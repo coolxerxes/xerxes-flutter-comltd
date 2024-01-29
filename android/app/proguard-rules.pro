@@ -1,0 +1,10 @@
+-dontwarn me.pushy.**
+-keep class me.pushy.** { *; }
+-keep class androidx.core.app.** { *; }
+-keep class android.support.v4.app.** { *; }
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep class com.tencent.android.tpush.** {*;}
+-keep class com.tencent.tpns.baseapi.** {*;}
+-keep class com.tencent.tpns.mqttchannel.** {*;}
+-keep class com.tencent.tpns.dataacquisition.** {*;}

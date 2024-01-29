@@ -1,0 +1,14 @@
+{
+    "tpns": {
+        "access_id": "1520011889",
+        "access_key": "A4UVZIDN2NM2"
+    },
+    "com.jioyouout": {
+        "channel": {
+            "enable": true
+        }
+    },
+    "debug": false,
+    "version": "1.3.7.2-release",
+    "upgrade": true
+}
