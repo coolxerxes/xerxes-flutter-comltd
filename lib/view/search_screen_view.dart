@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,11 +8,13 @@ import 'package:jyo_app/resources/app_strings.dart';
 import 'package:jyo_app/resources/app_styles.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
+import 'package:jyo_app/view_model/group_details_screen_vm.dart';
 import 'package:jyo_app/view_model/search_screen_vm.dart';
 
 import '../data/local/user_search_model.dart';
 import '../data/remote/api_interface.dart';
 import '../data/remote/endpoints.dart';
+import '../view_model/activity_details_screen_vm.dart';
 
 class SearchScreenView extends StatelessWidget {
   const SearchScreenView({Key? key}) : super(key: key);
@@ -26,10 +27,10 @@ class SearchScreenView extends StatelessWidget {
               backgroundColor: AppColors.appBkgColor,
               appBar: PreferredSize(
                 preferredSize: Size(
-                  double.infinity,
-                  //Platform.isIOS ?
-                   142.h //: 131.h,
-                ),
+                    double.infinity,
+                    //Platform.isIOS ?
+                    142.h //: 131.h,
+                    ),
                 child: Container(
                   color: AppColors.white,
                   padding:
@@ -39,97 +40,105 @@ class SearchScreenView extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                         // Platform.isIOS
-                           //   ?
-                               Expanded(
-                                  child: TextField(
-                                    controller: c.searchCtrl,
-                                    onChanged: (t) async {
-                                      if (t.trim().isNotEmpty) {
-                                        c.isSearchEmpty = false;
-                                        await c.searchPeople(
-                                            c.searchCtrl.text.trim());
-                                        c.searchResults!.add(null);
-                                        c.update();
-                                      } else {
-                                        c.isSearchEmpty = true;
-                                        c.searchResults!.clear();
-                                        c.update();
-                                      }
-                                    },
-                                    autofocus: true,
-                                    decoration: InputDecoration(
-                                      contentPadding: const EdgeInsets.all(5),
-                                      //isCollapsed: true,
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(14.r),
-                                        borderSide: BorderSide(
-                                            color: AppColors.texfieldColor,
-                                            width: 1.0.w,
-                                            style: BorderStyle.none),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(14.r),
-                                        borderSide: BorderSide(
-                                            color: AppColors.texfieldColor,
-                                            width: 1.0.w,
-                                            style: BorderStyle.none),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(14.r),
-                                        borderSide: BorderSide(
-                                            color: AppColors.texfieldColor,
-                                            width: 1.0.w,
-                                            style: BorderStyle.none),
-                                      ),
-                                      hintText: "Search",
-                                      filled: true,
-                                      fillColor: AppColors.texfieldColor,
-                                      hintStyle: AppStyles.interRegularStyle(
-                                          fontSize: 18,
-                                          color: AppColors.hintTextColor),
-                                      prefixIcon: const Icon(
-                                        Icons.search,
-                                        color: AppColors.hintTextColor,
-                                      ),
-                                    ),
-                                    style: AppStyles.interRegularStyle(
-                                        fontSize: 18,
-                                        color: AppColors.hintTextColor),
-                                  ),
-                                )
-                              // : Expanded(
-                              //     child: AppTextField(
-                              //     controller: c.searchCtrl,
-                              //     autoFocus: true,
-                              //     onChanged: (t) async {
-                              //       if (t.trim().isNotEmpty) {
-                              //         await c.searchPeople(
-                              //             c.searchCtrl.text.trim());
-                              //         c.searchResults!.add(null);
-                              //         c.update();
-                              //       } else {
-                              //         c.searchResults!.clear();
-                              //         c.update();
-                              //       }
-                              //     },
-                              //     margin: const EdgeInsets.all(0.0),
-                              //     radiusBottomLeft: 14.r,
-                              //     radiusBottomRight: 14.r,
-                              //     radiusTopLeft: 14.r,
-                              //     radiusTopRight: 14.r,
-                              //     height: 42.h,
-                              //     icon: const Icon(
-                              //       Icons.search,
-                              //       color: AppColors.hintTextColor,
-                              //     ),
-                              //     hintText: AppStrings.search,
-                              //     contentPaddingTop: 7,
-                              //   ))
-                              ,
+                          // Platform.isIOS
+                          //   ?
+                          Expanded(
+                            child: TextField(
+                              controller: c.searchCtrl,
+                              onChanged: (t) async {
+                                if (t.trim().isNotEmpty) {
+                                  c.isSearchEmpty = false;
+                                  if (c.selectedSearchType ==
+                                      SearchType.people) {
+                                    await c
+                                        .searchPeople(c.searchCtrl.text.trim());
+                                    c.searchResults!.add(null);
+                                  } else if (c.selectedSearchType ==
+                                      SearchType.activities) {
+                                    await c.searchActivity(
+                                        c.searchCtrl.text.trim());
+                                  } else if (c.selectedSearchType ==
+                                      SearchType.group) {
+                                    await c.searchGroup(t);
+                                  }
+                                  c.update();
+                                } else {
+                                  c.isSearchEmpty = true;
+                                  c.searchResults!.clear();
+                                  c.activityResults.clear();
+                                  c.groupResults.clear();
+                                  c.update();
+                                }
+                              },
+                              autofocus: true,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(5),
+                                //isCollapsed: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14.r),
+                                  borderSide: BorderSide(
+                                      color: AppColors.texfieldColor,
+                                      width: 1.0.w,
+                                      style: BorderStyle.none),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14.r),
+                                  borderSide: BorderSide(
+                                      color: AppColors.texfieldColor,
+                                      width: 1.0.w,
+                                      style: BorderStyle.none),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14.r),
+                                  borderSide: BorderSide(
+                                      color: AppColors.texfieldColor,
+                                      width: 1.0.w,
+                                      style: BorderStyle.none),
+                                ),
+                                hintText: "Search",
+                                filled: true,
+                                fillColor: AppColors.texfieldColor,
+                                hintStyle: AppStyles.interRegularStyle(
+                                    fontSize: 18,
+                                    color: AppColors.hintTextColor),
+                                prefixIcon: const Icon(
+                                  Icons.search,
+                                  color: AppColors.hintTextColor,
+                                ),
+                              ),
+                              style: AppStyles.interRegularStyle(
+                                  fontSize: 18, color: AppColors.hintTextColor),
+                            ),
+                          )
+                          // : Expanded(
+                          //     child: AppTextField(
+                          //     controller: c.searchCtrl,
+                          //     autoFocus: true,
+                          //     onChanged: (t) async {
+                          //       if (t.trim().isNotEmpty) {
+                          //         await c.searchPeople(
+                          //             c.searchCtrl.text.trim());
+                          //         c.searchResults!.add(null);
+                          //         c.update();
+                          //       } else {
+                          //         c.searchResults!.clear();
+                          //         c.update();
+                          //       }
+                          //     },
+                          //     margin: const EdgeInsets.all(0.0),
+                          //     radiusBottomLeft: 14.r,
+                          //     radiusBottomRight: 14.r,
+                          //     radiusTopLeft: 14.r,
+                          //     radiusTopRight: 14.r,
+                          //     height: 42.h,
+                          //     icon: const Icon(
+                          //       Icons.search,
+                          //       color: AppColors.hintTextColor,
+                          //     ),
+                          //     hintText: AppStrings.search,
+                          //     contentPaddingTop: 7,
+                          //   ))
+                          ,
                           sizedBoxW(width: 16.w),
                           InkWell(
                               onTap: () {
@@ -188,6 +197,7 @@ class SearchScreenView extends StatelessWidget {
                                         onTap: () {
                                           c.selectedSearchType =
                                               SearchType.activities;
+                                          c.onTabChanged();
                                           c.update();
                                         },
                                         child: Center(
@@ -237,6 +247,7 @@ class SearchScreenView extends StatelessWidget {
                                             onTap: () {
                                               c.selectedSearchType =
                                                   SearchType.people;
+                                              c.onTabChanged();
                                               c.update();
                                             },
                                             child: Center(
@@ -284,6 +295,7 @@ class SearchScreenView extends StatelessWidget {
                                             onTap: () {
                                               c.selectedSearchType =
                                                   SearchType.group;
+                                              c.onTabChanged();
                                               c.update();
                                             },
                                             child: Center(
@@ -310,11 +322,24 @@ class SearchScreenView extends StatelessWidget {
               body: Container(
                 margin: EdgeInsets.only(top: 8.h),
                 child: c.selectedSearchType == SearchType.activities
-                    ? ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return Container();
-                        })
+                    ? Container(
+                        color: AppColors.white,
+                        child: ListView.builder(
+                            itemCount: c.activityResults.length,
+                            itemBuilder: (context, index) {
+                              return ActivitySearchedCard(
+                                activity: c.activityResults[index],
+                                onTap: () {
+                                  Get.delete<ActivityDetailsScreenVM>();
+                                  getToNamed(activityDetailsScreenRoute,
+                                      argument: {
+                                        "id":
+                                            c.activityResults[index].activityId
+                                      });
+                                },
+                              );
+                            }),
+                      )
                     : c.selectedSearchType == SearchType.people
                         ? ListView.builder(
                             itemCount: c.searchResults!.length,
@@ -324,9 +349,24 @@ class SearchScreenView extends StatelessWidget {
                                   : peopleCard(c, index);
                             })
                         : ListView.builder(
-                            itemCount: 5,
+                            itemCount: c.groupResults.length,
                             itemBuilder: (context, index) {
-                              return Container();
+                              return GroupSearchedCard(
+                                group: c.groupResults[index],
+                                onTap: () {
+                                  Get.delete<GroupDetailsScreenVM>();
+                                  getToNamed(groupDetailsScreenRoute,
+                                      argument: {
+                                        "groupId": c.groupResults[index].groupId
+                                            .toString()
+                                      });
+                                },
+                                onJoinTapped: c.groupResults[index].isJoinedGroup!
+                                    ? null
+                                    : () {
+                                        c.joinGroup(index);
+                                      },
+                              );
                             }),
               )));
     });
@@ -386,12 +426,20 @@ class SearchScreenView extends StatelessWidget {
                                 c.searchResults![index]!.lastName.toString(),
                             style: AppStyles.interSemiBoldStyle(fontSize: 16),
                           ),
-                          c.searchResults![index]!.username.toString().trim().isEmpty ? Container(): Text(
-                            "(@"+c.searchResults![index]!.username.toString()+")",
-                            style: AppStyles.interRegularStyle(
-                                            fontSize: 15.0,
-                                            color: AppColors.hintTextColor),
-                          ),
+                          c.searchResults![index]!.username
+                                  .toString()
+                                  .trim()
+                                  .isEmpty
+                              ? Container()
+                              : Text(
+                                  "(@" +
+                                      c.searchResults![index]!.username
+                                          .toString() +
+                                      ")",
+                                  style: AppStyles.interRegularStyle(
+                                      fontSize: 15.0,
+                                      color: AppColors.hintTextColor),
+                                ),
                         ],
                       ),
                       sizedBoxH(height: 2.h),

@@ -6,6 +6,7 @@ import '../../models/registration_model/check_otp_response.dart';
 import '../../models/registration_model/create_or_update_user_response.dart';
 import '../../models/registration_model/create_user_response.dart';
 import '../../models/registration_model/interest_data_response.dart';
+import '../../models/registration_model/tour_update_model.dart';
 
 abstract class RegistrationRepo {
   Future<MobileVerificationResponse?> sendOtp(Map data);
@@ -15,4 +16,5 @@ abstract class RegistrationRepo {
   Future<SingInResponse>? signIn(Map data);
   Future<InterestDataResponse>? getAllIntrest();
   Future<SaveInterestResponse>? saveIntrest(Map data);
+  Future<TourUpdateModel>? updateTour(Map data);
 }

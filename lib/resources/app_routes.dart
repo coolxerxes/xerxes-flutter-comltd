@@ -34,3 +34,12 @@ const chatScreenRoute = "/chatScreenRoute";
 const createActivityScreenRoute = "/createActivityScreenRoute";
 const createActivityScreen2Route = "/createActivityScreen2Route";
 const chooseLocationOnMapScreenRoute = "/chooseLocationOnMapScreenRoute";
+const createGroupScreenRoute = "/createGroupScreenRoute";
+const groupListScreenRoute = "/groupListScreenRoute";
+const groupDetailsScreenRoute = '/groupDetailsScreenRoute';
+const qrScreenRoute = '/qrScreenRoute';
+
+const listOfSavedActivitiesScreenRoute = '/listOfSavedActivitiesScreenRoute';
+const activityDetailsScreenRoute = '/activityDetailsScreenRoute';
+const activityParticipantsScreenRoute = '/activityParticipantsScreenRoute';
+

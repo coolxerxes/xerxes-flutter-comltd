@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/view_model/most_liked_screen_vm.dart';
@@ -14,6 +15,7 @@ import '../data/remote/endpoints.dart';
 import '../models/profile_model/upload_profile_response.dart';
 import '../models/registration_model/interest_data_response.dart';
 import '../repository/registration_repo/registration_repo_impl.dart';
+import '../resources/app_colors.dart';
 import '../utils/common.dart';
 import '../utils/secured_storage.dart';
 
@@ -29,6 +31,7 @@ class EditProfileScreenVM extends GetxController {
   List<Datum> userInterestlist = List.empty(growable: true);
 
   XFile? selectedAvatar;
+  CroppedFile? selectedAvatarC;
 
   String? userPropic;
 
@@ -41,6 +44,35 @@ class EditProfileScreenVM extends GetxController {
   void onInit() {
     init();
     super.onInit();
+  }
+
+  Future<void> cropImage() async {
+    selectedAvatarC = await ImageCropper().cropImage(
+      sourcePath: selectedAvatar!.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        // CropAspectRatioPreset.ratio3x2,
+        // CropAspectRatioPreset.original,
+        // CropAspectRatioPreset.ratio4x3,
+        // CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: AppColors.orangePrimary,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Cropper',
+          aspectRatioLockEnabled: true,
+        ),
+        // WebUiSettings(
+        //   context: context,
+        // ),
+      ],
+    );
   }
 
   Future<void> init() async {
@@ -90,7 +122,7 @@ class EditProfileScreenVM extends GetxController {
         "lastName": fullNameCtrl.text
             .trim()
             .substring(fullNameCtrl.text.trim().split(" ").first.length),
-        "birthday": "12-12-1997",
+        //"birthday": "12-12-1997",
         "username": userNameCtrl.text.trim(),
         "biography": bioCtrl.text.trim()
       }
@@ -115,7 +147,10 @@ class EditProfileScreenVM extends GetxController {
   void pickImage(ImageSource source) async {
     selectedAvatar = await ImagePicker().pickImage(source: source);
     if (selectedAvatar != null) {
-      addPropicApi();
+      await cropImage();
+      if (selectedAvatarC != null) {
+        addPropicApi();
+      }
     }
     update();
   }
@@ -148,8 +183,8 @@ class EditProfileScreenVM extends GetxController {
       });
 
       //[4] ADD IMAGE TO UPLOAD
-      if (selectedAvatar != null) {
-        var file = await dio.MultipartFile.fromFile(selectedAvatar!.path,
+      if (selectedAvatarC != null) {
+        var file = await dio.MultipartFile.fromFile(selectedAvatarC!.path,
             filename: "profile_pic_" + DateTime.now().toIso8601String(),
             contentType: MediaType(
               "image",
@@ -160,7 +195,7 @@ class EditProfileScreenVM extends GetxController {
       }
 
       //[5] SEND TO SERVER
-      if (selectedAvatar != null) {
+      if (selectedAvatarC != null) {
         var response = await dioRequest.post(
           ApiInterface.baseUrl +
               Endpoints.user +
@@ -190,7 +225,6 @@ class EditProfileScreenVM extends GetxController {
         }
         update();
         //Navigator.of(context).pop();
-
       } else {
         //Navigator.of(context).pop();
         // isNotUploading = true;
@@ -203,17 +237,14 @@ class EditProfileScreenVM extends GetxController {
       if (err.response == null) {
         debugPrint("Error 1");
         //isNotUploading = true;
-
       }
       if (err.response != null && err.response!.statusCode == 413) {
         debugPrint("Error 413");
         //isNotUploading = true;
-
       }
       if (err.response != null && err.response!.statusCode == 400) {
         debugPrint("Error 400");
         //isNotUploading = true;
-
       }
       update();
     }

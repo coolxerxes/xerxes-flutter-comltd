@@ -40,16 +40,25 @@ class Data {
     this.status,
     this.message,
     this.userId,
+    this.isOverviewed,
+    this.overviewStep,
+    this.token
   });
 
   String? status;
   String? message;
   dynamic userId;
+  bool? isOverviewed;
+  dynamic overviewStep;
+  String? token;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         status: json["status"],
         message: json["message"],
         userId: json["userId"],
+        isOverviewed: json["isOverviewed"]??false,
+        overviewStep: json["overviewStep"]??0,
+        token: json["token"]
       );
 
   Map<String, dynamic> toJson() => {

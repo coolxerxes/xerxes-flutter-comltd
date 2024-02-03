@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "191667118813",
+    "project_id": "jio-you-out-dc07a",
+    "storage_bucket": "jio-you-out-dc07a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191667118813:android:f532c7e5c022b359913134",
+        "android_client_info": {
+          "package_name": "com.jioyouout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191667118813-2opnucs4kqbshb26rdi3q22vavuj7hdq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApuTejE80bn8zJlS9K7G62eUCKBY4tnAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191667118813-2opnucs4kqbshb26rdi3q22vavuj7hdq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "191667118813-t2a99hnk33fiaanlr6ka613bv3s1t92n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jioyouout"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

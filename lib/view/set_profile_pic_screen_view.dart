@@ -29,20 +29,25 @@ class SetProfilePicScreenView extends StatelessWidget {
         return SafeArea(
           child: Scaffold(
               backgroundColor: AppColors.appBkgColor,
-              appBar: PreferredSize(preferredSize: Size(double.infinity,65.w,),
-              child: RegistrationTopBar(
-                    progress: 6,
-                    text: AppStrings.next,
-                    enabled: c.isEnabled,
-                    onBackPressed: () {
-                      getToNamed(groupSuggestionScreenRoute);
-                    },
-                    onNextPressed: () async {
-                      // await SecuredStorage.writeStringValue(
-                      //     Keys.profile, "Completed");
-                      Get.offAllNamed(baseScreenRoute);
-                    },
-                  ),),
+              appBar: PreferredSize(
+                preferredSize: Size(
+                  double.infinity,
+                  65.w,
+                ),
+                child: RegistrationTopBar(
+                  progress: 6,
+                  text: AppStrings.next,
+                  enabled: c.isEnabled,
+                  onBackPressed: () {
+                    getToNamed(groupSuggestionScreenRoute);
+                  },
+                  onNextPressed: () async {
+                    // await SecuredStorage.writeStringValue(
+                    //     Keys.profile, "Completed");
+                    Get.offAllNamed(baseScreenRoute);
+                  },
+                ),
+              ),
               body: ListView(
                 children: [
                   sizedBoxH(
@@ -58,28 +63,31 @@ class SetProfilePicScreenView extends StatelessWidget {
                   ),
                   sizedBoxH(height: 48),
                   Center(
-                    child: c.isUploading! ? SizedBox(
-                            width: 144.w,
-                            height: 144.h,
-                            child: const Center(child: CircularProgressIndicator()),
-                          ):  c.selectedAvatar == null
+                    child: c.isUploading!
                         ? SizedBox(
                             width: 144.w,
                             height: 144.h,
-                            child: Image.asset(AppImage.sampleAvatar),
+                            child: const Center(
+                                child: CircularProgressIndicator()),
                           )
-                        : Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(57.6.r),
-                            ),
-                            width: 144.w,
-                            height: 144.h,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(57.6.r),
-                                child: Image.file(
-                                  File(c.selectedAvatar!.path),
-                                  fit: BoxFit.fill,
-                                ))),
+                        : c.selectedAvatarC == null
+                            ? SizedBox(
+                                width: 144.w,
+                                height: 144.h,
+                                child: Image.asset(AppImage.sampleAvatar),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(57.6.r),
+                                ),
+                                width: 144.w,
+                                height: 144.h,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(57.6.r),
+                                    child: Image.file(
+                                      File(c.selectedAvatarC!.path),
+                                      fit: BoxFit.cover,
+                                    ))),
                   ),
                   sizedBoxH(height: 48),
                   Center(
@@ -99,7 +107,8 @@ class SetProfilePicScreenView extends StatelessWidget {
                                       color: AppColors.iosBlue),
                                 ),
                                 onPressed: () {
-                                  Navigator.pop(context, AppStrings.selectPhoto);
+                                  Navigator.pop(
+                                      context, AppStrings.selectPhoto);
                                   c.pickImage(ImageSource.gallery);
                                 },
                               ),

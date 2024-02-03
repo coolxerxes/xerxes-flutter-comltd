@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../resources/app_colors.dart';
 import '../../resources/app_styles.dart';
 import '../common.dart';
 
@@ -15,6 +16,7 @@ class AppGradientButton extends StatelessWidget {
     this.margin,
     this.padding,
     this.icon,
+    this.isDisabled = false,
     Key? key,
   }) : super(key: key);
 
@@ -25,6 +27,7 @@ class AppGradientButton extends StatelessWidget {
   EdgeInsets? margin;
   EdgeInsets? padding;
   Widget? icon;
+  bool? isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +37,9 @@ class AppGradientButton extends StatelessWidget {
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(
+          color: isDisabled! ? AppColors.tabBkgColor : AppColors.orangePrimary ,
           borderRadius: BorderRadius.circular(100.r),
-          gradient: const LinearGradient(
+          gradient: isDisabled! ? null : const LinearGradient(
               colors: [Color(0xffFFD036), Color(0xffFFA43C)],
               transform: GradientRotation(240) //120
               )),
@@ -43,7 +47,7 @@ class AppGradientButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(100.r),
           type: MaterialType.transparency,
           child: InkWell(
-              onTap: onPressed,
+              onTap: isDisabled! ? null : onPressed,
               borderRadius: BorderRadius.circular(100.r),
               child: Center(
                   child: Row(
@@ -52,7 +56,7 @@ class AppGradientButton extends StatelessWidget {
                   Text(
                     btnText!,
                     style: AppStyles.interMediumStyle(
-                        fontSize: 14.4, color: Colors.white),
+                        fontSize: 14.4, color: isDisabled! ? AppColors.ageColor : Colors.white),
                   ),
                   sizedBoxW(
                     width: icon == null ? 0 : 10,

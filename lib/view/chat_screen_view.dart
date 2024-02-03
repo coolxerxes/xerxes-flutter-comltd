@@ -45,106 +45,158 @@ class ChatScreenView extends StatelessWidget {
               )
             ],
             middle: [
-              (c.conversation!.conversationWith as User).avatar!.trim().isEmpty
-                  ? MyAvatar(
-                      url: AppImage.sampleAvatar,
-                      height: 40,
-                      width: 40,
-                      radiusAll: 16,
-                    )
-                  : MyAvatar(
-                      url: (c.conversation!.conversationWith as User).avatar!,
-                      height: 40,
-                      width: 40,
-                      radiusAll: 16,
-                      isNetwork: true,
-                    ),
+              c.conversation != null
+                  ? (c.conversation!.conversationWith as User)
+                          .avatar!
+                          .trim()
+                          .isEmpty
+                      ? MyAvatar(
+                          url: AppImage.sampleAvatar,
+                          height: 40,
+                          width: 40,
+                          radiusAll: 16,
+                        )
+                      : MyAvatar(
+                          url: (c.conversation!.conversationWith as User)
+                              .avatar!,
+                          height: 40,
+                          width: 40,
+                          radiusAll: 16,
+                          isNetwork: true,
+                        )
+                  : c.group != null
+                      ? c.group!.icon!.trim().isEmpty
+                          ? MyAvatar(
+                              url: AppImage.sampleAvatar,
+                              height: 40,
+                              width: 40,
+                              radiusAll: 16,
+                            )
+                          : MyAvatar(
+                              url: c.group!.icon!.trim(),
+                              height: 40,
+                              width: 40,
+                              radiusAll: 16,
+                              isNetwork: true,
+                            )
+                      : MyAvatar(
+                          url: AppImage.sampleAvatar,
+                          height: 40,
+                          width: 40,
+                          radiusAll: 16,
+                        ),
               sizedBoxW(width: 8),
               Text(
-                (c.conversation!.conversationWith as User).name,
+                c.conversation != null
+                    ? (c.conversation!.conversationWith as User).name
+                    : c.group != null
+                        ? ("${c.group!.name.toString()}\n${c.group!.membersCount.toString()} members")
+                        : "",
                 style: AppStyles.interSemiBoldStyle(fontSize: 16),
               )
             ],
-            actions: [
-              MyIconButton(
-                onTap: () {
-                  showCupertinoModalPopup(
-                    context: context,
-                    builder: (BuildContext context) => CupertinoActionSheet(
-                        // title: const Text('Choose Options'),
-                        // message: const Text('Your options are '),
-                        actions: <Widget>[
-                          CupertinoActionSheetAction(
-                              child: Text(
-                                AppStrings.pinChat,
-                                style: AppStyles.interRegularStyle(
-                                  color: AppColors.iosBlue,
+            actions: c.group != null
+                ? []
+                : [
+                    MyIconButton(
+                      onTap: () {
+                        showCupertinoModalPopup(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              CupertinoActionSheet(
+                                  // title: const Text('Choose Options'),
+                                  // message: const Text('Your options are '),
+                                  actions: <Widget>[
+                                CupertinoActionSheetAction(
+                                    child: Text(
+                                      AppStrings.pinChat,
+                                      style: AppStyles.interRegularStyle(
+                                        color: AppColors.iosBlue,
+                                      ),
+                                    ),
+                                    onPressed: () {}),
+                                CupertinoActionSheetAction(
+                                  child: Text(
+                                    AppStrings.blockUser + " user",
+                                    style: AppStyles.interRegularStyle(
+                                        color: Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context, AppStrings.reportUser);
+                                    c.blockUserProfile();
+                                  },
                                 ),
-                              ),
-                              onPressed: () {}),
-                          CupertinoActionSheetAction(
-                            child: Text(
-                              AppStrings.blockUser + " user",
-                              style: AppStyles.interRegularStyle(
-                                  color: Colors.red),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context, AppStrings.reportUser);
-                              c.blockUserProfile();
-                            },
-                          ),
-                          CupertinoActionSheetAction(
-                            child: Text(
-                              AppStrings.clearMessages,
-                              style: AppStyles.interRegularStyle(
-                                  color: Colors.red),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context, AppStrings.blockUser);
-                              c.messageList.clear();
-                              c.update();
-                              c.deleteConvo(c.receiver!.uid,
-                                  CometChatConversationType.user);
-                              c.init();
-                              Get.offNamed(chatScreenRoute,preventDuplicates: false);
-                              //c.blockUserProfile();
-                            },
-                          )
-                        ],
-                        cancelButton: CupertinoActionSheetAction(
-                          child: Text(
-                            AppStrings.cancel,
-                            style: AppStyles.interRegularStyle(
-                                color: AppColors.iosBlue),
-                          ),
-                          isDefaultAction: true,
-                          onPressed: () {
-                            Navigator.pop(context, AppStrings.cancel);
-                          },
-                        )),
-                  );
-                },
-                icon: AppBarIcons.menuSvg,
-                isSvg: true,
-                size: 24,
-              )
-            ],
+                                CupertinoActionSheetAction(
+                                  child: Text(
+                                    AppStrings.clearMessages,
+                                    style: AppStyles.interRegularStyle(
+                                        color: Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context, AppStrings.blockUser);
+                                    c.messageList.clear();
+                                    c.update();
+                                    c.deleteConvo(c.receiver!.uid,
+                                        CometChatConversationType.user);
+                                    c.init();
+                                    Get.offNamed(chatScreenRoute,
+                                        preventDuplicates: false);
+                                    //c.blockUserProfile();
+                                  },
+                                )
+                              ],
+                                  cancelButton: CupertinoActionSheetAction(
+                                    child: Text(
+                                      AppStrings.cancel,
+                                      style: AppStyles.interRegularStyle(
+                                          color: AppColors.iosBlue),
+                                    ),
+                                    isDefaultAction: true,
+                                    onPressed: () {
+                                      Navigator.pop(context, AppStrings.cancel);
+                                    },
+                                  )),
+                        );
+                      },
+                      icon: AppBarIcons.menuSvg,
+                      isSvg: true,
+                      size: 24,
+                    )
+                  ],
           ),
-          body: uikit.CometChatMessageList(
-            user: c.conversation!.conversationWith as User,
-            messageListStyle: const uikit.MessageListStyle(),
 
-            theme: uikit.CometChatTheme(
-                palette: const uikit.Palette(
-                  backGroundColor: uikit.PaletteModel(
-                      light: Colors.white, dark: Colors.white),
-                  primary: uikit.PaletteModel(
-                      light: AppColors.orangePrimary,
-                      dark: AppColors.orangePrimary),
+          body: c.group != null
+              ? uikit.CometChatMessages(
+                  group: c.group,
+                  hideMessageHeader: true,
+                  theme: uikit.CometChatTheme(
+                      palette: const uikit.Palette(
+                        backGroundColor: uikit.PaletteModel(
+                            light: Colors.white, dark: Colors.white),
+                        primary: uikit.PaletteModel(
+                            light: AppColors.orangePrimary,
+                            dark: AppColors.orangePrimary),
+                      ),
+                      typography: uikit.Typography.fromDefault()),
+                )
+              : uikit.CometChatMessageList(
+                  group: c.group,
+                  user: c.conversation?.conversationWith as User?,
+                  messageListStyle: const uikit.MessageListStyle(),
+
+                  theme: uikit.CometChatTheme(
+                      palette: const uikit.Palette(
+                        backGroundColor: uikit.PaletteModel(
+                            light: Colors.white, dark: Colors.white),
+                        primary: uikit.PaletteModel(
+                            light: AppColors.orangePrimary,
+                            dark: AppColors.orangePrimary),
+                      ),
+                      typography: uikit.Typography.fromDefault()),
+                  //messagesRequestBuilder: MessagesRequestBuilder()..uid = c.receiver!.uid,
                 ),
-                typography: uikit.Typography.fromDefault()),
-            //messagesRequestBuilder: MessagesRequestBuilder()..uid = c.receiver!.uid,
-          ),
           //     ListView.builder(
           //   itemCount: c.messageList.length,
           //   itemBuilder: (context, index) {
@@ -202,183 +254,188 @@ class ChatScreenView extends StatelessWidget {
           //   },
           // ),
 
-          bottomNavigationBar: Padding(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: c.user != null
-                  ?
-                  // Container(
-                  //     color: AppColors.white,
-                  //     //margin: EdgeInsets.only(left: 30),
-                  //     padding: EdgeInsets.only(
-                  //         bottom: 15.h, right: 22.w, left: 22.w, top: 5.h),
-                  //     child: Row(
-                  //       children: [
-                  //         InkWell(
-                  //           onTap: () {},
-                  //           child: SvgPicture.asset(
-                  //             AppIcons.cameraSvg,
-                  //           ),
-                  //         ),
-                  //         sizedBoxW(width: 12),
-                  //         Expanded(
-                  //           child: SearchTextField(
-                  //             controller: c.textEditingController,
-                  //             radius: 100,
-                  //             hint: AppStrings.saySomething,
-                  //             icon: false,
-                  //           ),
-                  //         ),
-                  //         sizedBoxW(width: 12),
-                  //         InkWell(
-                  //           onTap: () {
-                  //             c.onSendButtonClick();
-                  //           },
-                  //           child: Text(AppStrings.send,
-                  //               style: TextStyle(
-                  //                   foreground: Paint()
-                  //                     ..shader = const LinearGradient(
-                  //                       colors: <Color>[
-                  //                         Color(0xffFFD036),
-                  //                         Color(0xffFFA43C)
-                  //                       ],
-                  //                     ).createShader(const Rect.fromLTWH(
-                  //                         0.0, 0.0, 200.0, 70.0)),
-                  //                   fontSize: 16.sp,
-                  //                   fontFamily: interMedium)),
-                  //         )
-                  //       ],
-                  //     ),
-                  //   )
+          bottomNavigationBar: c.group != null
+              ? null
+              : Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: c.user != null
+                      ?
+                      // Container(
+                      //     color: AppColors.white,
+                      //     //margin: EdgeInsets.only(left: 30),
+                      //     padding: EdgeInsets.only(
+                      //         bottom: 15.h, right: 22.w, left: 22.w, top: 5.h),
+                      //     child: Row(
+                      //       children: [
+                      //         InkWell(
+                      //           onTap: () {},
+                      //           child: SvgPicture.asset(
+                      //             AppIcons.cameraSvg,
+                      //           ),
+                      //         ),
+                      //         sizedBoxW(width: 12),
+                      //         Expanded(
+                      //           child: SearchTextField(
+                      //             controller: c.textEditingController,
+                      //             radius: 100,
+                      //             hint: AppStrings.saySomething,
+                      //             icon: false,
+                      //           ),
+                      //         ),
+                      //         sizedBoxW(width: 12),
+                      //         InkWell(
+                      //           onTap: () {
+                      //             c.onSendButtonClick();
+                      //           },
+                      //           child: Text(AppStrings.send,
+                      //               style: TextStyle(
+                      //                   foreground: Paint()
+                      //                     ..shader = const LinearGradient(
+                      //                       colors: <Color>[
+                      //                         Color(0xffFFD036),
+                      //                         Color(0xffFFA43C)
+                      //                       ],
+                      //                     ).createShader(const Rect.fromLTWH(
+                      //                         0.0, 0.0, 200.0, 70.0)),
+                      //                   fontSize: 16.sp,
+                      //                   fontFamily: interMedium)),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   )
 
-                  c.isBlocked!
-                      ? SizedBox(
-                          height: 80.h,
-                          width: double.infinity,
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Center(
-                                  child: Text(
-                                    "You blocked this user.\nCannot send messages to this user now.",
-                                    style: AppStyles.interMediumStyle(),
-                                    textAlign: TextAlign.center,
-                                  ),
+                      c.isBlocked!
+                          ? SizedBox(
+                              height: 80.h,
+                              width: double.infinity,
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        "You blocked this user.\nCannot send messages to this user now.",
+                                        style: AppStyles.interMediumStyle(),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : SizedBox(
-                          height: 115.h,
-                          child: uikit.CometChatMessageComposer(
-                            user: c.conversation!.conversationWith as User,
-                            hideLiveReaction: true,
-                            placeholderText: AppStrings.saySomething,
-                          ),
-                        )
-                  : Container()),
+                              ),
+                            )
+                          : SizedBox(
+                              height: 115.h,
+                              child: uikit.CometChatMessageComposer(
+                                group: c.group,
+                                user: c.conversation != null
+                                    ? c.conversation!.conversationWith as User
+                                    : null,
+                                hideLiveReaction: true,
+                                placeholderText: AppStrings.saySomething,
+                              ),
+                            )
+                      : Container()),
         )),
       );
     });
   }
 
-  Expanded senderBubble(ChatScreenVM c, TextMessage msg) {
-    return Expanded(
-      flex: 5,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Wrap(
-              direction: Axis.horizontal,
-              alignment: WrapAlignment.end,
-              children: [
-                Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
-                    margin:
-                        EdgeInsets.only(bottom: 14.h, left: 12.w, right: 12.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        color: AppColors.texfieldColor,
-                        gradient: const LinearGradient(
-                            colors: [Color(0xffFFD036), Color(0xffFFA43C)],
-                            transform: GradientRotation(240) //120
-                            )),
-                    child: Text(
-                      (msg).text.toString(),
-                      style: AppStyles.interMediumStyle(
-                          fontSize: 15,
-                          color: msg.sender!.uid.toString() !=
-                                  c.user!.uid.toString()
-                              ? AppColors.black
-                              : AppColors.white),
-                    )),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Expanded senderBubble(ChatScreenVM c, TextMessage msg) {
+  //   return Expanded(
+  //     flex: 5,
+  //     child: Row(
+  //       mainAxisSize: MainAxisSize.min,
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: [
+  //         Expanded(
+  //           child: Wrap(
+  //             direction: Axis.horizontal,
+  //             alignment: WrapAlignment.end,
+  //             children: [
+  //               Container(
+  //                   padding:
+  //                       EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+  //                   margin:
+  //                       EdgeInsets.only(bottom: 14.h, left: 12.w, right: 12.h),
+  //                   decoration: BoxDecoration(
+  //                       borderRadius: BorderRadius.circular(12.r),
+  //                       color: AppColors.texfieldColor,
+  //                       gradient: const LinearGradient(
+  //                           colors: [Color(0xffFFD036), Color(0xffFFA43C)],
+  //                           transform: GradientRotation(240) //120
+  //                           )),
+  //                   child: Text(
+  //                     (msg).text.toString(),
+  //                     style: AppStyles.interMediumStyle(
+  //                         fontSize: 15,
+  //                         color: msg.sender!.uid.toString() !=
+  //                                 c.user!.uid.toString()
+  //                             ? AppColors.black
+  //                             : AppColors.white),
+  //                   )),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Expanded receiverBubble(ChatScreenVM c, TextMessage msg) {
-    return Expanded(
-      flex: 5,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: Wrap(
-              direction: Axis.horizontal,
-              alignment: WrapAlignment.start,
-              children: [
-                Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
-                    margin:
-                        EdgeInsets.only(bottom: 14.h, left: 12.w, right: 12.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        color: AppColors.texfieldColor),
-                    child: Text(
-                      (msg).text.toString(),
-                      style: AppStyles.interMediumStyle(
-                          fontSize: 15,
-                          color: msg.sender!.uid.toString() !=
-                                  c.user!.uid.toString()
-                              ? AppColors.black
-                              : AppColors.white),
-                    )),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Expanded receiverBubble(ChatScreenVM c, TextMessage msg) {
+  //   return Expanded(
+  //     flex: 5,
+  //     child: Row(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Expanded(
+  //           child: Wrap(
+  //             direction: Axis.horizontal,
+  //             alignment: WrapAlignment.start,
+  //             children: [
+  //               Container(
+  //                   padding:
+  //                       EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+  //                   margin:
+  //                       EdgeInsets.only(bottom: 14.h, left: 12.w, right: 12.h),
+  //                   decoration: BoxDecoration(
+  //                       borderRadius: BorderRadius.circular(12.r),
+  //                       color: AppColors.texfieldColor),
+  //                   child: Text(
+  //                     (msg).text.toString(),
+  //                     style: AppStyles.interMediumStyle(
+  //                         fontSize: 15,
+  //                         color: msg.sender!.uid.toString() !=
+  //                                 c.user!.uid.toString()
+  //                             ? AppColors.black
+  //                             : AppColors.white),
+  //                   )),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  getMessage(ChatScreenVM c, BaseMessage message) {
-    if (message is TextMessage) {
-      return message.sender!.uid.toString() != c.user!.uid.toString()
-          ? receiverBubble(c, message)
-          : senderBubble(c, message);
-    } else if (message is MediaMessage) {
-      return Container(
-        width: 100,
-        height: 120,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.r),
-            child: Image.network(message.attachment!.fileUrl)),
-      );
-    } else {
-      return Container();
-    }
-  }
+  // getMessage(ChatScreenVM c, BaseMessage message) {
+  //   if (message is TextMessage) {
+  //     return message.sender!.uid.toString() != c.user!.uid.toString()
+  //         ? receiverBubble(c, message)
+  //         : senderBubble(c, message);
+  //   } else if (message is MediaMessage) {
+  //     return Container(
+  //       width: 100,
+  //       height: 120,
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(8.r),
+  //       ),
+  //       child: ClipRRect(
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           child: Image.network(message.attachment!.fileUrl)),
+  //     );
+  //   } else {
+  //     return Container();
+  //   }
+  // }
 }

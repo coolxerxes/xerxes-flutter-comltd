@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../utils/common.dart';
+import '../../utils/secured_storage.dart';
 import 'api_interface.dart';
 import 'endpoints.dart';
 import 'package:http/http.dart' as http;
@@ -14,16 +16,22 @@ class ApiService extends ApiInterface {
   dynamic returnResponse(http.Response response) {
     try {
       dynamic responseJson = jsonDecode(response.body);
-      debugPrint("RESPONSE $responseJson");
+      debugPrint(
+          "Request : ${response.request!.url} ,header : ${response.request!.headers.toString()} ,method : ${response.toString()} ,RESPONSE $responseJson");
       return responseJson;
     } catch (e) {
       return {};
     }
   }
 
+  Future<String?> get authorizationToken async {
+    return SecuredStorage.readStringValue(Keys.token);
+  }
+
   @override
   Future? sendOtp(Map data) async {
     var client = http.Client();
+
     dynamic responseJson;
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.sendOtp),
@@ -59,6 +67,7 @@ class ApiService extends ApiInterface {
             Endpoints.createOrUpdateUserInfo),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -85,6 +94,9 @@ class ApiService extends ApiInterface {
     dynamic responseJson;
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.create),
+        headers: {
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
     return responseJson;
@@ -97,6 +109,9 @@ class ApiService extends ApiInterface {
     final response = await client.get(
       Uri.parse(
           ApiInterface.baseUrl + Endpoints.metaData + Endpoints.getAllIntrest),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -111,6 +126,7 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.saveIntrest),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -124,6 +140,9 @@ class ApiService extends ApiInterface {
     dynamic responseJson;
     final response = await client.get(
       Uri.parse(ApiInterface.baseUrl + Endpoints.user + id),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -138,6 +157,7 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.accountSetting),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -154,6 +174,9 @@ class ApiService extends ApiInterface {
           Endpoints.user +
           Endpoints.notificationSetting +
           id),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -169,6 +192,7 @@ class ApiService extends ApiInterface {
             Endpoints.updateNotification),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -183,6 +207,9 @@ class ApiService extends ApiInterface {
     final response = await client.get(
       Uri.parse(
           ApiInterface.baseUrl + Endpoints.user + Endpoints.postPrivacy + id),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -197,6 +224,7 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.updatePrivacy),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -212,6 +240,7 @@ class ApiService extends ApiInterface {
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.blockUsers),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -229,6 +258,9 @@ class ApiService extends ApiInterface {
           Endpoints.friend +
           Endpoints.blockedUserList +
           id),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -241,6 +273,9 @@ class ApiService extends ApiInterface {
     final response = await client.get(
       Uri.parse(
           ApiInterface.baseUrl + Endpoints.user + Endpoints.friendList + id),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -254,7 +289,8 @@ class ApiService extends ApiInterface {
         Uri.parse(
             ApiInterface.baseUrl + Endpoints.user + Endpoints.postHidefrom),
         headers: <String, String>{
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -272,6 +308,7 @@ class ApiService extends ApiInterface {
             Endpoints.changePhoneNumber),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -288,6 +325,7 @@ class ApiService extends ApiInterface {
             Endpoints.checkChangePhoneNoOTP),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -317,6 +355,7 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.deleteAccount),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -330,6 +369,9 @@ class ApiService extends ApiInterface {
     final response = await client.get(
       Uri.parse(
           ApiInterface.baseUrl + Endpoints.user + Endpoints.getMyVouchers + id),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -345,6 +387,7 @@ class ApiService extends ApiInterface {
             Endpoints.sendSignInNotification),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -364,6 +407,9 @@ class ApiService extends ApiInterface {
           name! +
           "/" +
           userId.toString()),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -380,6 +426,7 @@ class ApiService extends ApiInterface {
             Endpoints.profile),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -397,6 +444,7 @@ class ApiService extends ApiInterface {
             Endpoints.sentRequest),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -414,6 +462,7 @@ class ApiService extends ApiInterface {
             Endpoints.accept),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -430,6 +479,7 @@ class ApiService extends ApiInterface {
             Endpoints.friend.substring(0, (Endpoints.friend.length - 1))),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -447,6 +497,7 @@ class ApiService extends ApiInterface {
             Endpoints.block),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -463,6 +514,9 @@ class ApiService extends ApiInterface {
           Endpoints.friend +
           Endpoints.pendingRequestList +
           id.toString()),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -479,6 +533,7 @@ class ApiService extends ApiInterface {
             Endpoints.cancelFriendRequest),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -493,6 +548,7 @@ class ApiService extends ApiInterface {
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.post),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -510,6 +566,7 @@ class ApiService extends ApiInterface {
             Endpoints.byUser),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -517,7 +574,8 @@ class ApiService extends ApiInterface {
   }
 
   @override
-  Future? attachment(XFile? imgFile, {String? fileName}) async {
+  Future? attachment(XFile? imgFile,
+      {String? fileName, String? filePath}) async {
     debugPrint("MAKING IMAGE REQUEST");
     try {
       ///[1] CREATING INSTANCE
@@ -530,7 +588,8 @@ class ApiService extends ApiInterface {
       //[2] ADDING TOKEN
       dioRequest.options.headers = {
         'Content-Type': 'multipart/form-data',
-        'enctype': 'multipart/form-data'
+        'enctype': 'multipart/form-data',
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
       };
 
       //[3] ADDING EXTRA INFO
@@ -539,8 +598,8 @@ class ApiService extends ApiInterface {
       });
 
       //[4] ADD IMAGE TO UPLOAD
-      if (imgFile != null) {
-        var file = await dio.MultipartFile.fromFile(imgFile.path,
+      if (imgFile != null || filePath != null) {
+        var file = await dio.MultipartFile.fromFile(filePath ?? imgFile!.path,
             filename: fileName ?? "post_pic" + DateTime.now().toIso8601String(),
             contentType: MediaType(
               "attachment",
@@ -551,7 +610,7 @@ class ApiService extends ApiInterface {
       }
 
       //[5] SEND TO SERVER
-      if (imgFile != null) {
+      if (imgFile != null || filePath != null) {
         var response = await dioRequest.post(
           ApiInterface.baseUrl +
               Endpoints.user +
@@ -568,7 +627,6 @@ class ApiService extends ApiInterface {
       if (err.response == null) {
         debugPrint("Error 1");
         //isNotUploading = true;
-
       }
       if (err.response != null && err.response!.statusCode == 413) {
         debugPrint("Error 413");
@@ -584,16 +642,17 @@ class ApiService extends ApiInterface {
   }
 
   @override
-  Future? comment(Map data) async {
+  Future? comment(Map data, {String endpoint = Endpoints.post}) async {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl +
             Endpoints.user +
-            Endpoints.post +
+            endpoint +
             Endpoints.comment),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -611,6 +670,7 @@ class ApiService extends ApiInterface {
             Endpoints.delete),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -618,16 +678,17 @@ class ApiService extends ApiInterface {
   }
 
   @override
-  Future? getComment(Map data) async {
+  Future? getComment(Map data, {String endpoint = Endpoints.post}) async {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl +
             Endpoints.user +
-            Endpoints.post +
+            endpoint +
             Endpoints.getComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -644,6 +705,9 @@ class ApiService extends ApiInterface {
           Endpoints.post +
           Endpoints.getLikeUser +
           postId),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -660,6 +724,9 @@ class ApiService extends ApiInterface {
           postId +
           "/" +
           userId),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -675,6 +742,9 @@ class ApiService extends ApiInterface {
           Endpoints.post +
           Endpoints.getTimeLine +
           userId),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
@@ -682,10 +752,13 @@ class ApiService extends ApiInterface {
 
   @override
   Future? getTimeLineNew(Map data) async {
-    var headers = {'Content-Type': 'application/json'};
+    var headers = {
+      'Content-Type': 'application/json',
+      if (await authorizationToken != null) 'Authorization': (await authorizationToken)!};
     var request = http.Request(
         'POST', Uri.parse('${ApiInterface.baseUrl}/user/post/getTimeLineNew'));
-    debugPrint("data gTln $data, url ${ApiInterface.baseUrl}/user/post/getTimeLineNew");    
+    debugPrint(
+        "data gTln $data, url ${ApiInterface.baseUrl}/user/post/getTimeLineNew");
     request.body = json.encode(data);
     request.headers.addAll(headers);
 
@@ -728,6 +801,7 @@ class ApiService extends ApiInterface {
             Endpoints.jioMe),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -745,6 +819,7 @@ class ApiService extends ApiInterface {
             Endpoints.like),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -759,6 +834,7 @@ class ApiService extends ApiInterface {
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.post),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -776,6 +852,7 @@ class ApiService extends ApiInterface {
             Endpoints.getTagedUser),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -792,92 +869,926 @@ class ApiService extends ApiInterface {
             Endpoints.getMyNotifications),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
     return responseJson;
   }
-  
+
   @override
-  Future? deleteAComment(Map data) async {
-   var client = http.Client();
+  Future? deleteAComment(Map data, {String endpoint = Endpoints.post}) async {
+    var client = http.Client();
     dynamic responseJson;
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl +
             Endpoints.user +
-            Endpoints.post +
+            endpoint +
             Endpoints.deleteComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
     return responseJson;
   }
-  
+
   @override
-  Future? disLikeAComment(Map data) async {
+  Future? disLikeAComment(Map data, {String endpoint = Endpoints.post}) async {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl +
             Endpoints.user +
-            Endpoints.post +
+            endpoint +
             Endpoints.disLikeComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
     return responseJson;
   }
-  
+
   @override
-  Future? likeAComment(Map data) async {
+  Future? likeAComment(Map data, {String endpoint = Endpoints.post}) async {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl +
             Endpoints.user +
-            Endpoints.post +
+            endpoint +
             Endpoints.likeComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
     return responseJson;
   }
-  
+
   @override
-  Future? updateComment(Map data) async {
+  Future? updateComment(Map data, {String endpoint = Endpoints.post}) async {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl +
             Endpoints.user +
-            Endpoints.post +
+            endpoint +
             Endpoints.updateComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
     return responseJson;
   }
-  
+
   @override
   Future? getCalendarEvents(Map data) async {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl +""
+      Uri.parse(ApiInterface.baseUrl + ""
           // Endpoints.user +
           // Endpoints.post +
           // Endpoints.getTimeLine
           ),
+      headers: {
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      }
     );
     responseJson = returnResponse(response);
     return responseJson;
+  }
+
+  @override
+  Future? addActivity(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.activity),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? getActivityByUser(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.byUser),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? updateActivity(Map data, String id) async {
+    debugPrint("Upd Act id $id");
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.patch(
+        Uri.parse(
+            ApiInterface.baseUrl + Endpoints.user + Endpoints.activity + id),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? acceptOrRejectRequestGroup(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.acceptOrRejectRequest),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? createGroup(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.group),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? inviteFriend(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.inviteFriend),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? listOfSave(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.listOfSave),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? memberList(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.memberList),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? requestList(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.requestList),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? requestToJoin(Map dta) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.requestToJoin),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(dta));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? searchGroup(Map dta) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.search),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(dta));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? saveActivity(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.saveActivity),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? shareAsPost(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.shareAsPost),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? deleteActivity(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.delete),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? getActivityDetails(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.details),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? updateTourStep(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(
+            ApiInterface.baseUrl + Endpoints.user + Endpoints.overviewSteps),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? getMapFilteredActivity(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.getActivityByFilter),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? getMapTappedActivity(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.getActivitys),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? acceptInvite(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.acceptInvite),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  // @override
+  // Future? activityComment(Map data) async {
+  //    var client = http.Client();
+  //   dynamic responseJson;
+  //   final response = await client.post(
+  //       Uri.parse(ApiInterface.baseUrl +
+  //           Endpoints.user +
+  //           Endpoints.activity+
+  //           Endpoints.comment
+  //           ),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: jsonEncode(data));
+  //   responseJson = returnResponse(response);
+  //   return responseJson;
+  // }
+
+  // @override
+  // Future? getActivityComment(Map data)async  {
+  //    var client = http.Client();
+  //   dynamic responseJson;
+  //   final response = await client.post(
+  //       Uri.parse(ApiInterface.baseUrl +
+  //           Endpoints.user +
+  //           Endpoints.activity+
+  //           Endpoints.getComment
+  //           ),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: jsonEncode(data));
+  //   responseJson = returnResponse(response);
+  //   return responseJson;
+  // }
+
+  @override
+  Future? invite(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.invite),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? joinActivity(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.joinActivity),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? leaveActivity(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.leaveActivity),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? participantsList(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.participantsList),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? rejectInvite(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.rejectInvite),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? requestListToJoin(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.requestListToJoin),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? acceptRequestToJoin(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.acceptRequestToJoin),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? activitySearch(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.search),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? getGroupList(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.myGroup),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? getGroupDetails(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.details),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future acceptOrRejectInvitation(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.acceptOrRejectInvitation),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future updateGroup(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.update),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future demoteAdminToMember(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.demoteAdminToMember),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? demoteToNormalParticipants(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.host +
+            Endpoints.demoteToNormalParticipants),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future leaveGroup(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.leave),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future memberToAdmin(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.memberToAdmin),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future removeMember(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.removeMember),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? removeParticipants(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.removeParticipants),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? setHostAndSelfDemote(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.host +
+            Endpoints.setHostAndSelfDemote),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? setSubHost(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.host +
+            Endpoints.setSubHost),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future setSuperAdminDemoteToAdmin(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.setSuperAdminDemoteToAdmin),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? leaveActivityAppointSomeoneAsHost(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.activity +
+            Endpoints.host +
+            Endpoints.leaveActivityAppointSomeoneAsHost),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future leaveAndSetSomeOneAsSuperAdmin(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.group +
+            Endpoints.leaveAndSetSomeOneAsSuperAdmin),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        },
+        body: jsonEncode(data));
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future getGroupSuggestion(String id) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.get(
+      Uri.parse(
+          ApiInterface.baseUrl + Endpoints.suggestionGroups + id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      },
+    );
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? postGetSuggestedPeople(Map data) async {
+    log('data api ' + data.toString());
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+      Uri.parse(ApiInterface.baseUrl + 'user/friend/getSuggestedPeople'),
+      body: jsonEncode(data),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+      },
+    );
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  @override
+  Future? postSugge(userId) {
+    // TODO: implement postSugge
+    throw UnimplementedError();
   }
 }

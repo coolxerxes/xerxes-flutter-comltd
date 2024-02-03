@@ -42,6 +42,7 @@ class BirthdayScreenView extends StatelessWidget {
                 ),
               ),
               body: ListView(
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   sizedBoxH(
                     height: 82,

@@ -67,7 +67,21 @@
   		<key>NSAllowsArbitraryLoads</key>
    		<true/>
 	</dict>
-
+	<key>NSCalendarsUsageDescription</key>
+	<string>To add activity to system calendar</string>
+	<key>NSContactsUsageDescription</key>
+	<string>To add activity to system calendar</string>
     
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+ <key>CFBundleTypeRole</key>
+ <string>Editor</string>
+ <key>CFBundleURLName</key>
+    <string>namnp.page.link</string>
+ <key>CFBundleURLSchemes</key>
+ <array>
+  <string>https</string>
+ </array>
+
 </dict>
 </plist>

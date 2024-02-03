@@ -11,7 +11,9 @@ class MessageScreenVM extends GetxController {
   String? userId;
   List<Datum> friends = List.empty(growable: true);
   List<Conversation> conversationList = List.empty(growable: true);
+  List<Group> groupsList = List.empty(growable: true);
   bool? isLoading = true;
+  bool? isLoadingGroup = true;
 
   @override
   void onInit() {
@@ -22,6 +24,7 @@ class MessageScreenVM extends GetxController {
   Future<void> init() async {
     userId = await SecuredStorage.readStringValue(Keys.userId);
     await getConversations();
+    await getGroupConversations();
     await listFriendsOfCometChat(uid: userId.toString());
   }
 
@@ -42,6 +45,28 @@ class MessageScreenVM extends GetxController {
       onError: (excep) {
         showAppDialog(msg: excep.message);
         isLoading = false;
+        update();
+      },
+    );
+  }
+
+  Future<void> getGroupConversations() async {
+    isLoadingGroup = true;
+    update();
+    GroupsRequest groupRequest = (GroupsRequestBuilder()
+          ..joinedOnly = true
+          ..limit = 25)
+        .build();
+    await groupRequest.fetchNext(
+      onSuccess: ((groups) {
+        groupsList.clear();
+        groupsList.addAll(groups);
+        isLoadingGroup = false;
+        update();
+      }),
+      onError: (excep) {
+        showAppDialog(msg: excep.message);
+        isLoadingGroup = false;
         update();
       },
     );

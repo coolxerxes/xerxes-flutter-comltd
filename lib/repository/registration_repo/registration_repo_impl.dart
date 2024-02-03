@@ -2,6 +2,7 @@ import 'package:jyo_app/data/remote/api_service.dart';
 import 'package:jyo_app/models/registration_model/mobile_verification_response.dart';
 import 'package:jyo_app/models/registration_model/save_interest_model.dart';
 import 'package:jyo_app/models/registration_model/sign_in_response.dart';
+import 'package:jyo_app/models/registration_model/tour_update_model.dart';
 import 'package:jyo_app/repository/registration_repo/registration_repo.dart';
 
 import '../../models/registration_model/check_otp_response.dart';
@@ -35,7 +36,7 @@ class RegistrationRepoImpl extends RegistrationRepo {
     dynamic response = await apiService.signIn(data);
     return SingInResponse.fromJson( response );
   }
-
+  
   @override
   Future<CreateUserResponse> userCreate(Map data) async {
     dynamic response = await apiService.userCreate(data);
@@ -52,5 +53,11 @@ class RegistrationRepoImpl extends RegistrationRepo {
   Future<SaveInterestResponse> saveIntrest(Map data) async {
     dynamic response = await apiService.saveIntrest(data);
     return SaveInterestResponse.fromJson( response );
+  }
+
+  @override
+  Future<TourUpdateModel>? updateTour(Map data) async {
+      dynamic response = await apiService.updateTourStep(data);
+    return TourUpdateModel.fromJson( response );
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/models/posts_model/post_and_activity_model.dart';
+import 'package:jyo_app/repository/activities_repo/activities_repo_impl.dart';
 import 'package:jyo_app/repository/post_repo/post_repo_impl.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/view_model/timeline_screen_vm.dart';
@@ -13,29 +14,33 @@ import 'package:video_player/video_player.dart';
 import '../data/remote/api_interface.dart';
 import '../models/posts_model/timeline_model.dart';
 import '../utils/secured_storage.dart';
-import '../view/timeline_screen_view.dart';
 import 'base_screen_vm.dart';
+import 'comments_vm.dart';
 import 'create_post_screen_vm.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:jyo_app/models/posts_model/tagged_user_model.dart' as tag;
-import 'package:jyo_app/models/posts_model/get_comment_model.dart' as comm;
+//import 'package:jyo_app/models/comment_model/get_comment_model.dart' as comm;
 import 'package:jyo_app/models/posts_model/like_user_model.dart' as lu;
 
 class PostsAndActivitiesVM extends GetxController {
   BaseScreenVM bsv = Get.find<BaseScreenVM>();
   PostRepoImpl postRepoImpl = PostRepoImpl();
+  CommentsVM cvm = CommentsVM();
+  //CommentsRepoImpl commentsRepoImpl = CommentsRepoImpl();
+  ActivitiesRepoImpl activitiesRepoImpl = ActivitiesRepoImpl();
   //ProfileRepoImpl profileRepoImpl = ProfileRepoImpl();
   String? userId;
   GetxController? c;
 
   List<PostOrActivity> postsList = List.empty(growable: true);
+  List<PostOrActivity> activitiesList = List.empty(growable: true);
   List<PostOrActivity> postsListPaged = List.empty(growable: true);
   List<tag.Datum> taggedUsersList = List.empty(growable: true);
-  List<comm.Datum> commentList = List.empty(growable: true);
+  //List<comm.Datum> commentList = List.empty(growable: true);
   List<lu.Datum> likeUsers = List.empty(growable: true);
-  TextEditingController commentCtrl = TextEditingController();
+  //TextEditingController commentCtrl = TextEditingController();
 
-  bool? showCommentTextField = true;
+  //bool? showCommentTextField = true;
 
   // @override
   // void onInit() {
@@ -43,11 +48,42 @@ class PostsAndActivitiesVM extends GetxController {
   //   //afterInit();
   // }
 
-  Future<void> afterInit(GetxController c) async {
+  Future<void> afterInit(GetxController c, {endpoint, usrId}) async {
     debugPrint("AfterInit");
-    userId = await SecuredStorage.readStringValue(Keys.userId);
+    userId = usrId??(await SecuredStorage.readStringValue(Keys.userId));
     this.c = c;
+    cvm.afterInit(c, endpoint);
     //getProfileData();
+  }
+
+  Future<void> saveActivity(Map data) async {
+    debugPrint("saveActiviyt req $data");
+    await activitiesRepoImpl.saveActivity(data)!.then((res) {
+      debugPrint("activity save res $res");
+      snackbar(title: res["message"]);
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: error.toString());
+    });
+  }
+
+  Future<void> joinActivity(Map data) async {
+    debugPrint("joinAct req $data");
+    await activitiesRepoImpl.joinActivity(data)!.then((res) {
+      debugPrint("joinAct save res ${res.message}");
+      snackbar(title: res.message);
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: error.toString());
+    });
+  }
+
+  Future<void> leaveActivity(Map data) async {
+    debugPrint("leaveAct req $data");
+    await activitiesRepoImpl.leaveActivity(data)!.then((res) {
+      debugPrint("leaveAct save res $res");
+      snackbar(title: res.message);
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: error.toString());
+    });
   }
 
   // Future<void> getProfileData() async {
@@ -65,6 +101,74 @@ class PostsAndActivitiesVM extends GetxController {
   //     showAppDialog(msg: "Error ${error.toString()}");
   //   });
   // }
+  Future<PostOrActivity?> getActivitiyDetail(Map data, GetxController c) async {
+    debugPrint("Inside POAVM");
+    List<PostOrActivity> list = List.empty(growable: true);
+    await activitiesRepoImpl.getActivityDetails(data).then((res) async {
+      if (res.status == 200) {
+        list.addAll(res.postsOrActivities!);
+        //c.update();
+      } else if (res.status == 400) {
+        debugPrint("Activity By User Res : ${res.message.toString()}");
+      } else {
+        showAppDialog(msg: "Activity By User Res : ${res.message.toString()}");
+      }
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: "Activity By User Error : ${error.toString()}");
+    });
+    return list.isEmpty ? null : list[0];
+  }
+
+  Future<List<PostOrActivity>> getActivitiesByUser(
+      Map data, GetxController c) async {
+    debugPrint("Inside POAVM");
+    List<PostOrActivity> list = List.empty(growable: true);
+    await activitiesRepoImpl.getActivityByUser(data).then((res) async {
+      if (res.status == 200) {
+        list.addAll(res.postsOrActivities!);
+        //c.update();
+      } else {
+        showAppDialog(msg: "Activity By User Res : ${res.message.toString()}");
+      }
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: "Activity By User Error : ${error.toString()}");
+    });
+    return list;
+  }
+
+  Future<List<PostOrActivity>> searchActivities(
+      Map data, GetxController c) async {
+    debugPrint("Inside POAVM");
+    List<PostOrActivity> list = List.empty(growable: true);
+    await activitiesRepoImpl.activitySearch(data).then((res) async {
+      if (res.status == 200) {
+        list.addAll(res.postsOrActivities!);
+        //c.update();
+      } else {
+        showAppDialog(msg: "Activity By User Res : ${res.message.toString()}");
+      }
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: "Activity By User Error : ${error.toString()}");
+    });
+    return list;
+  }
+
+  Future<List<PostOrActivity>> getSavedActivities(
+      Map data, GetxController c) async {
+    debugPrint("Inside POAVM");
+    List<PostOrActivity> list = List.empty(growable: true);
+    await activitiesRepoImpl.listOfSave(data).then((res) async {
+      if (res.status == 200) {
+        list.addAll(res.postsOrActivities!);
+        //c.update();
+      } else {
+        showAppDialog(msg: "ls Activity Res : ${res.message.toString()}");
+      }
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: "ls Activity Error : ${error.toString()}");
+    });
+    return list;
+  }
 
   Future<List<PostOrActivity>> getTimeline(Map data, TimelineScreenVM c) async {
     debugPrint("Inside POAVM");
@@ -154,167 +258,6 @@ class PostsAndActivitiesVM extends GetxController {
     await postRepoImpl.getLikeUser(postId)!.then((res) async {
       if (res.status == 200) {
         likeUsers.addAll(res.data!);
-        c?.update();
-      } else {
-        showAppDialog(msg: "Error ${res.message.toString()}");
-      }
-    }).onError((error, stackTrace) {
-      showAppDialog(msg: "Error ${error.toString()}");
-    });
-  }
-
-  Future<void> comment(commentList, postId, index, postIdIndex,
-      {repliedTo}) async {
-    commentList ??= this.commentList;
-    String? userId = await SecuredStorage.readStringValue(Keys.userId);
-    var data = {
-      "userId": userId.toString(),
-      "postId": postId.toString(),
-      "comment": repliedTo != null
-          ? commentList[index].getReplyCtrl.text.trim()
-          : commentCtrl.text.trim(),
-      //"attachment": ["attachment.jpg"]
-    };
-    if (repliedTo != null) {
-      data["repliedTo"] = repliedTo.toString();
-    }
-    //"repliedTo": 1
-    debugPrint("Comment data $data");
-    await postRepoImpl.comment(data)!.then((res) async {
-      if (res.status == 200) {
-        postsList[postIdIndex].commentCount =
-            postsList[postIdIndex].commentCount! + 1;
-        getComments(postId, cIndex: index, postIdIndex: postIdIndex);
-        c?.update();
-      } else {
-        showAppDialog(msg: "Error ${res.message.toString()}");
-      }
-    }).onError((error, stackTrace) {
-      showAppDialog(msg: "Error ${error.toString()}");
-    });
-  }
-
-  Future<void> likeComment(commentList, index) async {
-    var data = {
-      "userId": userId.toString(),
-      "commentId": commentList[index].id.toString()
-    };
-    debugPrint("like Comm data $data");
-    await postRepoImpl.likeComment(data)!.then((res) {
-      if (res.status == 200) {
-      } else {
-        showAppDialog(msg: res.message.toString());
-      }
-      c?.update();
-    }).onError((error, stackTrace) {
-      showAppDialog(msg: error.toString());
-      c?.update();
-    });
-  }
-
-  Future<void> updateComment(commentList, index, postId, postIdIndex) async {
-    var data = {
-      "updatedComment": commentList[index].getUpdateCtrl.text.toString(),
-      "commentId": commentList[index].id.toString()
-    };
-    debugPrint("upd Comment data $data");
-    await postRepoImpl.updateComment(data)!.then((res) {
-      if (res.status == 200) {
-        //  getComments(postId, cIndex: index, postIdIndex: postIdIndex);
-      } else {
-        showAppDialog(msg: res.message.toString());
-      }
-      c?.update();
-    }).onError((error, stackTrace) {
-      showAppDialog(msg: error.toString());
-      c?.update();
-    });
-  }
-
-  Future<void> deleteComment(commentList, index, postId, postIdIndex) async {
-    var data = {"commentId": commentList[index].id.toString()};
-    debugPrint("deleteComment data $data");
-    await postRepoImpl.deleteComment(data)!.then((res) {
-      if (res.status == 200) {
-        getComments(postId, cIndex: index, postIdIndex: postIdIndex);
-      } else {
-        showAppDialog(msg: res.message.toString());
-      }
-      c?.update();
-    }).onError((error, stackTrace) {
-      showAppDialog(msg: error.toString());
-      c?.update();
-    });
-  }
-
-  Future<void> dislikeComment(commentList, index) async {
-    var data = {
-      "userId": userId.toString(),
-      "commentId": commentList[index].id.toString()
-    };
-    debugPrint("dislike Comm data $data");
-    await postRepoImpl.disLikeComment(data)!.then((res) {
-      if (res.status == 200) {
-      } else {
-        showAppDialog(msg: res.message.toString());
-      }
-      c?.update();
-    }).onError((error, stackTrace) {
-      showAppDialog(msg: error.toString());
-      c?.update();
-    });
-  }
-
-  Future<void> getComments(postId, {cIndex, postIdIndex}) async {
-    var data = {"userId": userId.toString(), "postId": postId.toString()};
-    commentList.clear();
-    debugPrint("cdata $data");
-    await postRepoImpl.getComments(data).then((res) async {
-      if (res.status == 200) {
-        commentList.addAll(res.data!);
-        //commentCtrl.clear();
-        if (commentCtrl.text.isNotEmpty) {
-          debugPrint("clearing comment ctrl");
-          Get.back();
-        }
-        if (cIndex != null) {
-          // if(commentList[cIndex].getReplyCtrl.text.trim().isNotEmpty){
-          //   debugPrint("clearing child comment ctrl");
-          Get.back();
-          // }
-        }
-        PostWidget.showCommentModal(this, postId, postIdIndex).whenComplete(() {
-          commentCtrl.clear();
-          // if (!dontReload!) {
-          //   // !dontRelod! means = reload.
-          //   getTimeline();
-          // }
-          // dontReload = false;
-          c?.update();
-        });
-        c?.update();
-      } else {
-        showAppDialog(msg: "Error ${res.message.toString()}");
-      }
-    }).onError((error, stackTrace) {
-      showAppDialog(msg: "Error ${error.toString()}");
-    });
-  }
-
-  Future<void> getChildComments(commentList, postId, repliedTo, index) async {
-    var data = {
-      "userId": userId.toString(),
-      "postId": postId.toString(),
-      "repliedTo": repliedTo.toString()
-    };
-    await postRepoImpl
-        .getComments(
-      data,
-    )
-        .then((res) async {
-      commentList[index].getChildComments!.clear();
-      if (res.status == 200) {
-        commentList[index].getChildComments!.addAll(res.data!);
         c?.update();
       } else {
         showAppDialog(msg: "Error ${res.message.toString()}");
@@ -437,4 +380,19 @@ class PostsAndActivitiesVM extends GetxController {
       debugPrint((received / total * 100).toStringAsFixed(0) + "%");
     }
   }
+
+  Future deleteActivity(String actId, GetxController pc) async {
+    var data = {
+      "userId": userId.toString(),
+      "activityId": actId.toString(),
+    };
+    await activitiesRepoImpl.deleteActivity(data).then((res) {
+      Get.back();
+      showAppDialog(msg: res.message.toString());
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: error.toString());
+    });
+  }
+
+  //CommentsVM...
 }

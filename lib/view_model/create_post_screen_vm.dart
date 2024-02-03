@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jyo_app/data/local/post_edit_model.dart';
+import 'package:jyo_app/models/group_suggestion_model/accept_or_reject_group_invite.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
 import 'package:jyo_app/repository/post_repo/post_repo_impl.dart';
 import 'package:jyo_app/repository/profile_repo/profile_repo_impl.dart';
@@ -17,7 +18,7 @@ import '../models/posts_model/timeline_model.dart' as tl;
 import '../models/search_people_model/friend_list_model.dart';
 
 class CreatePostScreenVM extends GetxController {
-  final tvm = Get.find<TimelineScreenVM>();
+  final tvm = Get.put(TimelineScreenVM());
   PostRepoImpl postRepoImpl = PostRepoImpl();
   FriendsRepoImpl friendsRepoImpl = FriendsRepoImpl();
   ProfileRepoImpl profileRepoImpl = ProfileRepoImpl();
@@ -37,6 +38,7 @@ class CreatePostScreenVM extends GetxController {
   bool? isUploading = false;
 
   String? privacyStatus = "";
+  Map activityData = {};
 
   @override
   void onInit() {
@@ -48,8 +50,13 @@ class CreatePostScreenVM extends GetxController {
     userId = await SecuredStorage.readStringValue(Keys.userId);
     attachments!.add(null);
     postsToUpload!.add(null);
+    if (Get.arguments != null) {
+      activityData = Get.arguments;
+    }
+
     await fetchPostPrivacy();
     await fetchFreindList();
+
     if (PostEdit.getPostOrActivity != null) {
       setPost();
     }
@@ -63,6 +70,13 @@ class CreatePostScreenVM extends GetxController {
     postsToUpload!.clear();
     documents!.clear();
     documents!.addAll(PostEdit.getPostOrActivity!.document!);
+    if (PostEdit.getPostOrActivity!.activityData != null &&
+        PostEdit.getPostOrActivity!.activityData!.isNotEmpty) {
+      activityData = PostEdit.getPostOrActivity!.activityData!;
+      activityData["activityId"] =
+          PostEdit.getPostOrActivity!.activityId.toString();
+      debugPrint("ActivityData  $activityData");
+    }
 
     for (var i = 0; i < PostEdit.getPostOrActivity!.userTags!.length; i++) {
       String? id = PostEdit.getPostOrActivity!.userTags![i].toString();
@@ -106,7 +120,8 @@ class CreatePostScreenVM extends GetxController {
       selectedAvatar = await ImagePicker().pickVideo(source: source);
       if (selectedAvatar != null) {
         debugPrint("selected Avatar ext ${selectedAvatar!.path}");
-        if (selectedAvatar!.path.split(".").last.toString().trim() == "qt" || selectedAvatar!.path.split(".").last.toString().trim() == "mov") {
+        if (selectedAvatar!.path.split(".").last.toString().trim() == "qt" ||
+            selectedAvatar!.path.split(".").last.toString().trim() == "mov") {
           showAppDialog(msg: "This video format is not supported");
           return;
         }
@@ -216,12 +231,16 @@ class CreatePostScreenVM extends GetxController {
     // if (isEditing!) {
     //   data["id"] = PostEdit.getPostOrActivity!.id.toString();
     // }
+    if (activityData.isNotEmpty) {
+      data["activityId"] = activityData["activityId"].toString();
+    }
     debugPrint("add Post data $data");
-    await postRepoImpl.addPost(data)!.then((res) {
+    await postRepoImpl.addPost(data)!.then((res) async {
       if (res.status == 200) {
         back();
         final tsvm = Get.put(TimelineScreenVM());
-        tsvm.init();
+        await tsvm.init();
+        tsvm.update();
         //showAppDialog(msg: res.message);
       } else {
         showAppDialog(msg: res.message.toString());
@@ -317,6 +336,9 @@ class CreatePostScreenVM extends GetxController {
     };
     if (isEditing!) {
       data["id"] = PostEdit.getPostOrActivity!.id.toString();
+      if (activityData.isNotEmpty) {
+        data["activityId"] = activityData["activityId"].toString();
+      }
     }
     debugPrint("edit Post data $data");
     await postRepoImpl.updatePost(data)!.then((res) {
@@ -336,17 +358,20 @@ class CreatePostScreenVM extends GetxController {
   }
 
   void search(String t) {
-    friends!.assignAll(searchedFriends!.where((Datum p0) =>
-        (t.toString().isEmpty
+    friends!
+        .assignAll(searchedFriends!.where((Datum p0) => (t.toString().isEmpty
             ? true
-            : (p0.user!.firstName
-                    .toString()
-                    .toLowerCase()
-                    .contains(t.toString().toLowerCase()) ||
-                p0.user!.lastName
-                    .toString()
-                    .toLowerCase()
-                    .contains(t.toString().toLowerCase())))));
+            : (p0.user!.firstName.toString().toLowerCase() +
+                    " " + //.contains(t.toString().toLowerCase()) ||
+                    p0.user!.lastName.toString().toLowerCase())
+                // (p0.user!.firstName
+                //         .toString()
+                //         .toLowerCase()
+                //         .contains(t.toString().toLowerCase()) ||
+                //     p0.user!.lastName
+                //         .toString()
+                //         .toLowerCase()
+                .contains(t.toString().toLowerCase()))));
   }
 
   Future<void> fetchPostPrivacy() async {

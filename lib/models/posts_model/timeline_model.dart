@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:video_player/video_player.dart';
 
+import '../activity_model/activity_details_model.dart';
+import '../activity_model/fetch_activities_model.dart';
 import 'get_post_by_user_model.dart';
 
 TimelineResponseModel timelineResponseModelFromJson(String str) =>
@@ -46,28 +48,69 @@ class TimelineResponseModel {
 }
 
 class Datum {
-  Datum({
-    this.id,
-    this.userId,
-    this.text,
-    this.postDate,
-    this.attachment,
-    this.document,
-    this.activityId,
-    this.topicTags,
-    this.userTags,
-    this.groupId,
-    this.visible,
-    this.createdAt,
-    this.updatedAt,
-    this.isLiked,
-    this.isJioMe,
-    this.likeCount,
-    this.commentCount,
-    this.userInfo,
-    this.tagUserInfo,
-  });
-
+  Datum(
+      {this.id,
+      this.userId,
+      this.groupId,
+      this.activityName,
+      this.activityAbout,
+      this.category,
+      this.activityDate,
+      this.coverImage,
+      this.limitParticipants,
+      this.location,
+      this.lat,
+      this.long,
+      this.privateActivity,
+      this.byApproval,
+      this.ageRequirement,
+      this.maxParticipants,
+      this.createdAt,
+      this.mode,
+      this.text,
+      this.postDate,
+      this.attachment,
+      this.document,
+      this.activityId,
+      this.topicTags,
+      this.userTags,
+      this.visible,
+      this.updatedAt,
+      this.activityData,
+      this.isJioMe,
+      this.isLiked,
+      this.likeCount,
+      this.commentCount,
+      this.tagUserInfo,
+      this.isMember,
+      this.activityParticipantsCount,
+      this.isActivitySaved,
+      this.activityParticipants,
+      this.activityMembersCount,
+      this.joinedUser,
+      this.userInfo,
+      this.activityHost});
+  String? coverImage;
+  bool? limitParticipants;
+  dynamic location;
+  String? lat;
+  String? long;
+  bool? privateActivity;
+  bool? byApproval;
+  String? ageRequirement;
+  int? maxParticipants;
+  String? mode;
+  UserData? activityHost;
+  bool? isMember;
+  bool? isActivitySaved;
+  int? activityMembersCount;
+  List<JoinedUser>? joinedUser;
+  List<int>? category;
+  String? activityDate;
+  String? activityName;
+  List<ActivityParticipant>? activityParticipants;
+  int? activityParticipantsCount;
+  String? activityAbout;
   int? id;
   int? userId;
   String? text;
@@ -87,8 +130,33 @@ class Datum {
   int? isJioMe;
   UserInfo? userInfo;
   TagUserInfo? tagUserInfo;
+  Map? activityData;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+        activityHost: json['activityHost'] != null
+            ? new UserData.fromJson(json['activityHost'])
+            : null,
+        category: json["category"] == null
+            ? []
+            : List<int>.from(json["category"]!.map((x) => x)),
+        activityDate: json["activityDate"],
+        coverImage: json["coverImage"],
+        limitParticipants: json["limitParticipants"],
+        location: json["location"],
+        lat: json["lat"],
+        long: json["long"],
+        mode: json["mode"],
+        activityParticipantsCount: json["activityParticipantsCount"],
+        activityParticipants: json["activityParticipants"] == null
+            ? []
+            : List<ActivityParticipant>.from(json["activityParticipants"]!
+                .map((x) => ActivityParticipant.fromJson(x))),
+        privateActivity: json["privateActivity"],
+        byApproval: json["byApproval"],
+        ageRequirement: json["ageRequirement"],
+        maxParticipants: json["maxParticipants"],
+        activityName: json["activityName"],
+        activityAbout: json["activityAbout"],
         id: json["id"],
         userId: json["userId"],
         text: json["text"],
@@ -102,6 +170,7 @@ class Datum {
             : List<Document>.from(
                 jsonDecode(json["documents"]).map((x) => Document.fromJson(x))),
         activityId: json["activityId"],
+        activityData: json["activityData"],
         topicTags: json["topicTags"],
         userTags: json["userTags"] == null
             ? []
@@ -112,6 +181,13 @@ class Datum {
         updatedAt: json["updatedAt"],
         isLiked: json["isLiked"] ?? 0,
         isJioMe: json["isJioMe"] ?? 0,
+        isMember: json["isMember"],
+        isActivitySaved: json["isActivitySaved"],
+        activityMembersCount: json["activityMembersCount"],
+        joinedUser: json["joinedUser"] == null
+            ? []
+            : List<JoinedUser>.from(
+                json["joinedUser"]!.map((x) => JoinedUser.fromJson(x))),
         likeCount: json["likeCount"] ?? 0,
         commentCount: json["commentCount"] ?? 0,
         userInfo: json["userInfo"] == null
@@ -158,7 +234,7 @@ class Attachment {
   set setController(VideoPlayerController? controller) =>
       this.controller = controller;
 
-   Future<void> get getInitializeVideoPlayer => initializeVideoPlayerFuture;
+  Future<void> get getInitializeVideoPlayer => initializeVideoPlayerFuture;
   set setInitalizeVideoPlayer(initializeVidPlayer) =>
       initializeVideoPlayerFuture = initializeVidPlayer;
 
@@ -190,6 +266,34 @@ class Document {
   Map<String, dynamic> toJson() => {
         "originalName": originalName,
         "s3Name": s3Name,
+      };
+}
+
+class JoinedUser {
+  int? userId;
+  String? firstName;
+  String? lastName;
+  String? profilePic;
+
+  JoinedUser({
+    this.userId,
+    this.firstName,
+    this.lastName,
+    this.profilePic,
+  });
+
+  factory JoinedUser.fromJson(Map<String, dynamic> json) => JoinedUser(
+        userId: json["userId"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+        profilePic: json["profilePic"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "userId": userId,
+        "firstName": firstName,
+        "lastName": lastName,
+        "profilePic": profilePic,
       };
 }
 

@@ -217,21 +217,63 @@ class MessageScreenView extends StatelessWidget {
                                     }),
                       ),
                     )
-                  : SizedBox(
-                      height: MediaQuery.of(context).size.height - 190,
-                      //color: Colors.black,
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          //await c.refreshLists();
-                        },
-                        child: ListView.builder(
-                            itemCount: 25,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return groupMessage();
-                            }),
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        await c.refreshLists();
+                      },
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height - 190,
+                        //color: Colors.black,
+                        child: c.isLoadingGroup!
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                    backgroundColor: AppColors.orangePrimary),
+                              )
+                            : c.groupsList.isEmpty
+                                ? Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.message,
+                                          color: AppColors.hintTextColor,
+                                          size: 50,
+                                        ),
+                                        sizedBoxH(height: 16),
+                                        Text(
+                                          "No Groups found.\nCreate or join groups to get the list.",
+                                          style: AppStyles.interMediumStyle(
+                                              fontSize: 14,
+                                              color: AppColors.hintTextColor),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    itemCount: c.groupsList.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return groupMessage(c, index);
+                                    }),
                       ),
                     )
+
+              // SizedBox(
+              //     height: MediaQuery.of(context).size.height - 190,
+              //     //color: Colors.black,
+              //     child: RefreshIndicator(
+              //       onRefresh: () async {
+              //         //await c.refreshLists();
+              //       },
+              //       child: ListView.builder(
+              //           itemCount: 25,
+              //           shrinkWrap: true,
+              //           itemBuilder: (context, index) {
+              //             return groupMessage();
+              //           }),
+              //     ),
+              //   )
             ],
           ));
     });
@@ -335,7 +377,7 @@ class MessageScreenView extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    getMessage(c,index),
+                                    getMessage(c, index),
                                     style: AppStyles.interRegularStyle(
                                         fontSize: 15,
                                         textOverflow: TextOverflow.ellipsis),
@@ -365,96 +407,126 @@ class MessageScreenView extends StatelessWidget {
     );
   }
 
-  Widget groupMessage() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.only(left: 22.w, right: 22.w),
-            padding: EdgeInsets.symmetric(vertical: 12.h),
-            decoration: const BoxDecoration(
-              color: AppColors.white,
-            ),
-            child: Row(
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    SizedBox(
-                      width: 71.w,
-                      height: 64.h,
-                    ),
-                    MyAvatar(
-                      url: AppImage.avatar2,
-                      width: 64,
-                      height: 64,
-                      radiusAll: 22,
-                    ),
-                    Positioned(
-                        left: 57.w,
-                        top: 28.h,
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100.r),
-                              color: AppColors.white),
-                          child: Container(
-                              width: 14.w,
-                              height: 14.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100.r),
-                                  color: AppColors.orangePrimary)),
-                        ))
-                  ],
-                ),
-                sizedBoxW(width: 8.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+  Widget groupMessage(MessageScreenVM c, index) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () {
+            Get.delete<ChatScreenVM>(force: true);
+            final cvm = Get.put(ChatScreenVM());
+            cvm.group = c.groupsList[index];
+            getToNamed(chatScreenRoute);
+          },
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  //margin: EdgeInsets.only(left: 22.w, right: 22.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 22.w, vertical: 12.h),
+
+                  child: Row(
                     children: [
-                      Row(
+                      Stack(
+                        clipBehavior: Clip.none,
                         children: [
-                          Expanded(
-                            child: Text(
-                              "Liana Cole",
-                              style: AppStyles.interSemiBoldStyle(fontSize: 16),
-                            ),
+                          SizedBox(
+                            width: 71.w,
+                            height: 64.h,
                           ),
-                          Text(
-                            "10.00",
-                            style: AppStyles.interRegularStyle(
-                                fontSize: 14, color: AppColors.ageColor),
-                          ),
+                          isValidString(c.groupsList[index].icon)
+                              ? MyAvatar(
+                                  url: c.groupsList[index].icon.toString(),
+                                  width: 64,
+                                  height: 64,
+                                  radiusAll: 22,
+                                  isNetwork: true,
+                                )
+                              : MyAvatar(
+                                  url: AppImage.sampleAvatar,
+                                  width: 64,
+                                  height: 64,
+                                  radiusAll: 22,
+                                ),
+                          // Positioned(
+                          //     left: 57.w,
+                          //     top: 28.h,
+                          //     child: Container(
+                          //       padding: const EdgeInsets.all(2),
+                          //       decoration: BoxDecoration(
+                          //           borderRadius: BorderRadius.circular(100.r),
+                          //           color: AppColors.white),
+                          //       child: Container(
+                          //           width: 14.w,
+                          //           height: 14.h,
+                          //           decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.circular(100.r),
+                          //               color: Colors
+                          //                   .transparent //AppColors.orangePrimary
+                          //               )),
+                          //     ))
                         ],
                       ),
-                      sizedBoxH(height: 4.h),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Alright, see you!",
-                              style: AppStyles.interRegularStyle(
-                                  fontSize: 15,
-                                  textOverflow: TextOverflow.ellipsis),
+                      sizedBoxW(width: 8.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    c.groupsList[index].name.toString(),
+                                    style: AppStyles.interSemiBoldStyle(
+                                        fontSize: 16),
+                                  ),
+                                ),
+                                Text(
+                                  c.groupsList[index].updatedAt != null
+                                      ? DateFormat("HH:mm a").format(
+                                          c.groupsList[index].updatedAt!)
+                                      : "",
+                                  style: AppStyles.interRegularStyle(
+                                      fontSize: 14, color: AppColors.ageColor),
+                                ),
+                              ],
                             ),
-                          ),
-                          const RotatedBox(
-                              quarterTurns: 4,
-                              child: Icon(
-                                Icons.push_pin_sharp,
-                                color: AppColors.ageColor,
-                                size: 20,
-                              ))
-                        ],
-                      ),
+                            sizedBoxH(height: 4.h),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "", //c.groupsList[index].
+                                    style: AppStyles.interRegularStyle(
+                                        fontSize: 15,
+                                        textOverflow: TextOverflow.ellipsis),
+                                  ),
+                                ),
+                                const RotatedBox(
+                                    quarterTurns: 4,
+                                    child: Icon(
+                                      Icons.push_pin_sharp,
+                                      color: Colors
+                                          .transparent, //AppColors.ageColor,
+                                      size: 20,
+                                    ))
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 

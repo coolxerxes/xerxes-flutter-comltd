@@ -7,17 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/resources/app_routes.dart';
+import 'package:jyo_app/utils/DynamicLinkHandler.dart';
 import 'package:jyo_app/utils/app_widgets/app_gradient_btn.dart';
 import 'package:jyo_app/utils/common.dart';
 
 import 'package:flutter/services.dart';
 import 'package:jyo_app/utils/secured_storage.dart';
 import 'package:jyo_app/view_model/base_screen_vm.dart';
+import 'package:jyo_app/view_model/group_details_screen_vm.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 
+import '../data/local/notification_type.dart';
 import '../data/local/user_search_model.dart';
 import '../main.dart';
 import '../utils/commet_chat_constants.dart';
+import 'activity_details_screen_vm.dart';
 
 class SplashVM extends GetxController {
   Timer? t;
@@ -116,6 +120,18 @@ class SplashVM extends GetxController {
                 argument: isAppStartingFromNotification
                     ? {"isAppStartingFromNotification": true}
                     : null);
+          } else if (isActivityNotification(payload["notificationType"])) {
+            Get.delete<ActivityDetailsScreenVM>();
+            getToNamed(activityDetailsScreenRoute, argument: {
+              "id": payload["activityId"].toString(),
+              "isAppStartingFromNotification": isAppStartingFromNotification
+            });
+          } else if (isGroupNotification(payload["notificationType"])) {
+            Get.delete<GroupDetailsScreenVM>();
+            getToNamed(groupDetailsScreenRoute, argument: {
+              "groupId": payload["groupId"].toString(),
+              "isAppStartingFromNotification": isAppStartingFromNotification
+            });
           }
           // if (!isAppStartingFromNotification) {
           //   SecuredStorage.initiateSecureStorage();
@@ -176,6 +192,30 @@ class SplashVM extends GetxController {
         t.cancel();
       });
     }
+  }
+
+  bool isActivityNotification(type) {
+    return (type == NotificationTypes.joinActivity ||
+        type == NotificationTypes.acceptActivityJoinRequest ||
+        type == NotificationTypes.acceptJoinActivityInvitation ||
+        type == NotificationTypes.approvedJoinedActivityReq ||
+        type == NotificationTypes.commentActivity ||
+        type == NotificationTypes.sentJoinActivityInvitation ||
+        type == NotificationTypes.sentRequestToJoinActivity ||
+        type == NotificationTypes.pramottedToSubHost ||
+        type == NotificationTypes.promottedToHost);
+  }
+
+  bool isGroupNotification(String type) {
+    return (type == NotificationTypes.sentJoinGroupInvitaion ||
+        type == NotificationTypes.acceptJoinGroupInvitation ||
+        type == NotificationTypes.createdActivityInsideGroup ||
+        type == NotificationTypes.joinGroup ||
+        type == NotificationTypes.acceptGroupJoinRequest ||
+        type == NotificationTypes.sentJoinGroupRequest ||
+        type == NotificationTypes.acceptGroupJoinRequest ||
+        type == NotificationTypes.pramotedToAdmin ||
+        type == NotificationTypes.pramotedToSupAdmin);
   }
 
   Future pushyRegister() async {
@@ -276,6 +316,7 @@ class SplashVM extends GetxController {
             getOffNamed(setProfilePicScreenRoute);
           } else {
             getOffNamed(baseScreenRoute);
+            DynamicLinkHandler().initDynamicLinks();
           }
         }
       } else if (groups == null || groups.toString().trim().isEmpty) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/data/local/user_search_model.dart';
+import 'package:jyo_app/data/remote/endpoints.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
 import 'package:jyo_app/repository/profile_repo/profile_repo_impl.dart';
 import 'package:jyo_app/resources/app_strings.dart';
@@ -19,14 +20,16 @@ class FriendUserProfileScreenVM extends GetxController {
   final tsv = Get.put(TimelineScreenVM());
   final baseVM = Get.find<BaseScreenVM>();
   final postsVM = PostsAndActivitiesVM(); //Get.find<PostsAndActivitiesVM>();
+  final notificationScreenV = Get.put(NotificationScreenVM());
   String? myUserId = "", userId = "";
   String? firstName = "", lastName = "", age = "", userName = "", bio = "";
   String? freinds = "0", posts = "0", activities = "0";
 
   bool? isThisUserMyFriend = false;
+  bool? isPrivateAccount = false;
   bool? isRequestSent = false;
   bool? isRequestRecieved = false;
-  bool? isThisUserPrivate = false;
+  //bool? isThisUserPrivate = false;
   bool? isThisUserBlocked = false;
   bool? amIBlockedByThisUser = false;
   bool? isLoadingPost = true;
@@ -41,6 +44,8 @@ class FriendUserProfileScreenVM extends GetxController {
   bool? isOnlyMePrivacy = false;
   bool? isFriendsPrivacy = false;
   bool? isEveryonePrivacy = false;
+
+  bool isLoadingActs = true;
 
   @override
   void onInit() {
@@ -65,7 +70,7 @@ class FriendUserProfileScreenVM extends GetxController {
     isThisUserMyFriend = false;
     isRequestSent = false;
     isRequestRecieved = false;
-    isThisUserPrivate = false;
+    //isThisUserPrivate = false;
     isThisUserBlocked = false;
     amIBlockedByThisUser = false;
     isThisMyProfile = false;
@@ -76,7 +81,7 @@ class FriendUserProfileScreenVM extends GetxController {
     userIntrests = List.empty(growable: true);
     postsVM.postsList = List.empty(growable: true);
     postsVM.taggedUsersList = List.empty(growable: true);
-    postsVM.commentList = List.empty(growable: true);
+    postsVM.cvm.commentList = List.empty(growable: true);
     postsVM.likeUsers = List.empty(growable: true);
     imageFileName = "";
 
@@ -84,13 +89,18 @@ class FriendUserProfileScreenVM extends GetxController {
     isEnabled = true;
     SecuredStorage.initiateSecureStorage();
     myUserId = await SecuredStorage.readStringValue(Keys.userId);
-    postsVM.afterInit(this);
+
     if (SearchUser.getId != null) {
       userId = SearchUser.getId;
+    } else {
+      userId = Get.arguments!['id'];
     }
+    postsVM.afterInit(this, endpoint: Endpoints.post);
     await getProfileData();
-    if (!amIBlockedByThisUser!) {
+    if (!(amIBlockedByThisUser! ||
+        (isPrivateAccount! && !isThisUserMyFriend!))) {
       await getPosts();
+      await getActivities();
     }
     isLoadingPost = false;
     update();
@@ -133,6 +143,9 @@ class FriendUserProfileScreenVM extends GetxController {
         }
         if (res.data!.profileStatusData!.myProfile == 1) {
           isThisMyProfile = true;
+        }
+        if (res.data!.profileStatusData!.isPrivateAccount == 1) {
+          isPrivateAccount = true;
         }
         if (res.data!.profileStatusData!.postPrivacy!.onlyMe == 1) {
           isOnlyMePrivacy = true;
@@ -204,6 +217,7 @@ class FriendUserProfileScreenVM extends GetxController {
               uid: myUserId.toString(), fuid: userId.toString());
           await init();
         }
+        notificationScreenV.init();
       } else {
         showAppDialog(msg: res.message, btnText: AppStrings.okay);
       }
@@ -282,6 +296,7 @@ class FriendUserProfileScreenVM extends GetxController {
 
   Future<void> getPosts() async {
     var data = {"userId": myUserId.toString(), "friendId": userId.toString()};
+    debugPrint("getPostsData friend $data");
     await postsVM.getPostByUser(data, this).then((res) async {
       postsVM.postsList.clear();
       postsVM.postsList.addAll(res);
@@ -289,6 +304,21 @@ class FriendUserProfileScreenVM extends GetxController {
     }).onError((error, stackTrace) {
       showAppDialog(msg: "Error ${error.toString()}");
       isLoadingPost = false;
+      update();
+    });
+  }
+
+  Future<void> getActivities() async {
+    var data = {"userId": userId.toString()};
+    debugPrint("data acts fup $data");
+    await postsVM.getActivitiesByUser(data, this).then((res) async {
+      postsVM.activitiesList.clear();
+      postsVM.activitiesList.addAll(res);
+      isLoadingActs = false;
+      update();
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: "Error ${error.toString()}");
+      isLoadingActs = false;
       update();
     });
   }

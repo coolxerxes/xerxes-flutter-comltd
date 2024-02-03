@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/utils/secured_storage.dart';
@@ -24,6 +22,7 @@ class ChatScreenVM extends GetxController
   User? user;
   User? sender;
   User? receiver;
+  Group? group;
   late String _dateString;
   late String _uiMessageListener;
   Conversation? conversation;
@@ -36,175 +35,179 @@ class ChatScreenVM extends GetxController
   void init() async {
     user = await CometChat.getLoggedInUser();
     sender = user;
-    receiver = conversation!.conversationWith as User;
+    if(conversation!=null)
+    {receiver = conversation!.conversationWith as User;}
     _dateString = DateTime.now().millisecondsSinceEpoch.toString();
     _uiMessageListener = "${_dateString}UI_message_listener";
     //textEditingController = TextEditingController(text: text);
 
     CometChatMessageEvents.addMessagesListener(_uiMessageListener, this);
     //CometChatUIEvents.addUiListener(_uiEventListener, this);
-    MessagesRequest messagesRequest =
-        (MessagesRequestBuilder()..uid = receiver!.uid).build();
+    
 
-    CometChat.getLastDeliveredMessageId();
+     //TEMP Comment.
+    // MessagesRequest messagesRequest =
+    //     (MessagesRequestBuilder()..uid = receiver!.uid).build();
 
-    messagesRequest.fetchPrevious(
-      onSuccess: ((message) {
-        messageList.clear();
-        messageList.addAll(message);
-        messageList.reversed;
-        update();
-        debugPrint("messageList ${messageList.length}");
-      }),
-      onError: (excep) {
-        showAppDialog(msg: "Coudn't get messages");
-      },
-    );
+    // CometChat.getLastDeliveredMessageId();
+
+    // messagesRequest.fetchPrevious(
+    //   onSuccess: ((message) {
+    //     messageList.clear();
+    //     messageList.addAll(message);
+    //     messageList.reversed;
+    //     update();
+    //     debugPrint("messageList ${messageList.length}");
+    //   }),
+    //   onError: (excep) {
+    //     showAppDialog(msg: "Coudn't get messages");
+    //   },
+    // );
 
     update();
   }
 
-  onSendButtonClick() {
-    if (textEditingController.text.isNotEmpty) {
-      //if (previewMessageMode == PreviewMessageMode.none) {
-      sendTextMessage();
-      //} else if (previewMessageMode == PreviewMessageMode.edit) {
-      //editTextMessage();
-      // } else if (previewMessageMode == PreviewMessageMode.reply) {
-      //   Map<String, dynamic> _metadata = {};
-      //   _metadata["reply-message"] = oldMessage!.toJson();
+  // onSendButtonClick() {
+  //   if (textEditingController.text.isNotEmpty) {
+  //     //if (previewMessageMode == PreviewMessageMode.none) {
+  //     sendTextMessage();
+  //     //} else if (previewMessageMode == PreviewMessageMode.edit) {
+  //     //editTextMessage();
+  //     // } else if (previewMessageMode == PreviewMessageMode.reply) {
+  //     //   Map<String, dynamic> _metadata = {};
+  //     //   _metadata["reply-message"] = oldMessage!.toJson();
 
-      //   sendTextMessage(metadata: _metadata);
-      // }
-    }
-  }
+  //     //   sendTextMessage(metadata: _metadata);
+  //     // }
+  //   }
+  // }
 
-  sendTextMessage({Map<String, dynamic>? metadata}) {
-    String messagesText = textEditingController.text;
-    String type = MessageTypeConstants.text;
+  // sendTextMessage({Map<String, dynamic>? metadata}) {
+  //   String messagesText = textEditingController.text;
+  //   String type = MessageTypeConstants.text;
 
-    TextMessage textMessage = TextMessage(
-        sender: sender,
-        text: messagesText,
-        receiverUid: receiver!.uid,
-        receiverType: 'user',
-        type: type,
-        metadata: metadata,
-        // parentMessageId: parentMessageId,
-        muid: DateTime.now().microsecondsSinceEpoch.toString(),
-        category: CometChatMessageCategory.message);
+  //   TextMessage textMessage = TextMessage(
+  //       sender: sender,
+  //       text: messagesText,
+  //       receiverUid: receiver!.uid,
+  //       receiverType: 'user',
+  //       type: type,
+  //       metadata: metadata,
+  //       // parentMessageId: parentMessageId,
+  //       muid: DateTime.now().microsecondsSinceEpoch.toString(),
+  //       category: CometChatMessageCategory.message);
 
-    // oldMessage = null;
-    // messagePreviewTitle = '';
-    // messagePreviewSubtitle = '';
-    // previewMessageMode = PreviewMessageMode.none;
-    // textEditingController.text = '';
-    textEditingController.clear();
-    //_previousText = '';
-    update();
+  //   // oldMessage = null;
+  //   // messagePreviewTitle = '';
+  //   // messagePreviewSubtitle = '';
+  //   // previewMessageMode = PreviewMessageMode.none;
+  //   // textEditingController.text = '';
+  //   textEditingController.clear();
+  //   //_previousText = '';
+  //   update();
 
-    CometChatMessageEvents.ccMessageSent(textMessage, MessageStatus.inProgress);
+  //   CometChatMessageEvents.ccMessageSent(textMessage, MessageStatus.inProgress);
 
-    CometChat.sendMessage(textMessage, onSuccess: (TextMessage message) {
-      debugPrint("Message sent successfully:  ${message.text}");
-      _playSound();
-      messageList.add(message);
-      update();
-      CometChatMessageEvents.ccMessageSent(message, MessageStatus.sent);
-    }, onError: (CometChatException e) {
-      if (textMessage.metadata != null) {
-        textMessage.metadata!["error"] = e;
-      } else {
-        textMessage.metadata = {"error": e};
-      }
-      CometChatMessageEvents.ccMessageSent(textMessage, MessageStatus.error);
-      debugPrint("Message sending failed with exception:  ${e.message}");
-    });
-    update();
-  }
+  //   CometChat.sendMessage(textMessage, onSuccess: (TextMessage message) {
+  //     debugPrint("Message sent successfully:  ${message.text}");
+  //     _playSound();
+  //     messageList.add(message);
+  //     update();
+  //     CometChatMessageEvents.ccMessageSent(message, MessageStatus.sent);
+  //   }, onError: (CometChatException e) {
+  //     if (textMessage.metadata != null) {
+  //       textMessage.metadata!["error"] = e;
+  //     } else {
+  //       textMessage.metadata = {"error": e};
+  //     }
+  //     CometChatMessageEvents.ccMessageSent(textMessage, MessageStatus.error);
+  //     debugPrint("Message sending failed with exception:  ${e.message}");
+  //   });
+  //   update();
+  // }
 
-  sendMediaMessage(
-      {required PickedFile pickedFile,
-      required String messageType,
-      Map<String, dynamic>? metadata}) async {
-    String muid = DateTime.now().microsecondsSinceEpoch.toString();
+  // sendMediaMessage(
+  //     {required PickedFile pickedFile,
+  //     required String messageType,
+  //     Map<String, dynamic>? metadata}) async {
+  //   String muid = DateTime.now().microsecondsSinceEpoch.toString();
 
-    MediaMessage _mediaMessage = MediaMessage(
-      receiverType: 'user',
-      type: messageType,
-      receiverUid: receiver!.uid,
-      file: pickedFile.path,
-      metadata: metadata,
-      sender: sender,
-      //parentMessageId: parentMessageId,
-      muid: muid,
-      category: CometChatMessageCategory.message,
-    );
+  //   MediaMessage _mediaMessage = MediaMessage(
+  //     receiverType: 'user',
+  //     type: messageType,
+  //     receiverUid: receiver!.uid,
+  //     file: pickedFile.path,
+  //     metadata: metadata,
+  //     sender: sender,
+  //     //parentMessageId: parentMessageId,
+  //     muid: muid,
+  //     category: CometChatMessageCategory.message,
+  //   );
 
-    CometChatMessageEvents.ccMessageSent(
-        _mediaMessage, MessageStatus.inProgress);
+  //   CometChatMessageEvents.ccMessageSent(
+  //       _mediaMessage, MessageStatus.inProgress);
 
-    //for sending files
-    MediaMessage _mediaMessage2 = MediaMessage(
-      receiverType: 'user',
-      type: messageType,
-      receiverUid: receiver!.uid,
-      //file: Platform.isIOS ? 'file://${pickedFile.path}' : pickedFile.path,
+  //   //for sending files
+  //   MediaMessage _mediaMessage2 = MediaMessage(
+  //     receiverType: 'user',
+  //     type: messageType,
+  //     receiverUid: receiver!.uid,
+  //     //file: Platform.isIOS ? 'file://${pickedFile.path}' : pickedFile.path,
 
-      file: (Platform.isIOS && (!pickedFile.path.startsWith('file://')))
-          ? 'file://${pickedFile.path}'
-          : pickedFile.path,
-      metadata: metadata,
-      sender: sender,
-      //parentMessageId: parentMessageId,
-      muid: muid,
-      category: CometChatMessageCategory.message,
-    );
+  //     file: (Platform.isIOS && (!pickedFile.path.startsWith('file://')))
+  //         ? 'file://${pickedFile.path}'
+  //         : pickedFile.path,
+  //     metadata: metadata,
+  //     sender: sender,
+  //     //parentMessageId: parentMessageId,
+  //     muid: muid,
+  //     category: CometChatMessageCategory.message,
+  //   );
 
-    if (textEditingController.text.isNotEmpty) {
-      textEditingController.clear();
-      //_previousText = '';
-      update();
-    }
+  //   if (textEditingController.text.isNotEmpty) {
+  //     textEditingController.clear();
+  //     //_previousText = '';
+  //     update();
+  //   }
 
-    await CometChat.sendMediaMessage(_mediaMessage2,
-        onSuccess: (MediaMessage message) async {
-      debugPrint("Media message sent successfully: ${_mediaMessage.muid}");
+  //   await CometChat.sendMediaMessage(_mediaMessage2,
+  //       onSuccess: (MediaMessage message) async {
+  //     debugPrint("Media message sent successfully: ${_mediaMessage.muid}");
 
-      if (Platform.isIOS) {
-        if (message.file != null) {
-          message.file = message.file?.replaceAll("file://", '');
-        }
-      } else {
-        message.file = pickedFile.path;
-      }
+  //     if (Platform.isIOS) {
+  //       if (message.file != null) {
+  //         message.file = message.file?.replaceAll("file://", '');
+  //       }
+  //     } else {
+  //       message.file = pickedFile.path;
+  //     }
 
-      _playSound();
+  //     _playSound();
 
-      CometChatMessageEvents.ccMessageSent(message, MessageStatus.sent);
-    }, onError: (e) {
-      if (_mediaMessage.metadata != null) {
-        _mediaMessage.metadata!["error"] = e;
-      } else {
-        _mediaMessage.metadata = {"error": e};
-      }
-      CometChatMessageEvents.ccMessageSent(_mediaMessage, MessageStatus.error);
-      debugPrint("Media message sending failed with exception: ${e.message}");
-    });
-  }
+  //     CometChatMessageEvents.ccMessageSent(message, MessageStatus.sent);
+  //   }, onError: (e) {
+  //     if (_mediaMessage.metadata != null) {
+  //       _mediaMessage.metadata!["error"] = e;
+  //     } else {
+  //       _mediaMessage.metadata = {"error": e};
+  //     }
+  //     CometChatMessageEvents.ccMessageSent(_mediaMessage, MessageStatus.error);
+  //     debugPrint("Media message sending failed with exception: ${e.message}");
+  //   });
+  // }
 
-  _playSound() {
-    if (disableSoundForMessages == false) {
-      SoundManager.play(
-        sound: Sound.outgoingMessage,
-        //customSound: customSoundForMessage,
-        // packageName:
-        //     customSoundForMessage == null || customSoundForMessage == ""
-        //         ? UIConstants.packageName
-        //         : customSoundForMessagePackage
-      );
-    }
-  }
+  // _playSound() {
+  //   if (disableSoundForMessages == false) {
+  //     SoundManager.play(
+  //       sound: Sound.outgoingMessage,
+  //       //customSound: customSoundForMessage,
+  //       // packageName:
+  //       //     customSoundForMessage == null || customSoundForMessage == ""
+  //       //         ? UIConstants.packageName
+  //       //         : customSoundForMessagePackage
+  //     );
+  //   }
+  // }
 
   @override
   void onTextMessageReceived(TextMessage textMessage) async {
@@ -255,14 +258,13 @@ class ChatScreenVM extends GetxController
     });
   }
 
-  Future<void> deleteConvo(String conversationWith, String conversationType) async {
+  Future<void> deleteConvo(
+      String conversationWith, String conversationType) async {
     await CometChat.deleteConversation(conversationWith, conversationType,
         onSuccess: (String str) {
-      debugPrint(
-          "comet chat Conversation deleted successfully at : $str");
+      debugPrint("comet chat Conversation deleted successfully at : $str");
     }, onError: (CometChatException e) {
-      debugPrint(
-          "comet chat Conversation deletion failed : ${e.message}");
+      debugPrint("comet chat Conversation deletion failed : ${e.message}");
     });
   }
 }

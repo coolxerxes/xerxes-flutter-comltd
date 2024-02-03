@@ -1,15 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/view/account_setting_screen_view.dart';
+import 'package:jyo_app/view/activity_details_screen_view.dart';
+import 'package:jyo_app/view/activity_participants_screen_view.dart';
 import 'package:jyo_app/view/base_screen_view.dart';
 import 'package:jyo_app/view/birthday_screen_view.dart';
 import 'package:jyo_app/view/blocked_user_screen_view.dart';
 import 'package:jyo_app/view/chat_screen_view.dart';
 import 'package:jyo_app/view/choose_location_on_map_screen_view.dart';
 import 'package:jyo_app/view/create_activity_screen2_view.dart';
+import 'package:jyo_app/view/create_group_screen_view.dart';
 import 'package:jyo_app/view/create_post_screen_view.dart';
 import 'package:jyo_app/view/delete_acc_screen_view.dart';
 import 'package:jyo_app/view/display_name_view.dart';
@@ -18,7 +22,10 @@ import 'package:jyo_app/view/freindlist_screen_view.dart';
 import 'package:jyo_app/view/friend_user_profile_screen_view.dart';
 import 'package:jyo_app/view/full_screen_image_carousal_view.dart';
 import 'package:jyo_app/view/gender_screen_view.dart';
+import 'package:jyo_app/view/group_details_screen_view.dart';
+import 'package:jyo_app/view/group_list_screen_view.dart';
 import 'package:jyo_app/view/group_suggestion_view.dart';
+import 'package:jyo_app/view/list_of_save_activities_screen_view.dart';
 import 'package:jyo_app/view/login_view.dart';
 import 'package:jyo_app/view/most_liked_screen_view.dart';
 import 'package:jyo_app/view/notification_screen_view.dart';
@@ -26,6 +33,7 @@ import 'package:jyo_app/view/otp_screen_view.dart';
 import 'package:jyo_app/view/phone_number_screen.dart';
 import 'package:jyo_app/view/post_privacy_screen_view.dart';
 import 'package:jyo_app/view/push_notification_screen_view.dart';
+import 'package:jyo_app/view/qr_screen_view.dart';
 import 'package:jyo_app/view/search_screen_view.dart';
 import 'package:jyo_app/view/set_profile_pic_screen_view.dart';
 import 'package:jyo_app/view/single_post_screen_view.dart';
@@ -38,6 +46,7 @@ import '../utils/dialog_service/dialog_service.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 
+import 'firebase_options.dart';
 import 'view/create_activity_screen_view.dart';
 
 // Please place this code in main.dart,
@@ -78,9 +87,12 @@ void setupLocator() {
   locator.registerLazySingleton(() => NavigationService());
 }
 
-void main() {
+void main() async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -136,7 +148,7 @@ class MyApp extends StatelessWidget {
                 binding: MostLikedScreenBinding()),
             GetPage(
                 name: groupSuggestionScreenRoute,
-                page: () => const GroupSuggestionScreenView(),
+                page: () => GroupSuggestionScreenView(),
                 binding: GroupSuggestionScreenBinding()),
             GetPage(
                 name: otpScreenRoute,
@@ -222,6 +234,33 @@ class MyApp extends StatelessWidget {
                 name: chooseLocationOnMapScreenRoute,
                 page: () => const ChooseLocationOnMapScreenView(),
                 binding: CreateActivityBinding()),
+            GetPage(
+                name: createGroupScreenRoute,
+                page: () => const CreateGroupScreenView(),
+                binding: CreateGroupBinding()),
+            GetPage(
+                name: groupListScreenRoute,
+                page: () => const GroupListScreenView(),
+                binding: GroupListBinding()),
+            GetPage(
+                name: groupDetailsScreenRoute,
+                page: () => const GroupDetailsScreenView(),
+                binding: GroupDetailsBinding()),
+            GetPage(
+                name: listOfSavedActivitiesScreenRoute,
+                page: () => const ListOfSaveActivitesScreenView(),
+                binding: ListOfSaveActivitiesBinding()),
+            GetPage(
+                name: activityDetailsScreenRoute,
+                page: () => const ActivityDetailsScreeView(),
+                binding: ActivityDetailsBinding()),
+            GetPage(
+                name: activityParticipantsScreenRoute,
+                page: () => const ActivityParticipantsScreenView()),
+            GetPage(
+                name: qrScreenRoute,
+                page: () => const QrScreenView(),
+                binding: QRScreenBinding())
           ],
           initialRoute: splashScreenRoute,
           navigatorKey: locator<NavigationService>().navigatoryKey,

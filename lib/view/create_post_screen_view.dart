@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:jyo_app/resources/app_image.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/resources/app_strings.dart';
@@ -16,6 +17,7 @@ import 'package:video_player/video_player.dart';
 
 import '../data/remote/api_interface.dart';
 import '../data/remote/endpoints.dart';
+import '../models/posts_model/post_and_activity_model.dart';
 import '../resources/app_colors.dart';
 import '../resources/app_fonts.dart';
 import '../resources/app_styles.dart';
@@ -615,7 +617,19 @@ class CreatePostScreenView extends StatelessWidget {
                                   })),
                         ],
                       ),
-                    )
+                    ),
+                    c.activityData.isNotEmpty
+                        ? ActivitySearchedCard(
+                            activity: PostOrActivity(
+                                coverImage: c.activityData["coverImage"],
+                                activityName: c.activityData["activityName"],
+                                activityDate: DateFormat("dd MMM yyyy").format(
+                                    DateTime.parse(c
+                                        .activityData["activityDate"]
+                                        .toString())),
+                                group: c.activityData["group"],
+                                activityId: c.activityData["activityId"]))
+                        : Container()
                   ],
                 ))),
       );
@@ -905,7 +919,6 @@ class SearchTextField extends StatelessWidget {
     this.autoFocus = false,
     this.icon = true,
     Key? key,
-    
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -920,9 +933,9 @@ class SearchTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       onChanged: onChanged ?? (t) {},
-      autofocus: autoFocus??false,
+      autofocus: autoFocus ?? false,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(5),
+        contentPadding: EdgeInsets.symmetric(horizontal: icon! ? 5.w : 15.w),
         //isCollapsed: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius!.r),
@@ -945,15 +958,17 @@ class SearchTextField extends StatelessWidget {
               width: 1.0.w,
               style: BorderStyle.none),
         ),
-        hintText: hint ?? "Search user",
+        hintText: hint ?? "Search",
         filled: true,
         fillColor: AppColors.texfieldColor,
         hintStyle: AppStyles.interRegularStyle(
             fontSize: 18, color: AppColors.hintTextColor),
-        prefixIcon:  icon! ? const Icon(
-          Icons.search,
-          color: AppColors.hintTextColor,
-        ) : null,
+        prefixIcon: icon!
+            ? const Icon(
+                Icons.search,
+                color: AppColors.hintTextColor,
+              )
+            : null,
       ),
       style: AppStyles.interRegularStyle(
           fontSize: 18, color: AppColors.hintTextColor),

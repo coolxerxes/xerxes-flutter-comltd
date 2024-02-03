@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jyo_app/repository/registration_repo/registration_repo_impl.dart';
 import 'package:jyo_app/utils/common.dart';
 
 class SecuredStorage {
@@ -38,7 +40,6 @@ class SecuredStorage {
     try {
       await storage?.deleteAll(aOptions: aOptions);
     } catch (e) {
-      
       showAppDialog(
           msg:
               "Unable to logout, please clear the data of app in app management.");
@@ -56,6 +57,15 @@ class SecuredStorage {
 
   static Future<void> writeBoolValue(String key, bool value) async {
     await storage?.write(key: key, value: value.toString(), aOptions: aOptions);
+  }
+
+  static Future<void> updateTourStep(Map data) async {
+    debugPrint("utd $data");
+    await RegistrationRepoImpl().updateTour(data)!.then((value) {
+      debugPrint("msg: ${value.message}");
+    }).onError((error, stackTrace) {
+      debugPrint("msg: ${error.toString()}");
+    });
   }
 }
 
@@ -79,4 +89,10 @@ class Keys {
   static const activityInvitation = "activityInvitation";
   static const postPrivacy = "postPrivacy";
   static const deviceToken = "deviceToken";
+  static const isOverviewed = "isOverviewed";
+  static const overviewStep = "overviewStep";
+  static const token = "token";
+  static const catList = "catList";
+  static const radius = "radius";
+  static const sortBy = "sortBy";
 }

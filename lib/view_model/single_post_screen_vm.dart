@@ -8,6 +8,8 @@ import 'package:jyo_app/utils/secured_storage.dart';
 import 'package:jyo_app/view_model/posts_and_activities_vm.dart';
 import 'package:jyo_app/view_model/timeline_screen_vm.dart';
 
+import '../data/remote/endpoints.dart';
+
 
 class SinglePostScreenVM extends GetxController {
   ProfileRepoImpl profileRepoImpl = ProfileRepoImpl();
@@ -35,7 +37,7 @@ class SinglePostScreenVM extends GetxController {
     SecuredStorage.initiateSecureStorage();
     imageFileName = await SecuredStorage.readStringValue(Keys.profile);
     userId = await SecuredStorage.readStringValue(Keys.userId);
-    postsVM.afterInit(this);
+    postsVM.afterInit(this,endpoint: Endpoints.post);
     postId = NotiPost.getId.toString();
     getProfileData();
     await getPosts();

@@ -128,13 +128,17 @@ class BlockedUserScreenVM extends GetxController {
     blockListServer!.assignAll(searchedblockListServer!.where((bu.Datum p0) =>
         (t.toString().isEmpty
             ? true
-            : (p0.userInfo!.firstName
-                    .toString()
-                    .toLowerCase()
-                    .contains(t.toString().toLowerCase()) ||
-                p0.userInfo!.lastName
-                    .toString()
-                    .toLowerCase()
-                    .contains(t.toString().toLowerCase())))));
+            : 
+            (p0.userInfo!.firstName.toString().toLowerCase() +
+                    " " + //.contains(t.toString().toLowerCase()) ||
+                    p0.userInfo!.lastName.toString().toLowerCase())
+            // (p0.userInfo!.firstName
+            //         .toString()
+            //         .toLowerCase()
+            //         .contains(t.toString().toLowerCase()) ||
+            //     p0.userInfo!.lastName
+            //         .toString()
+            //         .toLowerCase()
+                    .contains(t.toString().toLowerCase()))));
   }
 }

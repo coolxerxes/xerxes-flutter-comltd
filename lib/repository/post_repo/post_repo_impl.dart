@@ -1,21 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jyo_app/models/posts_model/TSuggestedPeople.dart';
 import 'package:jyo_app/models/posts_model/add_post_model.dart';
 import 'package:jyo_app/models/posts_model/attachment_model.dart';
-import 'package:jyo_app/models/posts_model/comment_model.dart';
-import 'package:jyo_app/models/posts_model/delete_comment_model.dart';
 import 'package:jyo_app/models/posts_model/delete_post_model.dart';
-import 'package:jyo_app/models/posts_model/dislike_comment_model.dart';
-import 'package:jyo_app/models/posts_model/get_comment_model.dart';
 import 'package:jyo_app/models/posts_model/get_post_by_user_model.dart';
 import 'package:jyo_app/models/posts_model/jio_me_model.dart';
-import 'package:jyo_app/models/posts_model/like_comment_model.dart';
 import 'package:jyo_app/models/posts_model/like_model.dart';
 import 'package:jyo_app/models/posts_model/like_user_model.dart';
 import 'package:jyo_app/models/posts_model/post_and_activity_model.dart';
 import 'package:jyo_app/models/posts_model/tagged_user_model.dart';
 import 'package:jyo_app/models/posts_model/timeline_model.dart';
-import 'package:jyo_app/models/posts_model/update_comment_model.dart';
 import 'package:jyo_app/models/posts_model/update_post_model.dart';
 import 'package:jyo_app/repository/post_repo/post_repo.dart';
 
@@ -26,8 +21,9 @@ class PostRepoImpl extends PostRepo {
 
   @override
   Future<AttachmentResponseModel>? attachment(XFile? imgFile,
-      {String? fileName}) async {
-    dynamic response = await apiService.attachment(imgFile, fileName: fileName);
+      {String? fileName, String? filePath}) async {
+    dynamic response = await apiService.attachment(imgFile,
+        fileName: fileName, filePath: filePath);
     debugPrint("att $response");
     return AttachmentResponseModel.fromJson(response);
   }
@@ -68,12 +64,12 @@ class PostRepoImpl extends PostRepo {
     return TaggedUserResponseModel.fromJson(response);
   }
 
-  @override
-  Future<CommentResponseModel>? comment(Map data) async {
-    dynamic response = await apiService.comment(data);
-    debugPrint("comment $response");
-    return CommentResponseModel.fromJson(response);
-  }
+  // @override
+  // Future<CommentResponseModel>? comment(Map data) async {
+  //   dynamic response = await apiService.comment(data);
+  //   debugPrint("comment $response");
+  //   return CommentResponseModel.fromJson(response);
+  // }
 
   @override
   Future<LikeResponseModel>? like(Map data) async {
@@ -82,12 +78,12 @@ class PostRepoImpl extends PostRepo {
     return LikeResponseModel.fromJson(response);
   }
 
-  @override
-  Future<GetCommentResponseModel> getComments(Map data) async {
-    dynamic response = await apiService.getComment(data);
-    debugPrint("get Comment $response");
-    return GetCommentResponseModel.fromJson(response);
-  }
+  // @override
+  // Future<GetCommentResponseModel> getComments(Map data) async {
+  //   dynamic response = await apiService.getComment(data);
+  //   debugPrint("get Comment $response");
+  //   return GetCommentResponseModel.fromJson(response);
+  // }
 
   @override
   Future<DeletePostResponse>? deletePost(Map data) async {
@@ -118,30 +114,37 @@ class PostRepoImpl extends PostRepo {
   }
 
   @override
-  Future<DeleteCommentModel>? deleteComment(Map data) async {
-    dynamic response = await apiService.deleteAComment(data);
-    debugPrint("delete comm $response");
-    return DeleteCommentModel.fromJson(response);
+  Future<TSuggestedPeople>? postSuggestedPeople(Map data) async {
+    dynamic response = await apiService.postGetSuggestedPeople(data);
+    debugPrint("postSuggestedPeople post $response");
+    return TSuggestedPeople.fromJson(response);
   }
 
-  @override
-  Future<DislikeCommentModel>? disLikeComment(Map data) async {
-    dynamic response = await apiService.disLikeAComment(data);
-    debugPrint("dislike comm $response");
-    return DislikeCommentModel.fromJson(response);
-  }
+  // @override
+  // Future<DeleteCommentModel>? deleteComment(Map data) async {
+  //   dynamic response = await apiService.deleteAComment(data);
+  //   debugPrint("delete comm $response");
+  //   return DeleteCommentModel.fromJson(response);
+  // }
 
-  @override
-  Future<LikeCommentModel>? likeComment(Map data) async {
-    dynamic response = await apiService.likeAComment(data);
-    debugPrint("like comm $response");
-    return LikeCommentModel.fromJson(response);
-  }
+  // @override
+  // Future<DislikeCommentModel>? disLikeComment(Map data) async {
+  //   dynamic response = await apiService.disLikeAComment(data);
+  //   debugPrint("dislike comm $response");
+  //   return DislikeCommentModel.fromJson(response);
+  // }
 
-  @override
-  Future<UpdateCommentModel>? updateComment(Map data) async {
-    dynamic response = await apiService.updateComment(data);
-    debugPrint("upd comm $response");
-    return UpdateCommentModel.fromJson(response);
-  }
+  // @override
+  // Future<LikeCommentModel>? likeComment(Map data) async {
+  //   dynamic response = await apiService.likeAComment(data);
+  //   debugPrint("like comm $response");
+  //   return LikeCommentModel.fromJson(response);
+  // }
+
+  // @override
+  // Future<UpdateCommentModel>? updateComment(Map data) async {
+  //   dynamic response = await apiService.updateComment(data);
+  //   debugPrint("upd comm $response");
+  //   return UpdateCommentModel.fromJson(response);
+  // }
 }

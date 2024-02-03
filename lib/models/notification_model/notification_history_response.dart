@@ -13,15 +13,15 @@ String notificationHistoryResponseModelToJson(
     json.encode(data.toJson());
 
 class NotificationHistoryResponseModel {
+  int? status;
+  String? message;
+  List<Datum>? data;
+
   NotificationHistoryResponseModel({
     this.status,
     this.message,
     this.data,
   });
-
-  int? status;
-  String? message;
-  List<Datum>? data;
 
   factory NotificationHistoryResponseModel.fromJson(
           Map<String, dynamic> json) =>
@@ -43,86 +43,49 @@ class NotificationHistoryResponseModel {
 }
 
 class Datum {
+  int? id;
+  int? userId;
+  int? friendId;
+  String? friendName;
+  String? notificationType;
+  int? relatedId;
+  String? relatedName;
+  String? relatedImage;
+  String? createdDate;
+
   Datum({
     this.id,
     this.userId,
     this.friendId,
+    this.friendName,
     this.notificationType,
+    this.relatedId,
+    this.relatedName,
+    this.relatedImage,
     this.createdDate,
-    this.user,
   });
-
-  int? id;
-  int? userId;
-  int? friendId;
-  String? notificationType;
-  String? createdDate;
-  User? user;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         userId: json["userId"],
         friendId: json["friendId"],
+        friendName: json["friendName"] ?? "",
         notificationType: json["notificationType"],
+        relatedId: json["relatedId"],
+        relatedName: json["relatedName"] ?? "",
+        relatedImage: json["relatedImage"],
         createdDate: json["createdDate"],
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "userId": userId,
         "friendId": friendId,
+        "friendName": friendName,
         "notificationType": notificationType,
+        "relatedId": relatedId,
+        "relatedName": relatedName,
+        "relatedImage": relatedImage,
         "createdDate": createdDate,
-        "user": user?.toJson(),
-      };
-}
-
-class User {
-  User({
-    this.id,
-    this.userInfo,
-  });
-
-  int? id;
-  UserInfo? userInfo;
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        userInfo: json["userInfo"] == null
-            ? null
-            : UserInfo.fromJson(json["userInfo"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "userInfo": userInfo?.toJson(),
-      };
-}
-
-class UserInfo {
-  UserInfo({
-    this.userId,
-    this.firstName,
-    this.lastName,
-    this.profilePic,
-  });
-
-  int? userId;
-  String? firstName;
-  String? lastName;
-  String? profilePic;
-
-  factory UserInfo.fromJson(Map<String, dynamic> json) => UserInfo(
-        userId: json["userId"],
-        firstName: json["firstName"]??"",
-        lastName: json["lastName"]??"",
-        profilePic : json["profilePic"]??""
-      );
-
-  Map<String, dynamic> toJson() => {
-        "userId": userId,
-        "firstName": firstName,
-        "lastName": lastName,
       };
 }

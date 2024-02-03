@@ -67,7 +67,6 @@ class OtpScreenVM extends GetxController {
     // if (countdownTimer != null) {
     //   countdownTimer!.cancel();
     // }
-
     // getOffNamed(displayNameRoute);
 
     await registrationRepoImpl.checkOtp(data).then((response) async {
@@ -79,6 +78,12 @@ class OtpScreenVM extends GetxController {
 
         await SecuredStorage.writeStringValue(
             Keys.userId, response.data!.userId.toString());
+        await SecuredStorage.writeBoolValue(
+            Keys.isOverviewed, response.data!.isOverviewed??false);
+        await SecuredStorage.writeStringValue(
+            Keys.overviewStep, response.data!.overviewStep.toString());
+        await SecuredStorage.writeStringValue(
+            Keys.token, response.data!.token.toString());
         await getProfileData();
         switch (response.data!.message.toString().trim()) {
           case RedirectionMessages.displayPage:
@@ -133,7 +138,7 @@ class OtpScreenVM extends GetxController {
         getOffNamed(displayNameRoute);
       } else if (lastName == null || lastName.toString().trim().isEmpty) {
         getOffNamed(displayNameRoute);
-      }else if (gender == null || gender.toString().trim().isEmpty) {
+      } else if (gender == null || gender.toString().trim().isEmpty) {
         getOffNamed(genderRoute);
       }
       // else if (birthday == null || birthday.toString().trim().isEmpty) {

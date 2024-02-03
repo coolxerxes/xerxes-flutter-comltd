@@ -54,13 +54,16 @@ class FriendlistScreenVM extends GetxController {
     searchedFriends!.assignAll(friends!.where((Datum p0) =>
         (t.toString().isEmpty
             ? true
-            : (p0.user!.firstName
-                    .toString()
-                    .toLowerCase()
-                    .contains(t.toString().toLowerCase()) ||
-                p0.user!.lastName
-                    .toString()
-                    .toLowerCase()
-                    .contains(t.toString().toLowerCase())))));
+            : (p0.user!.firstName.toString().toLowerCase() +
+                    " " + //.contains(t.toString().toLowerCase()) ||
+                    p0.user!.lastName.toString().toLowerCase())
+            // (p0.user!.firstName
+            //         .toString()
+            //         .toLowerCase()
+            //         .contains(t.toString().toLowerCase()) ||
+            //     p0.user!.lastName
+            //         .toString()
+            //         .toLowerCase()
+                    .contains(t.toString().toLowerCase()))));
   }
 }

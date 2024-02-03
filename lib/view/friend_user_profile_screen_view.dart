@@ -729,7 +729,7 @@ class FriendUserProfileScreenView extends StatelessWidget {
                                 : Row(
                                     children: [
                                       Text(
-                                        c.userName!,
+                                        "@" + c.userName!,
                                         style: AppStyles.interRegularStyle(
                                             fontSize: 15.0,
                                             color: AppColors.hintTextColor),
@@ -762,16 +762,19 @@ class FriendUserProfileScreenView extends StatelessWidget {
                                 : Row(
                                     children: [
                                       InkWell(
-                                          onTap: c.isThisUserBlocked!
-                                              ? null
-                                              : () async {
-                                                  SearchUser.setId = c.userId;
-                                                  await Get.delete<
-                                                          FriendlistScreenVM>(
-                                                      force: true);
-                                                  getToNamed(
-                                                      friendlistScreenRoute);
-                                                },
+                                          onTap: () async {
+                                            if (c.isThisUserBlocked!) {
+                                            } else if (c.isPrivateAccount! &&
+                                                !c.isThisUserMyFriend!) {
+                                              debugPrint("I am hrer");
+                                            } else {
+                                              SearchUser.setId = c.userId;
+                                              await Get.delete<
+                                                      FriendlistScreenVM>(
+                                                  force: true);
+                                              getToNamed(friendlistScreenRoute);
+                                            }
+                                          },
                                           child: Row(
                                             children: [
                                               Text(
@@ -847,7 +850,9 @@ class FriendUserProfileScreenView extends StatelessWidget {
                             sizedBoxH(
                               height: 8,
                             ),
-                            c.amIBlockedByThisUser!
+                            (c.amIBlockedByThisUser! ||
+                                    (c.isPrivateAccount! &&
+                                        !c.isThisUserMyFriend!))
                                 ? Container()
                                 : Row(
                                     children: [
@@ -859,12 +864,16 @@ class FriendUserProfileScreenView extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                            c.amIBlockedByThisUser!
+                            (c.amIBlockedByThisUser! ||
+                                    (c.isPrivateAccount! &&
+                                        !c.isThisUserMyFriend!))
                                 ? Container()
                                 : sizedBoxH(
                                     height: 8,
                                   ),
-                            c.amIBlockedByThisUser!
+                            (c.amIBlockedByThisUser! ||
+                                    (c.isPrivateAccount! &&
+                                        !c.isThisUserMyFriend!))
                                 ? Container()
                                 : SizedBox(
                                     height: 46.h,
@@ -882,7 +891,9 @@ class FriendUserProfileScreenView extends StatelessWidget {
                       ),
 
                       //Posts and activity tabs
-                      (c.isThisUserBlocked! || c.amIBlockedByThisUser!)
+                      (c.isThisUserBlocked! ||
+                              c.amIBlockedByThisUser! ||
+                              (c.isPrivateAccount! && !c.isThisUserMyFriend!))
                           ? Container()
                           : Container(
                               color: AppColors.white,
@@ -1028,7 +1039,10 @@ class FriendUserProfileScreenView extends StatelessWidget {
                                                 ? "Only Friends can view posts"
                                                 : c.isOnlyMePrivacy!
                                                     ? "Posts are hidden from all"
-                                                    : "No posts available",
+                                                    : (c.isPrivateAccount! &&
+                                                            !c.isThisUserMyFriend!)
+                                                        ? "This profile is private"
+                                                        : "No posts available",
                                         style: AppStyles.interRegularStyle(),
                                       )),
                                     )
@@ -1043,7 +1057,7 @@ class FriendUserProfileScreenView extends StatelessWidget {
                                           )),
                                         )
                                       : Column(
-                                          children: c.isThisUserPrivate!
+                                          children: c.isPrivateAccount!
                                               ? privatePostAndActivities
                                               : List.generate(
                                                   c.postsVM.postsList.length,
@@ -1054,11 +1068,53 @@ class FriendUserProfileScreenView extends StatelessWidget {
                                                       andIsFreind: true);
                                                 }),
                                         )
-                          : Column(
-                              children: c.isThisUserPrivate!
-                                  ? privatePostAndActivities
-                                  : [],
-                            )
+                          : c.isLoadingActs
+                              ? SizedBox(
+                                  height: 150.h,
+                                  child: const Center(
+                                      child: CircularProgressIndicator(
+                                    color: AppColors.orangePrimary,
+                                  )),
+                                )
+                              : c.postsVM.activitiesList.isEmpty
+                                  ? SizedBox(
+                                      height: 150.h,
+                                      child: Center(
+                                          child: Text(
+                                        c.amIBlockedByThisUser!
+                                            ? "User blocked you for some reason."
+                                            : c.isFriendsPrivacy!
+                                                ? "Only Friends can view Activities"
+                                                : c.isOnlyMePrivacy!
+                                                    ? "Activities are hidden from all"
+                                                    : "No Activities available",
+                                        style: AppStyles.interRegularStyle(),
+                                      )),
+                                    )
+                                  : c.isThisUserBlocked!
+                                      ? SizedBox(
+                                          height: 150.h,
+                                          child: Center(
+                                              child: Text(
+                                            "You have blocked this user.",
+                                            style:
+                                                AppStyles.interRegularStyle(),
+                                          )),
+                                        )
+                                      : Column(
+                                          children: c.isPrivateAccount!
+                                              ? privatePostAndActivities
+                                              : List.generate(
+                                                  c.postsVM.activitiesList
+                                                      .length, (index) {
+                                                  return ActivityWidget.activity(
+                                                      c.postsVM.activitiesList[
+                                                          index],
+                                                      c.postsVM,
+                                                      c,
+                                                      isProfile: true);
+                                                }),
+                                        )
                     ],
                   ),
                 ))),

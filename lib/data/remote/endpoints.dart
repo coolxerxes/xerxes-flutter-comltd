@@ -51,6 +51,50 @@ class Endpoints {
   static const getMyNotifications = "getMyNotifications";
   static const getTimeLineNew = "getTimeLineNew";
   static const getCalendarEvents = "getCalendarEvents";
+  static const activity = "activity/";
+  static const group = "group/";
+  static const inviteFriend = "inviteFriend";
+  static const requestToJoin = "requestToJoin";
+  static const requestList = "requestList";
+  static const acceptOrRejectRequest = "acceptOrRejectRequest";
+  static const memberList = "memberList";
+  static const saveActivity = "saveActivity";
+  static const listOfSave = "listOfSave";
+  static const shareAsPost = "shareAsPost";
+  static const details = "details";
+  static const overviewSteps = "overviewSteps";
+  static const getActivityByFilter = "getActivityByFilter";
+  static const getActivitys = "getActivitys";
+  static const invite = "invite";
+  static const acceptInvite = "acceptInvite";
+  static const participantsList = "participantsList";
+  static const rejectInvite = "rejectInvite";
+  static const leaveActivity = "leaveActivity";
+  static const joinActivity = "joinActivity";
+  static const requestListToJoin = "requestListToJoin";
+  static const acceptRequestToJoin = "acceptRequestToJoin";
+  static const search = "search";
+  static const acceptOrRejectInvitation = "acceptOrRejectInvitation";
+  static const host = "host/";
+  static const setSubHost = "setSubHost";
+  static const setHostAndSelfDemote = "setHostAndSelfDemote";
+  static const demoteToNormalParticipants = "demoteToNormalParticipants";
+  static const removeParticipants = "removeParticipants";
+  static const memberToAdmin = "memberToAdmin";
+  static const removeMember = "removeMember";
+  static const setSuperAdminDemoteToAdmin = "setSuperAdminDemoteToAdmin";
+  static const demoteAdminToMember = "demoteAdminToMember";
+  static const suggestionGroups = "user/group/groups/userIntrests/";
+  static const leave = "leave";
+  static const leaveActivityAppointSomeoneAsHost =
+      "leaveActivityAppointSomeoneAsHost";
+  static const leaveAndSetSomeOneAsSuperAdmin =
+      "leaveAndSetSomeOneAsSuperAdmin";
+      
+
+  static String myGroup = "myGroup";
+
+  static String update = "update";
 }
 
 class CommetChatEndpoint {

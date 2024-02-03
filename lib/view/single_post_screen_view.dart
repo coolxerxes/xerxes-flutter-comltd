@@ -21,7 +21,7 @@ class SinglePostScreenView extends StatelessWidget {
     return GetBuilder<SinglePostScreenVM>(builder: (c) {
       return WillPopScope(
         onWillPop: () async {
-           if (c.isAppStartingFromNotification!) {
+          if (c.isAppStartingFromNotification!) {
             getOffAllNamed(splashScreenRoute);
           } else {
             Get.back();
@@ -38,7 +38,11 @@ class SinglePostScreenView extends StatelessWidget {
                       size: 24,
                       isSvg: true,
                       onTap: () {
-                        Get.back();
+                        if (c.isAppStartingFromNotification!) {
+                          getOffAllNamed(splashScreenRoute);
+                        } else {
+                          Get.back();
+                        }
                       },
                     )
                   ],

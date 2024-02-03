@@ -13,6 +13,7 @@ class SettingListTile extends StatelessWidget {
     this.onTap,
     this.height = 52,
     this.margin = const EdgeInsets.symmetric(horizontal: 22),
+    this.padding = const EdgeInsets.symmetric(horizontal: 22),
     this.radiusBottomLeft = 10.0,
     this.radiusBottomRight = 10.0,
     this.radiusTopLeft = 10.0,
@@ -24,6 +25,7 @@ class SettingListTile extends StatelessWidget {
   String? text;
   double? height;
   EdgeInsets? margin;
+  EdgeInsets? padding;
   double? radiusBottomLeft, radiusBottomRight, radiusTopLeft, radiusTopRight;
   VoidCallback? onTap;
   bool? isLogout;
@@ -59,7 +61,7 @@ class SettingListTile extends StatelessWidget {
                 ),
                 child: Container(
                   height: height!.h, //52,
-                  padding:  EdgeInsets.symmetric(horizontal: 22.w),
+                  padding: padding?? EdgeInsets.symmetric(horizontal: 22.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(radiusBottomLeft!.r),

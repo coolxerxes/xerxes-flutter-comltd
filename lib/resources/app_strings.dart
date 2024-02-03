@@ -85,6 +85,7 @@ class AppStrings {
   static const freinds = "Friends";
   static const shareJYO = "Share Jio You Out";
   static const inviteJYO = "Invite your friends to this app!";
+  static const inviteYFinfo = "Invite friends who match this activity";
   static const post = "Post";
   static const public = "Public";
   static const tagFriend = "Tag friends";
@@ -96,6 +97,8 @@ class AppStrings {
   static const jioYou = "Jio you!";
   static const editPost = "Edit post";
   static const deletePost = "Delete post";
+  static const editAct = "Edit activity";
+  static const deleteAct = "Delete activity";
   static const search = "Search";
   static const people = "People";
   static const groups = "Groups";
@@ -166,6 +169,61 @@ class AppStrings {
 
   static const pinChat = "Pin chat";
   static const clearMessages = "Clear message";
+  static const createGroupInfoHeading = "Create a new group page";
+  static const createGroupInfoSubHead =
+      "By creating a group you can arange many people\nand create the activity together ✨";
+  static const privateThisGroup = "Private this group";
+  static const requireAcceptance = "Require acceptance";
+  static const inviteFriend = "Invite friends";
+  static const inviteYourFriend = "Invite your friends";
+
+  static String myGroup = "My group";
+
+  static String pending = "Pending";
+
+  static String savedActivities = "Saved activities";
+
+  static String leaveActivity = "Leave activity";
+
+  static String reportActivity = "Report activity";
+
+  static String participants = "Participants";
+
+  static String viewProfile = "View profile";
+
+  static String removeParticipants = "Remove participants";
+
+  static String setAsSubHost = "Set as sub-host";
+
+  static String editGrp = "Edit group";
+
+  static String leaveGrpAndAppntAdmin =
+      "Leave group and Appoint someone as Super Admin";
+
+  static String startAnActivity = "Start an activity";
+
+  static String setAsAdmin = "Set as admin";
+
+  static String checkHostProfile = "Check host profile";
+
+  static String filter = "Filter";
+
+  static String showResult = "Show result";
+
+  static String sortBy = "Sort by";
+
+  static String radius  = "Radius";
+
+  static String leaveActivityAsHost = "Leave activity and Appoint someone as Host";
+
+  static String removeMember = "Remove member";
+
+  static String leaveGroup = "Leave group";
+
+  static String appointAsHost = "Appoint as Host";
+
+  static String appointAsSA = "Appoint as Super Admin";
+  static String noData = "No Data";
 }
 
 class Hints {
@@ -175,6 +233,8 @@ class Hints {
   static const mm = "MM";
   static const yyyy = "YYYY";
   static const slash = "/";
+  static const groupName = "Group Name";
+  static const groupAbt = "What is the group about";
 }
 
 class NavTitles {

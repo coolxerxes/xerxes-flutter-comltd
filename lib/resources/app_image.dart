@@ -1,6 +1,7 @@
 class AppImage {
   static const splashScreenImage = "assets/images/screensplash.png";
   static const jioLogo = "assets/images/jio_logo.png";
+  static const jioLogoQr = "assets/images/app_logo_qr.png";
   static const jioSplashLogo = "assets/images/jio_splash_logo.png";
   static const sampleAvatar = "assets/images/sample_avatar.png";
   static const groupImage = "assets/images/group_image.png";
@@ -20,12 +21,19 @@ class AppImage {
   static const imgPh = "assets/images/img_ph.svg";
   static const share = "assets/images/share_icon.svg";
   static const shareNew = "assets/images/share_new.svg";
+  static const invite = "assets/images/invite.svg";
   static const jioMeLogo = "assets/images/jio_me_button.svg";
   static const nearbySearchLogo = "assets/images/nearby.png";
   static const addCover = "assets/images/add_cover.svg";
   static const place = "assets/images/place.svg";
   static const placeG = "assets/images/place_g.svg";
   static const placePng = "assets/images/place.png";
+  static const act1Png = "assets/images/act1.png";
+  static const act2Png = "assets/images/act2.png";
+  static const act3Png = "assets/images/act3.png";
+  static const act4Png = "assets/images/act4.png";
+  static const act5Png = "assets/images/act5.png";
+  static const peoplePng = "assets/images/people.svg";
 }
 
 class AppIcons {
@@ -61,9 +69,26 @@ class AppIcons {
   static const cameraSvg = "assets/images/camera.svg";
   static const crownSvg = "assets/images/crown.svg";
   static const crownPng = "assets/images/crown.png";
+  static const bookmarkUs = "assets/images/bookmark_us.svg";
+  static const pinStroke = "assets/images/pin_stroke.svg";
 
   static const reloadSvg = "assets/images/reload.svg";
   static const mapSvg = "assets/images/map.svg";
+  static const marker = "assets/images/marker.png";
+  static const markerBig = "assets/images/marker_big.svg";
+  static const groupIcon = "assets/images/group_img.png";
+  static const groupPhIcon = "assets/images/group_img_ph.png";
+
+  static const groupAd = "assets/images/group_ad.svg";
+
+  static const calAd = "assets/images/cal_ad.svg";
+  static const acceptActSvg = "assets/images/accept.svg";
+  static const ignoreActSvg = "assets/images/ignore.svg";
+  static const calIcon = "assets/images/cal_icon.svg";
+  static const actCal = "assets/images/act-cal.svg";
+  static const subCrown = "assets/images/crown_sub.png";
+
+  static String grpMsg = "assets/images/grp_msg.svg";
 }
 
 class NavIcons {
@@ -104,4 +129,10 @@ class AppBarIcons {
   static const timelineCrownSvg = "assets/images/timeline_crown.svg";
   static const menuSvg = "assets/images/menu.svg";
   static const plusSvg = "assets/images/plus.svg";
+  static const bookmarkUsHSvg = "assets/images/bookmark_us_h.svg";
+  static const shareHSvg = "assets/images/share_h.svg";
+  static const moreHSvg = "assets/images/more_h.svg";
+  static const share = "assets/images/share.svg";
+
+  static const bookmarkHSvg = "assets/images/bookmark_h.svg";
 }

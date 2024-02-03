@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +11,8 @@ import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/resources/app_strings.dart';
 import 'package:jyo_app/resources/app_styles.dart';
 import 'package:jyo_app/view_model/base_screen_vm.dart';
+
+import '../data/local/tour.dart';
 
 class BaseScreenView extends StatelessWidget {
   const BaseScreenView({Key? key}) : super(key: key);
@@ -39,12 +40,14 @@ class BaseScreenView extends StatelessWidget {
                 initialRoute: exploreRoute, //profileRoute,
                 onGenerateRoute: c.onGenerateRoute,
               ),
-              bottomNavigationBar: Container(
-                  color: AppColors.white,
-                  child: Padding(
-                      padding:
-                          EdgeInsets.only(bottom: Platform.isIOS ? 16.h : 10.h),
-                      child: BottomNavBar(
+              bottomNavigationBar:  Container(
+
+                  color:  AppColors.white ,
+                  child: Stack(
+                    children: [
+                    
+                      BottomNavBar(
+
                         children: [
                           //Explore
                           BottomNavChild(
@@ -56,10 +59,11 @@ class BaseScreenView extends StatelessWidget {
                                 c.selectedIndex == BottomBarSelection.explore
                                     ? true
                                     : false,
-                            onTap: () {
+                            onTap:  () {
+                              if(!Tour.getIsTourRunning!){
                               c.selectedIndex = BottomBarSelection.explore;
                               c.changePage(BottomBarSelection.explore);
-                              c.update();
+                              c.update();}
                             },
                           ),
                           //Calendar
@@ -72,10 +76,11 @@ class BaseScreenView extends StatelessWidget {
                                 c.selectedIndex == BottomBarSelection.calendar
                                     ? true
                                     : false,
-                            onTap: () {
+                            onTap:  () {
+                              if(!Tour.getIsTourRunning!){
                               c.selectedIndex = BottomBarSelection.calendar;
                               c.changePage(BottomBarSelection.calendar);
-                              c.update();
+                              c.update();}
                             },
                           ),
                           //Timeline
@@ -88,10 +93,11 @@ class BaseScreenView extends StatelessWidget {
                                 c.selectedIndex == BottomBarSelection.timeline
                                     ? true
                                     : false,
-                            onTap: () {
+                            onTap:  () {
+                              if(!Tour.getIsTourRunning!){
                               c.selectedIndex = BottomBarSelection.timeline;
                               c.changePage(BottomBarSelection.timeline);
-                              c.update();
+                              c.update();}
                             },
                           ),
                           //Message
@@ -104,10 +110,11 @@ class BaseScreenView extends StatelessWidget {
                                 c.selectedIndex == BottomBarSelection.message
                                     ? true
                                     : false,
-                            onTap: () {
+                            onTap:   () {
+                              if(!Tour.getIsTourRunning!){
                               c.selectedIndex = BottomBarSelection.message;
                               c.changePage(BottomBarSelection.message);
-                              c.update();
+                              c.update();}
                             },
                           ),
                           //Profile
@@ -121,13 +128,17 @@ class BaseScreenView extends StatelessWidget {
                                     ? true
                                     : false,
                             onTap: () {
+                              if(!Tour.getIsTourRunning!){
                               c.selectedIndex = BottomBarSelection.profile;
                               c.changePage(BottomBarSelection.profile);
-                              c.update();
+                              c.update();}
                             },
                           )
                         ],
-                      ))),
+                      ),
+                      Positioned(child: !Tour.getIsTourRunning! ?  const SizedBox(height: 0, width: 0,) : Container(height: 53.h, color:  Tour.getIsTourRunning! ? Colors.black.withOpacity(0.7) : AppColors.white,))
+                    ],
+                  )),
             ),
           ),
         );

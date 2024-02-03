@@ -12,6 +12,7 @@ import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
 
 import '../view_model/calendar_srceen_vm.dart';
+import '../view_model/create_activity_screen_vm.dart';
 
 class CalendarScreenView extends StatelessWidget {
   const CalendarScreenView({Key? key}) : super(key: key);
@@ -29,12 +30,13 @@ class CalendarScreenView extends StatelessWidget {
               leading: [
                 Text(
                   AppStrings.myCalendar,
-                  style: AppStyles.interMediumStyle(fontSize: 24),
+                  style: AppStyles.interMediumStyle(fontSize: 20),
                 ),
               ],
               actions: [
                 MyIconButton(
                   onTap: () {
+                    Get.delete<CreateActivityScreenVM>();
                     getToNamed(createActivityScreenRoute);
                   },
                   icon: AppBarIcons.plusSvg,
@@ -43,16 +45,23 @@ class CalendarScreenView extends StatelessWidget {
                 )
               ],
             ),
-            body: ListView.builder(
-              itemCount: c.events.length,
-              itemBuilder: (context, index) {
-                if (index != 0) {
-                  c.selectedDate = c.events[index - 1].date.toString();
-                }
-                return CalendarEventCard(
-                    calendarData: c.events[index], index: index);
-              },
-            ));
+            body: Center(
+              child: Text(
+                "No data available",
+                style: AppStyles.interRegularStyle(fontSize: 18),
+              ),
+            )
+            // ListView.builder(
+            //   itemCount: c.events.length,
+            //   itemBuilder: (context, index) {
+            //     if (index != 0) {
+            //       c.selectedDate = c.events[index - 1].date.toString();
+            //     }
+            //     return CalendarEventCard(
+            //         calendarData: c.events[index], index: index);
+            //   },
+            // )
+            );
       },
     );
   }

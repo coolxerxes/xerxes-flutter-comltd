@@ -5,6 +5,7 @@ import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/view/calendar_screen_view.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
 import 'package:jyo_app/view_model/calendar_srceen_vm.dart';
+import 'package:jyo_app/view_model/explore_screen_vm.dart';
 import 'package:jyo_app/view_model/freind_user_profile_screen_vm.dart';
 import 'package:jyo_app/view_model/message_screen_vm.dart';
 import 'package:jyo_app/view_model/profile_screen_vm.dart';
@@ -49,15 +50,17 @@ class BaseScreenVM extends GetxController {
   Route? onGenerateRoute(RouteSettings settings) {
     // Get.deleteAll(force: true);
     if (settings.name == exploreRoute) {
+      Get.delete<ExploreScreenVM>();
       return GetPageRoute(
         settings: settings,
-        page: () => const ExploreScreenView(),
+        page: () =>  const ExploreScreenView(),
         binding: ExploreScreenBinding(),
       );
     }
 
-    Get.delete<CalendarScreenVM>();
+    
     if (settings.name == calendarRoute) {
+      Get.delete<CalendarScreenVM>();
       return GetPageRoute(
         settings: settings,
         page: () => const CalendarScreenView(),

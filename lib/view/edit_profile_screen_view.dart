@@ -168,20 +168,52 @@ class EditProfileScreenView extends StatelessWidget {
                 sizedBoxH(
                   height: 24,
                 ),
-                AppTextField(
-                  controller: c.userNameCtrl,
-                  margin: const EdgeInsets.all(0),
-                  style: AppStyles.interRegularStyle(),
-                  hintText: "Username",
-                  prefixText: "@",
-                  // icon: SizedBox(
-                  //     width: 10,
-                  //     child: Center(
-                  //         child: Text(
-                  //       "@",
-                  //       style: AppStyles.interRegularStyle(fontSize: 15.6, color: AppColors.hintTextColor),
-                  //     ))),
+                Container(
+                  height: 52.h,
+                  margin: EdgeInsets.zero,
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  //.symmetric(
+                  //  horizontal: 22.w), //EdgeInsets.symmetric(horizontal: 22),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10.r),
+                        bottomRight: Radius.circular(10.r),
+                        topLeft: Radius.circular(10.r),
+                        topRight: Radius.circular(10.r),
+                      ),
+                      color: AppColors.texfieldColor),
+                  child: Row(mainAxisSize: MainAxisSize.max, children: [
+                    Text(
+                      "@",
+                      style: AppStyles.interRegularStyle(
+                          fontSize: 15.6, color: AppColors.hintTextColor),
+                    ),
+                    Expanded(
+                        child: TextField(
+                      controller: c.userNameCtrl,
+                      style: AppStyles.interRegularStyle(),
+                      decoration:
+                          const InputDecoration(border: InputBorder.none),
+                    ))
+                  ]),
                 ),
+
+                // AppTextField(
+                //   controller: c.userNameCtrl,
+                //   margin: const EdgeInsets.all(0),
+                //   style: AppStyles.interRegularStyle(),
+                //   hintText: "Username",
+                //   //prefixText: "@",
+
+                //   icon: SizedBox(
+                //       width: 10,
+                //       child: Center(
+                //           child: Text(
+                //         "@",
+                //         style: AppStyles.interRegularStyle(
+                //             fontSize: 15.6, color: AppColors.hintTextColor),
+                //       ))),
+                // ),
                 sizedBoxH(
                   height: 24,
                 ),

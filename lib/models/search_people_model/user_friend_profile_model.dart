@@ -88,9 +88,9 @@ class ProfileData {
         userIntrest: json["userIntrest"] == null
             ? null
             : UserIntrest.fromJson(json["userIntrest"]),
-        activity: json["activity"],
-        post: json["post"],
-        friendsCount: json["friendsCount"],
+        activity: json["activityCount"] ?? 0,
+        post: json["post"] ?? 0,
+        friendsCount: json["friendsCount"] ?? 0,
         age: json["age"],
       );
 
@@ -150,13 +150,19 @@ class UserIntrest {
   int? userId;
   List<IntrestId>? intrestIds;
 
-  factory UserIntrest.fromJson(Map<String, dynamic> json) => UserIntrest(
+  factory UserIntrest.fromJson(Map<String, dynamic> json) {
+    try {
+      return UserIntrest(
         userId: json["userId"],
         intrestIds: json["intrestIds"] == null
             ? []
             : List<IntrestId>.from(
                 json["intrestIds"]!.map((x) => IntrestId.fromJson(x))),
       );
+    } catch (e) {
+      return UserIntrest(userId: json["userId"], intrestIds: []);
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         "userId": userId,
@@ -199,6 +205,7 @@ class ProfileStatusData {
     this.isReceivedRequest,
     this.isBlocked,
     this.isYoublock,
+    this.isPrivateAccount,
     this.postPrivacy,
   });
 
@@ -209,6 +216,7 @@ class ProfileStatusData {
   int? isReceivedRequest;
   int? isBlocked;
   int? isYoublock;
+  int? isPrivateAccount;
   PostPrivacy? postPrivacy;
 
   factory ProfileStatusData.fromJson(Map<String, dynamic> json) =>
@@ -220,6 +228,7 @@ class ProfileStatusData {
         isReceivedRequest: json["isReceivedRequest"],
         isBlocked: json["isBlocked"],
         isYoublock: json["isYoublock"],
+        isPrivateAccount: json["isPrivateAccount"],
         postPrivacy: PostPrivacy.fromJson(json["postPrivacy"] ?? {}),
       );
 
@@ -235,25 +244,25 @@ class ProfileStatusData {
 }
 
 class PostPrivacy {
-    PostPrivacy({
-        this.onlyMe,
-        this.everyone,
-        this.friendsOnly,
-    });
+  PostPrivacy({
+    this.onlyMe,
+    this.everyone,
+    this.friendsOnly,
+  });
 
-    int? onlyMe;
-    int? everyone;
-    int? friendsOnly;
+  int? onlyMe;
+  int? everyone;
+  int? friendsOnly;
 
-    factory PostPrivacy.fromJson(Map<String, dynamic> json) => PostPrivacy(
-        onlyMe: json["onlyMe"]??0,
-        everyone: json["everyone"]??0,
-        friendsOnly: json["friendsOnly"]??0,
-    );
+  factory PostPrivacy.fromJson(Map<String, dynamic> json) => PostPrivacy(
+        onlyMe: json["onlyMe"] ?? 0,
+        everyone: json["everyone"] ?? 0,
+        friendsOnly: json["friendsOnly"] ?? 0,
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "onlyMe": onlyMe,
         "everyone": everyone,
         "friendsOnly": friendsOnly,
-    };
+      };
 }

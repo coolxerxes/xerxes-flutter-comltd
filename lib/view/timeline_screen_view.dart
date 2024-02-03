@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bottom_sheet/bottom_sheet.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:jyo_app/data/local/post_edit_model.dart';
 import 'package:jyo_app/data/remote/api_interface.dart';
 import 'package:jyo_app/resources/app_colors.dart';
@@ -20,157 +22,799 @@ import 'package:jyo_app/utils/app_widgets/app_bar.dart';
 import 'package:jyo_app/utils/app_widgets/app_icon_button.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/view/create_post_screen_view.dart';
+import 'package:jyo_app/view/profile_screen_view.dart';
 import 'package:jyo_app/view_model/create_post_screen_vm.dart';
 import 'package:jyo_app/view_model/freind_user_profile_screen_vm.dart';
 import 'package:jyo_app/view_model/posts_and_activities_vm.dart';
 
 import 'package:jyo_app/view_model/timeline_screen_vm.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:video_player/video_player.dart';
 
 import '../data/local/attachements.dart';
+import '../data/local/tour.dart';
 import '../data/local/user_search_model.dart';
 import '../data/remote/endpoints.dart';
+import '../models/group_suggestion_model/group_list_model.dart';
+import '../models/posts_model/post_and_activity_model.dart';
 import '../resources/app_fonts.dart';
 import '../utils/secured_storage.dart';
+import '../view_model/activity_details_screen_vm.dart';
+import '../view_model/comments_vm.dart';
+import 'explore_screen_view.dart';
+import 'package:jyo_app/models/comment_model/get_comment_model.dart' as comm;
 
 class TimelineScreenView extends StatelessWidget {
   const TimelineScreenView({Key? key}) : super(key: key);
+  static dynamic ctx;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TimelineScreenVM>(builder: (c) {
-      return SafeArea(
-        child: Scaffold(
-          backgroundColor: AppColors.appBkgColor,
-          appBar: MyAppBar(
-            color: 0xffFFFFFF,
-            padding: EdgeInsets.only(right: 22.w, top: 6.h, bottom: 6.h),
-            leading: [
-              SvgPicture.asset(AppBarIcons.jyoTimelineLogoSvg, width: 140.w),
-            ],
-            actions: [
-              MyIconButton(
-                onTap: () {},
-                icon: AppBarIcons.timelineCalSvg,
-                isSvg: true,
+      return ShowCaseWidget(
+          disableBarrierInteraction: true,
+          onComplete: (index, key) async {
+            c.step++;
+            await SecuredStorage.writeStringValue(
+                Keys.overviewStep, c.step.toString());
+            String? userId = await SecuredStorage.readStringValue(Keys.userId);
+            SecuredStorage.updateTourStep(
+                {"userId": userId.toString(), "steps": c.step.toString()});
+          },
+          onFinish: () {
+            //End tour
+            Tour.setIsTourRunning = false;
+            c.update();
+            c.bsvm.update();
+          },
+          builder: Builder(builder: (context) {
+            ctx = context;
+            return SafeArea(
+              child: Scaffold(
+                backgroundColor: AppColors.appBkgColor,
+                appBar: MyAppBar(
+                  color: 0xffFFFFFF,
+                  padding: EdgeInsets.only(right: 22.w, top: 6.h, bottom: 6.h),
+                  leading: [
+                    SvgPicture.asset(AppBarIcons.jyoTimelineLogoSvg,
+                        width: 140.w),
+                  ],
+                  actions: [
+                    Showcase.withWidget(
+                        disableMovingAnimation: true,
+                        onBarrierClick: () {},
+                        key: c.key4,
+                        // description: "Find new activities, friends and groups in\none place!",
+                        width: MediaQuery.of(context).size.width,
+                        height: 100.h,
+                        // targetPadding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
+                        targetShapeBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.r)),
+                        targetBorderRadius: BorderRadius.circular(14.r),
+                        container: Container(
+                          margin: EdgeInsets.only(left: 20.w),
+                          child: TourToolTip(
+                            tooltipPadding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.13),
+                            isArrowDown: false,
+                            tourText:
+                                "Hey! you also can create your own activity here ✨",
+                            width: MediaQuery.of(context).size.width - 45.w,
+                            onTap: () {
+                              ShowCaseWidget.of(ctx).next();
+                            },
+                          ),
+                        ),
+                        child: MyIconButton(
+                          onTap: () {},
+                          icon: AppBarIcons.timelineCalSvg,
+                          isSvg: true,
+                        )),
+                    sizedBoxW(width: 12),
+                    Showcase.withWidget(
+                        disableMovingAnimation: true,
+                        onBarrierClick: () {},
+                        key: c.key3,
+                        // description: "Find new activities, friends and groups in\none place!",
+                        width: MediaQuery.of(context).size.width,
+                        height: 100.h,
+                        // targetPadding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
+                        targetShapeBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.r)),
+                        targetBorderRadius: BorderRadius.circular(14.r),
+                        container: Container(
+                          margin: EdgeInsets.only(left: 20.w),
+                          child: TourToolTip(
+                            tooltipPadding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.35),
+                            isArrowDown: false,
+                            tourText: "Check all of your group here.",
+                            width: MediaQuery.of(context).size.width - 45.w,
+                            onTap: () {
+                              ShowCaseWidget.of(ctx).next();
+                            },
+                          ),
+                        ),
+                        child: MyIconButton(
+                          onTap: () {
+                            getToNamed(groupListScreenRoute);
+                          },
+                          icon: AppBarIcons.timelineCrownSvg,
+                          isSvg: true,
+                        )),
+                    sizedBoxW(width: 12),
+                    Showcase.withWidget(
+                        disableMovingAnimation: true,
+                        onBarrierClick: () {},
+                        key: c.key2,
+                        // description: "Find new activities, friends and groups in\none place!",
+                        width: MediaQuery.of(context).size.width,
+                        height: 100.h,
+                        // targetPadding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
+                        targetShapeBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.r)),
+                        targetBorderRadius: BorderRadius.circular(14.r),
+                        container: Container(
+                          margin: EdgeInsets.only(left: 20.w),
+                          child: TourToolTip(
+                            tooltipPadding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.57),
+                            isArrowDown: false,
+                            tourText:
+                                "See all notification and your new friend request here.",
+                            width: MediaQuery.of(context).size.width - 45.w,
+                            onTap: () {
+                              ShowCaseWidget.of(ctx).next();
+                            },
+                          ),
+                        ),
+                        child: MyIconButton(
+                          onTap: () {
+                            getToNamed(notificationScreenRoute);
+                          },
+                          icon: AppBarIcons.notificationBellSvg,
+                          isSvg: true,
+                        ))
+                  ],
+                ),
+                body: RefreshIndicator(
+                  color: AppColors.orangePrimary,
+                  onRefresh: () async {
+                    await c.init();
+                    return;
+                  },
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: //Container(color: AppColors.black,)
+                            SingleChildScrollView(
+                          controller: c.scrollController,
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  getToNamed(createPostScreenRoute);
+                                },
+                                child: Showcase.withWidget(
+                                    disableMovingAnimation: true,
+                                    onBarrierClick: () {},
+                                    key: c.key1,
+                                    // description: "Find new activities, friends and groups in\none place!",
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 100.h,
+                                    // targetPadding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
+                                    targetShapeBorder: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(14.r)),
+                                    //targetBorderRadius: BorderRadius.circular(14.r),
+                                    container: TourToolTip(
+                                      isArrowDown: false,
+                                      tourText:
+                                          "Share your latest experience here ☄️",
+                                      width: MediaQuery.of(context).size.width -
+                                          50.w,
+                                      onTap: () {
+                                        ShowCaseWidget.of(ctx).next();
+                                      },
+                                    ),
+                                    child: Container(
+                                      color: AppColors.white,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 22.w, vertical: 16.h),
+                                      child: Row(children: [
+                                        c.imageFileName!.trim().isEmpty
+                                            ? MyAvatar(
+                                                url: AppImage.sampleAvatar,
+                                                height: 56,
+                                                width: 56,
+                                                radiusAll: 22.4,
+                                              )
+                                            : MyAvatar(
+                                                url: ApiInterface.baseUrl +
+                                                    Endpoints.user +
+                                                    Endpoints.profileImage +
+                                                    c.imageFileName.toString(),
+                                                height: 56,
+                                                width: 56,
+                                                radiusAll: 22.4,
+                                                isNetwork: true,
+                                              ),
+                                        sizedBoxW(width: 12.w),
+                                        Text(
+                                          AppStrings.whatsNewToday,
+                                          style: AppStyles.interRegularStyle(
+                                              fontSize: 17.2,
+                                              color: AppColors.hintTextColor),
+                                        )
+                                      ]),
+                                    )),
+                              ),
+                              sizedBoxH(height: 8.h),
+                              c.isLoadingPost!
+                                  ? SizedBox(
+                                      height: 150.h,
+                                      child: const Center(
+                                          child: CircularProgressIndicator(
+                                        color: AppColors.orangePrimary,
+                                      )),
+                                    )
+                                  : c.postsVM.postsList.isEmpty
+                                      ? SizedBox(
+                                          height: 150.h,
+                                          child: Center(
+                                              child: Text(
+                                            "No posts available",
+                                            style:
+                                                AppStyles.interRegularStyle(),
+                                          )),
+                                        )
+                                      : Column(children: [
+                                          ...List.generate(
+                                              c.postsVM.postsList.length > 2
+                                                  ? 2
+                                                  : c.postsVM.postsList.length,
+                                              (index) {
+                                            return c.postsVM.postsList[index]
+                                                        .mode ==
+                                                    'POST'
+                                                ? PostWidget.post(
+                                                    c.postsVM, c, index)
+                                                : SizedBox();
+                                          }),
+                                          if (c.tSuggestedPeople!.data!
+                                              .isNotEmpty)
+                                            Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 8.h,
+                                                ),
+                                                Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 24,
+                                                      horizontal: 22),
+                                                  color: Colors.white,
+                                                  height: 278,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        'People to connect ✨',
+                                                        style: AppStyles
+                                                            .interSemiBoldStyle(
+                                                                fontSize: 18),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 16.h,
+                                                      ),
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: ListView
+                                                                  .separated(
+                                                                controller: c
+                                                                    .spScrollController,
+                                                                clipBehavior:
+                                                                    Clip.none,
+                                                                itemBuilder: (context,
+                                                                        index) =>
+                                                                    suggestedPeople(
+                                                                        c,
+                                                                        index),
+                                                                separatorBuilder:
+                                                                    (context,
+                                                                            index) =>
+                                                                        SizedBox(
+                                                                  width: 14.w,
+                                                                ),
+                                                                itemCount: c
+                                                                    .tSuggestedPeople!
+                                                                    .data!
+                                                                    .length,
+                                                                scrollDirection:
+                                                                    Axis.horizontal,
+                                                                shrinkWrap:
+                                                                    true,
+                                                              ),
+                                                            ),
+                                                            // if (c
+                                                            //     .tLoadMoreIsloading)
+                                                            //   Padding(
+                                                            //     padding: EdgeInsetsDirectional
+                                                            //         .only(
+                                                            //             start:
+                                                            //                 8),
+                                                            //     child: Center(
+                                                            //       child:
+                                                            //           CircularProgressIndicator(
+                                                            //         color: AppColors
+                                                            //             .orangePrimary,
+                                                            //       ),
+                                                            //     ),
+                                                            //   )
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          SizedBox(
+                                            height: 8.h,
+                                          ),
+                                          ...List.generate(
+                                              c.postsVM.postsList.length - 2,
+                                              (index) {
+                                            return c
+                                                        .postsVM
+                                                        .postsList[index + 2]
+                                                        .mode ==
+                                                    'POST'
+                                                ? PostWidget.post(
+                                                    c.postsVM, c, index + 2)
+                                                : PostWidget.activity(
+                                                    c, index + 2);
+                                          }),
+                                        ]),
+                            ],
+                          ),
+                        ),
+                      ),
+                      (c.fetchingMorePosts! && c.itIsTimeNow!)
+                          ? const SizedBox(
+                              height: 50,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.orangePrimary,
+                                ),
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
+                ),
               ),
-              sizedBoxW(width: 12),
-              MyIconButton(
-                onTap: () {},
-                icon: AppBarIcons.timelineCrownSvg,
-                isSvg: true,
-              ),
-              sizedBoxW(width: 12),
-              MyIconButton(
+            );
+          }));
+    });
+  }
+
+  static void showcase(TimelineScreenVM c) async {
+    bool? isOverviewed = await SecuredStorage.readBoolValue(Keys.isOverviewed);
+    String? overViewStep =
+        await SecuredStorage.readStringValue(Keys.overviewStep);
+    debugPrint("Step $overViewStep, isOverview $isOverviewed");
+    c.step = int.parse(overViewStep!);
+    if (c.step == 3) {
+      c.keyList.add(c.key1);
+      c.keyList.add(c.key2);
+      c.keyList.add(c.key3);
+      c.keyList.add(c.key4);
+    } else if (c.step == 4) {
+      c.keyList.add(c.key2);
+      c.keyList.add(c.key3);
+      c.keyList.add(c.key4);
+    } else if (c.step == 5) {
+      c.keyList.add(c.key3);
+      c.keyList.add(c.key4);
+    } else if (c.step == 6) {
+      c.keyList.add(c.key4);
+    }
+
+    if (!isOverviewed! && c.step < 7) {
+      Tour.setIsTourRunning = true;
+      ShowCaseWidget.of(ctx).startShowCase(c.keyList);
+      c.update();
+      c.bsvm.update();
+    }
+  }
+
+  suggestedPeople(TimelineScreenVM c, int index) {
+    return Container(
+      padding: EdgeInsetsDirectional.symmetric(vertical: 24, horizontal: 22),
+      height: 192,
+      width: 304,
+      decoration: BoxDecoration(
+          color: AppColors.lightGray, borderRadius: BorderRadius.circular(16)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              InkWell(
                 onTap: () {
-                  getToNamed(notificationScreenRoute);
+                  Get.dialog(Material(
+                    type: MaterialType.transparency,
+                    child: Container(
+                      color: AppColors.black,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 22.w, vertical: 22.h),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: AppColors.white,
+                                    ))
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 138.h,
+                          ),
+                          Expanded(
+                              child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOutCubic,
+                                  // margin: EdgeInsets.all(margin),
+                                  decoration: BoxDecoration(
+                                      image: (c.imageFileName != null &&
+                                              c.imageFileName!.isEmpty)
+                                          ? const DecorationImage(
+                                              image: AssetImage(
+                                                AppImage.sampleAvatar,
+                                              ),
+                                              fit: BoxFit.cover,
+                                            )
+                                          : DecorationImage(
+                                              image: NetworkImage(
+                                                ApiInterface.baseUrl +
+                                                    Endpoints.user +
+                                                    Endpoints.profileImage +
+                                                    c.imageFileName.toString(),
+                                              ),
+                                              fit: BoxFit.cover,
+                                            )))),
+                          SizedBox(
+                            height: 138.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ));
                 },
-                icon: AppBarIcons.notificationBellSvg,
-                isSvg: true,
+                child: Container(
+                  width: 62.w,
+                  height: 62.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(22.4.r),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(22.4.r),
+                    child: (c.tSuggestedPeople!.data![index].userInfo!
+                                    .profilePic ==
+                                null ||
+                            c.tSuggestedPeople!.data![index].userInfo!
+                                .profilePic
+                                .toString()
+                                .trim()
+                                .isEmpty)
+                        ? Image.asset(
+                            AppImage.sampleAvatar,
+                            fit: BoxFit.fill,
+                          )
+                        : MyAvatar(
+                            isNetwork: true,
+                            url: ApiInterface.baseUrl +
+                                Endpoints.user +
+                                Endpoints.profileImage +
+                                c.tSuggestedPeople!.data![index].userInfo!
+                                    .profilePic!,
+                            // fit: BoxFit.cover,
+                          ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 14.w,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        '${c.tSuggestedPeople!.data![index].userInfo!.fullName}',
+                        style: AppStyles.interSemiBoldStyle(fontSize: 16),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Text(
+                      '${c.tSuggestedPeople!.data![index].userInfo!.biography ?? ''}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyles.interRegularStyle(fontSize: 13),
+                    ),
+                  ],
+                ),
               )
             ],
           ),
-          body: RefreshIndicator(
-            color: AppColors.orangePrimary,
-            onRefresh: () async {
-              await c.init();
-              return;
-            },
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: //Container(color: AppColors.black,)
-                      SingleChildScrollView(
-                    controller: c.scrollController,
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            getToNamed(createPostScreenRoute);
-                          },
-                          child: Container(
-                            color: AppColors.white,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 22.w, vertical: 16.h),
-                            child: Row(children: [
-                              c.imageFileName!.trim().isEmpty
-                                  ? MyAvatar(
-                                      url: AppImage.sampleAvatar,
-                                      height: 56,
-                                      width: 56,
-                                      radiusAll: 22.4,
-                                    )
-                                  : MyAvatar(
-                                      url: ApiInterface.baseUrl +
-                                          Endpoints.user +
-                                          Endpoints.profileImage +
-                                          c.imageFileName.toString(),
-                                      height: 56,
-                                      width: 56,
-                                      radiusAll: 22.4,
-                                      isNetwork: true,
-                                    ),
-                              sizedBoxW(width: 12.w),
-                              Text(
-                                AppStrings.whatsNewToday,
-                                style: AppStyles.interRegularStyle(
-                                    fontSize: 17.2,
-                                    color: AppColors.hintTextColor),
-                              )
-                            ]),
-                          ),
-                        ),
-                        sizedBoxH(height: 8.h),
-                        c.isLoadingPost!
-                            ? SizedBox(
-                                height: 150.h,
-                                child: const Center(
-                                    child: CircularProgressIndicator(
-                                  color: AppColors.orangePrimary,
-                                )),
-                              )
-                            : c.postsVM.postsList.isEmpty
-                                ? SizedBox(
-                                    height: 150.h,
-                                    child: Center(
-                                        child: Text(
-                                      "No posts available",
-                                      style: AppStyles.interRegularStyle(),
-                                    )),
-                                  )
-                                : Column(
-                                    children: List.generate(
-                                        c.postsVM.postsList.length, (index) {
-                                      return PostWidget.post(
-                                          c.postsVM, c, index);
-                                    }),
+          Spacer(),
+          Row(
+            children: [
+              !c.tSuggestedPeople!.data![index].isRequestSent!
+                  ? InkWell(
+                      borderRadius: BorderRadius.circular(100.r),
+                      onTap: c.isEnabled!
+                          ? () {
+                              c.addFriend(index);
+                            }
+                          : null,
+                      child: Container(
+                          height: 34.h,
+                          //width: 84.w,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 5.h),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100.r),
+                              // border:
+                              // Border.all(
+                              //     color: AppColors.editBorderColor),
+                              gradient: const LinearGradient(
+                                  transform: GradientRotation(94.37),
+                                  colors: [
+                                    Color(0xffFFD036),
+                                    Color(0xffFFA43C)
+                                  ])),
+                          child: Center(
+                              child: Text(
+                            AppStrings.addFriend,
+                            style: AppStyles.interMediumStyle(
+                                color: AppColors.white, fontSize: 14.4),
+                          ))))
+                  : InkWell(
+                      borderRadius: BorderRadius.circular(100.r),
+                      onTap: () {
+                        showCupertinoModalPopup(
+                          context: Get.context!,
+                          builder: (BuildContext context) =>
+                              CupertinoActionSheet(
+                                  actions: <Widget>[
+                                CupertinoActionSheetAction(
+                                  child: Text(
+                                    AppStrings.cancelFriendReq,
+                                    style: AppStyles.interRegularStyle(
+                                        color: Colors.red),
                                   ),
-                      ],
+                                  onPressed: () {
+                                    Navigator.pop(
+                                        context, AppStrings.cancelFriendReq);
+                                    c.cancelFriendRequest(index);
+                                  },
+                                )
+                              ],
+                                  cancelButton: CupertinoActionSheetAction(
+                                    child: Text(
+                                      AppStrings.cancel,
+                                      style: AppStyles.interRegularStyle(
+                                          color: AppColors.iosBlue),
+                                    ),
+                                    isDefaultAction: true,
+                                    onPressed: () {
+                                      Navigator.pop(context, AppStrings.cancel);
+                                    },
+                                  )),
+                        );
+                      },
+                      child: Container(
+                          height: 34.h,
+                          // width: 84.w,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 5.h),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100.r),
+                            border:
+                                Border.all(color: AppColors.editBorderColor),
+                            //         gradient: const LinearGradient(
+                            // transform: GradientRotation(94.37),
+                            // colors: [Color(0xffFFD036), Color(0xffFFA43C)])
+                          ),
+                          child: Center(
+                              child: Text(AppStrings.requestSent,
+                                  style: AppStyles.interMediumStyle(
+                                    color: AppColors.editBorderColor,
+                                    fontSize: Platform.isIOS ? 13 : 14.4,
+                                  ),
+                                  textAlign: TextAlign.center))),
+                    ),
+              SizedBox(
+                width: 12.w,
+              ),
+              GestureDetector(
+                onTap: () {
+                  c.tSuggestedPeople!.data!.removeAt(index);
+                  c.update();
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100.r),
+                  child: Container(
+                    padding: EdgeInsets.all(6),
+                    color: AppColors.btnStrokeColor,
+                    child: SvgPicture.asset(
+                      AppIcons.closeSvg,
+                      // width: 12.w,
+                      // height: 12.h,
+                      color: AppColors.white,
                     ),
                   ),
                 ),
-                (c.fetchingMorePosts! && c.itIsTimeNow!)
-                    ? const SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.orangePrimary,
-                          ),
-                        ),
-                      )
-                    : Container()
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-      );
-    });
+        ],
+      ),
+    );
   }
 }
 
 class PostWidget {
+  static activity(TimelineScreenVM c, index) {
+    return Container(
+      color: Colors.white,
+      margin: EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 22.w),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Get.dialog(Material(
+                    type: MaterialType.transparency,
+                    child: Container(
+                      color: AppColors.black,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 22.w, vertical: 22.h),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: AppColors.white,
+                                    ))
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 138.h,
+                          ),
+                          Expanded(
+                              child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOutCubic,
+                                  // margin: EdgeInsets.all(margin),
+                                  decoration: BoxDecoration(
+                                      image: (c.imageFileName != null &&
+                                              c.imageFileName!.isEmpty)
+                                          ? const DecorationImage(
+                                              image: AssetImage(
+                                                AppImage.sampleAvatar,
+                                              ),
+                                              fit: BoxFit.cover,
+                                            )
+                                          : DecorationImage(
+                                              image: NetworkImage(
+                                                  ApiInterface.baseUrl +
+                                                      Endpoints.user +
+                                                      Endpoints.profileImage +
+                                                      c
+                                                          .postsVM
+                                                          .postsList[index]
+                                                          .activityHost!
+                                                          .profilePic!),
+                                              fit: BoxFit.cover,
+                                            )))),
+                          SizedBox(
+                            height: 138.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ));
+                },
+                child: Container(
+                  height: 48,
+                  width: 48,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(19.4.r),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(19.4.r),
+                    child:
+                        (c.postsVM.postsList[index].activityHost!.profilePic ==
+                                null)
+                            ? Image.asset(
+                                AppImage.sampleAvatar,
+                                fit: BoxFit.fill,
+                              )
+                            : MyAvatar(
+                                isNetwork: true,
+                                url: ApiInterface.baseUrl +
+                                    Endpoints.user +
+                                    Endpoints.profileImage +
+                                    c.postsVM.postsList[index].activityHost!
+                                        .profilePic!,
+                                // fit: BoxFit.cover,
+                              ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 14.w,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        '${c.postsVM.postsList[index].activityHost!.firstName} ${c.postsVM.postsList[index].activityHost!.lastName} ',
+                        style: AppStyles.interSemiBoldStyle(fontSize: 16),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Text(
+                      'Joined this activity',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyles.interRegularStyle(fontSize: 13),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          ActivityWidget.activity(c.postsVM.postsList[index], c.postsVM, c,
+              isProfile: true),
+        ],
+      ),
+    );
+  }
+
   static Widget post(PostsAndActivitiesVM c, orgC, index,
       {bool isProfilePost = false, bool andIsFreind = false}) {
     return Column(
@@ -187,9 +831,7 @@ class PostWidget {
                   isProfilePost
                       ? orgC.imageFileName!.isNotEmpty
                           ? InkWell(
-                              onTap: () {
-                                
-                              },
+                              onTap: () {},
                               child: MyAvatar(
                                 url: ApiInterface.baseUrl +
                                     Endpoints.user +
@@ -202,9 +844,7 @@ class PostWidget {
                               ),
                             )
                           : InkWell(
-                              onTap: () {
-                                
-                              },
+                              onTap: () {},
                               child: MyAvatar(
                                 url: AppImage.sampleAvatar,
                                 height: 48,
@@ -403,151 +1043,153 @@ class PostWidget {
               sizedBoxH(height: c.postsList[index].userTags!.isEmpty ? 0 : 16),
               c.postsList[index].userTags!.isEmpty
                   ? Container()
-                  : InkWell(
-                      onTap: () async {
-                        await c.getTaggedUser(c.postsList[index].userTags);
-                        showFlexibleBottomSheet(
-                          initHeight: 0.3,
-                          //isExpand: true,
-                          minHeight: 0,
-                          maxHeight: 0.85,
-                          //isCollapsible: true,
-                          bottomSheetColor: Colors.transparent,
-                          context: getContext(),
-                          builder: (a, b, d) {
-                            return showUsers(c, c.taggedUsersList, 0, b);
+                  : c.postsList[index].tagUserInfo == null
+                      ? Container()
+                      : InkWell(
+                          onTap: () async {
+                            await c.getTaggedUser(c.postsList[index].userTags);
+                            showFlexibleBottomSheet(
+                              initHeight: 0.3,
+                              //isExpand: true,
+                              minHeight: 0,
+                              maxHeight: 0.85,
+                              //isCollapsible: true,
+                              bottomSheetColor: Colors.transparent,
+                              context: getContext(),
+                              builder: (a, b, d) {
+                                return showUsers(c, c.taggedUsersList, 0, b);
+                              },
+                              anchors: [0, 0.3, 0.85],
+                              isSafeArea: true,
+                            );
                           },
-                          anchors: [0, 0.3, 0.85],
-                          isSafeArea: true,
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            AppIcons.taggedSvg,
-                            color: AppColors.ageColor,
-                            width: 18.w,
-                            height: 18.h,
-                          ),
-                          RichText(
-                            text: TextSpan(
-                                text: "with ",
-                                style: AppStyles.interRegularStyle(
-                                    fontSize: 15, color: AppColors.ageColor),
-                                children: [
-                                  TextSpan(
-                                    text: c.postsList[index].tagUserInfo!
-                                            .userData!.firstName! +
-                                        " " +
-                                        c.postsList[index].tagUserInfo!
-                                            .userData!.lastName!,
-                                    style: AppStyles.interMediumStyle(
-                                        fontSize: 15,
-                                        color: AppColors.orangePrimary),
-                                  ),
-                                  TextSpan(
-                                    text: (c.postsList[index].tagUserInfo!
-                                                        .countOfUserTags! -
-                                                    1)
-                                                .toString() ==
-                                            "0"
-                                        ? ""
-                                        : " and ${c.postsList[index].tagUserInfo!.countOfUserTags! - 1} others ",
-                                    style: AppStyles.interMediumStyle(
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                AppIcons.taggedSvg,
+                                color: AppColors.ageColor,
+                                width: 18.w,
+                                height: 18.h,
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                    text: "with ",
+                                    style: AppStyles.interRegularStyle(
                                         fontSize: 15,
                                         color: AppColors.ageColor),
-                                  )
-                                ]),
+                                    children: [
+                                      TextSpan(
+                                        text: c.postsList[index].tagUserInfo!
+                                                .userData!.firstName! +
+                                            " " +
+                                            c.postsList[index].tagUserInfo!
+                                                .userData!.lastName!,
+                                        style: AppStyles.interMediumStyle(
+                                            fontSize: 15,
+                                            color: AppColors.orangePrimary),
+                                      ),
+                                      TextSpan(
+                                        text: (c.postsList[index].tagUserInfo!
+                                                            .countOfUserTags! -
+                                                        1)
+                                                    .toString() ==
+                                                "0"
+                                            ? ""
+                                            : " and ${c.postsList[index].tagUserInfo!.countOfUserTags! - 1} others ",
+                                        style: AppStyles.interMediumStyle(
+                                            fontSize: 15,
+                                            color: AppColors.ageColor),
+                                      )
+                                    ]),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                                color: (c.postsList[index].tagUserInfo!
+                                                    .countOfUserTags! -
+                                                1)
+                                            .toString() ==
+                                        "0"
+                                    ? Colors.transparent
+                                    : AppColors.ageColor,
+                                size: 22,
+                              )
+                            ],
                           ),
-                          Icon(
-                            Icons.keyboard_arrow_down,
-                            color: (c.postsList[index].tagUserInfo!
-                                                .countOfUserTags! -
-                                            1)
-                                        .toString() ==
-                                    "0"
-                                ? Colors.transparent
-                                : AppColors.ageColor,
-                            size: 22,
-                          )
-                        ],
-                      ),
-                    ),
+                        ),
               sizedBoxH(height: c.postsList[index].document!.isEmpty ? 0 : 16),
               c.postsList[index].document!.isEmpty
                   ? Container()
                   : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Documents",
-                        style: AppStyles.interMediumStyle(
-                            fontSize: 14, color: AppColors.black),
-                      ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                        child: ListView.builder(
-                            itemCount: c.postsList[index].document!.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, idx) {
-                              return InkWell(
-                                onTap: () async {
-                                  String? imgUrl = ApiInterface.postImgUrl +
-                                      c.postsList[index].document![idx]
-                                          .s3Name
-                                          .toString();
-                                  Directory? tempDir;
-                                  String? fullPath;
-                                  if (Platform.isIOS) {
-                                    tempDir = await getTemporaryDirectory();
-                                    fullPath = tempDir
-                                            .absolute.path + //tempDir!.path
-                                        "/${c.postsList[index].document![idx].s3Name.toString()}"; //"/boo2.pdf'";
-                                  } else if (Platform.isAndroid) {
-                                    tempDir =
-                                        await getExternalStorageDirectory(); //await getTemporaryDirectory();
-                                    fullPath = tempDir!
-                                            .absolute.path + //tempDir!.path
-                                        "/${c.postsList[index].document![idx].s3Name.toString()}"; //"/boo2.pdf'";
-                                  }
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Documents",
+                          style: AppStyles.interMediumStyle(
+                              fontSize: 14, color: AppColors.black),
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        SizedBox(
+                          height: 40.h,
+                          child: ListView.builder(
+                              itemCount: c.postsList[index].document!.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, idx) {
+                                return InkWell(
+                                  onTap: () async {
+                                    String? imgUrl = ApiInterface.postImgUrl +
+                                        c.postsList[index].document![idx].s3Name
+                                            .toString();
+                                    Directory? tempDir;
+                                    String? fullPath;
+                                    if (Platform.isIOS) {
+                                      tempDir = await getTemporaryDirectory();
+                                      fullPath = tempDir
+                                              .absolute.path + //tempDir!.path
+                                          "/${c.postsList[index].document![idx].s3Name.toString()}"; //"/boo2.pdf'";
+                                    } else if (Platform.isAndroid) {
+                                      tempDir =
+                                          await getExternalStorageDirectory(); //await getTemporaryDirectory();
+                                      fullPath = tempDir!
+                                              .absolute.path + //tempDir!.path
+                                          "/${c.postsList[index].document![idx].s3Name.toString()}"; //"/boo2.pdf'";
+                                    }
 
-                                  debugPrint(
-                                      'full path $fullPath, img Url $imgUrl');
+                                    debugPrint(
+                                        'full path $fullPath, img Url $imgUrl');
 
-                                  c.getRequiredPermission(imgUrl, fullPath);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(right: 8.w),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.w),
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(10.r),
-                                      color: AppColors.texfieldColor),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        c.postsList[index].document![idx]
-                                            .originalName
-                                            .toString(),
-                                        style: AppStyles.interMediumStyle(
-                                            fontSize: 14),
-                                      ),
-                                    ],
+                                    c.getRequiredPermission(imgUrl, fullPath);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 8.w),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 12.w),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
+                                        color: AppColors.texfieldColor),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          c.postsList[index].document![idx]
+                                              .originalName
+                                              .toString(),
+                                          style: AppStyles.interMediumStyle(
+                                              fontSize: 14),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }),
-                      ),
-                      // SizedBox(
-                      //   height:  16.h,
-                      // )
-                    ],
-                  ),
+                                );
+                              }),
+                        ),
+                        // SizedBox(
+                        //   height:  16.h,
+                        // )
+                      ],
+                    ),
 
               sizedBoxH(
                   height: c.postsList[index].attachment!.isEmpty ? 0 : 16),
@@ -569,8 +1211,7 @@ class PostWidget {
                                           .attachment![0].getController!,
                                       radiusAll: 16,
                                     )
-                                  :
-                                  MyAvatar(
+                                  : MyAvatar(
                                       url: ApiInterface.postImgUrl +
                                           c.postsList[index].attachment![0].name
                                               .toString(),
@@ -906,62 +1547,35 @@ class PostWidget {
               sizedBoxH(
                   height: c.postsList[index].attachment!.isEmpty ? 16 : 16),
 
-              //EVENT CARD TEMP HIDE START
-              // Container(
-              //   padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-              //   decoration: BoxDecoration(
-              //     color: AppColors.lightGray,
-              //     borderRadius: BorderRadius.circular(16.r),
-              //   ),
-              //   child: Row(
-              //     children: [
-              //       MyAvatar(
-              //         url: AppImage.avatar2,
-              //         width: 64,
-              //         height: 64,
-              //         radiusAll: 25.6,
-              //       ),
-              //       sizedBoxW(width: 14),
-              //       Expanded(
-              //           child: Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           Row(
-              //             children: [
-              //               Expanded(
-              //                 child: Text(
-              //                   "SPL - Tampines Rovers Matchday at Our Tampines Hub",
-              //                   style: AppStyles.interSemiBoldStyle(
-              //                       fontSize: 16, color: AppColors.textColor),
-              //                 ),
-              //               )
-              //             ],
-              //           ),
-              //           sizedBoxH(height: 4),
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.start,
-              //             children: [
-              //               Text(
-              //                 "8 May 2022 by ",
-              //                 style: AppStyles.interRegularStyle(
-              //                     fontSize: 13.2,
-              //                     color: AppColors.hintTextColor),
-              //               ),
-              //               Text(
-              //                 "Tampines Rovers Fans",
-              //                 style: AppStyles.interMediumStyle(
-              //                     fontSize: 13.2,
-              //                     color: AppColors.editBorderColor),
-              //               ),
-              //             ],
-              //           )
-              //         ],
-              //       ))
-              //     ],
-              //   ),
-              // ),
-              // sizedBoxH(height: isProfilePost ? 16 : 0),
-              //EVENT CARD TEMP HIDE END
+              c.postsList[index].activityData != null
+                  ? ActivitySearchedCard(
+                      onTap: () {
+                        Get.delete<ActivityDetailsScreenVM>();
+                        getToNamed(activityDetailsScreenRoute, argument: {
+                          "id": c.postsList[index].activityId.toString()
+                        });
+                      },
+                      margin: EdgeInsets.zero,
+                      activity: PostOrActivity(
+                          activityId: c.postsList[index].activityId.toString(),
+                          activityName: c
+                              .postsList[index].activityData!["activityName"]
+                              .toString(),
+                          activityDate: DateFormat("dd MMM yyyy").format(
+                              DateTime.parse(c.postsList[index]
+                                  .activityData!["activityDate"]
+                                  .toString())),
+                          coverImage: c
+                              .postsList[index].activityData!["coverImage"]
+                              .toString(),
+                          group: c.postsList[index].activityData!["group"]))
+                  : Container(),
+
+              c.postsList[index].activityData != null
+                  ? sizedBoxH(height: 16)
+                  : Container(),
+
+              //Add event card here
               !isProfilePost
                   ? Container()
                   : andIsFreind
@@ -1059,7 +1673,6 @@ class PostWidget {
                                         }))
                                     //})
                                     ,
-
                                     c.postsList[index].jioMeUserInfo!.length > 5
                                         ? Container(
                                             height: 40.h,
@@ -1178,9 +1791,13 @@ class PostWidget {
                           child: InkWell(
                               borderRadius: BorderRadius.circular(12.r),
                               onTap: () async {
-                                await c.getComments(
+                                await c.cvm.getComments(
                                     c.postsList[index].id.toString(),
-                                    postIdIndex: index);
+                                    postIdIndex: index, callback: () {
+                                  c.postsList[index].commentCount =
+                                      c.postsList[index].commentCount! + 1;
+                                  c.update();
+                                });
                                 // showCommentModal(c, c.postsList[index].id.toString());
                               },
                               child: Container(
@@ -1244,7 +1861,8 @@ class PostWidget {
     );
   }
 
-  static Future<dynamic> showCommentModal(c, postId, postIdIndex) {
+  static Future<dynamic> showCommentModal(
+      CommentsVM c, postId, postIdIndex, Function()? callback) {
     return showFlexibleBottomSheet(
       initHeight: 0.75,
       isExpand: true,
@@ -1254,14 +1872,15 @@ class PostWidget {
       bottomSheetColor: Colors.transparent,
       context: getContext(),
       builder: (a, b, d) {
-        return commentSheet(c, postId, postIdIndex, b);
+        return commentSheet(c, postId, postIdIndex, b, callback);
       },
       anchors: [0, 0.75, 0.85],
       isSafeArea: true,
     );
   }
 
-  static Widget commentSheet(c, postId, postIdIndex, ScrollController b) {
+  static Widget commentSheet(CommentsVM c, postId, postIdIndex,
+      ScrollController b, Function()? callback) {
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(32.r), topRight: Radius.circular(32.r)),
@@ -1312,8 +1931,8 @@ class PostWidget {
                             shrinkWrap: true,
                             itemCount: c.commentList.length,
                             itemBuilder: (context, index) {
-                              return commentCardWrapper(
-                                  context, c, index, postId, postIdIndex, 1);
+                              return commentCardWrapper(context, c, index,
+                                  postId, postIdIndex, 1, callback);
                             },
                           )),
                     ],
@@ -1321,7 +1940,7 @@ class PostWidget {
                 ),
               )),
         ),
-        bottomNavigationBar: !c.showCommentTextField
+        bottomNavigationBar: !c.showCommentTextField!
             ? Container(
                 height: 1,
               )
@@ -1343,7 +1962,8 @@ class PostWidget {
                     InkWell(
                       onTap: () {
                         if (c.commentCtrl.text.isNotEmpty) {
-                          c.comment(null, postId, null, postIdIndex);
+                          c.comment(null, postId, null, postIdIndex,
+                              callback: callback);
                         }
                       },
                       child: Text(AppStrings.send,
@@ -1366,40 +1986,48 @@ class PostWidget {
     );
   }
 
-  static Column commentCardWrapper(
-      BuildContext context, c, int index, postId, postIdIndex, double level) {
+  static Column commentCardWrapper(BuildContext context, CommentsVM c,
+      int index, postId, postIdIndex, double level, Function()? callback) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        commentCard(
-            context, c, c.commentList, index, postId, postIdIndex, level),
+        commentCard(context, c, c.commentList, index, postId, postIdIndex,
+            level, callback),
         sizedBoxH(height: 24)
       ],
     );
   }
 
-  static Obx childCommentList(c, commentList, int index, BuildContext context,
-      postId, postIdIndex, level) {
+  static Obx childCommentList(
+      CommentsVM c,
+      List<comm.Datum> commentList,
+      int index,
+      BuildContext context,
+      postId,
+      postIdIndex,
+      level,
+      Function()? callback) {
     return Obx(() => Column(
           children: List.generate(
               //c.
-              commentList[index].getChildComments.length, (indexx) {
+              commentList[index].getChildComments!.length, (indexx) {
             return commentCard(
                 context,
                 c, //c.
-                commentList[index].getChildComments,
+                commentList[index].getChildComments!,
                 indexx,
                 postId,
                 postIdIndex,
-                level);
+                level,
+                callback);
           }),
         ));
   }
 
-  static Obx commentReplier(
-      c, commentList, int index, postId, postIdIndex, level) {
+  static Obx commentReplier(CommentsVM c, List<comm.Datum> commentList,
+      int index, postId, postIdIndex, level, Function()? callback) {
     return Obx(() => //c.
-        commentList[index].getIsReplying
+        commentList[index].getIsReplying!
             ? Container(
                 margin: EdgeInsets.only(left: (level * 22.w), right: 22.w),
                 child: Row(
@@ -1412,7 +2040,7 @@ class PostWidget {
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText:
-                                  "Reply to ${commentList[index].userInfoData.firstName.toString() + " " + commentList[index].userInfoData.lastName.toString()}")),
+                                  "Reply to ${commentList[index].userInfoData!.firstName.toString() + " " + commentList[index].userInfoData!.lastName.toString()}")),
                     ),
                     sizedBoxW(width: 8),
                     InkWell(
@@ -1429,7 +2057,8 @@ class PostWidget {
                           c.update();
                           c.comment(commentList, postId, index, postIdIndex,
                               repliedTo: //c.
-                                  commentList[index].id.toString());
+                                  commentList[index].id.toString(),
+                              callback: callback);
                         }
                       },
                       child: Text("Send",
@@ -1458,15 +2087,15 @@ class PostWidget {
             : Container());
   }
 
-  static Obx commentContent(
-      c, commentList, int index, postId, postIdIndex, level) {
-    commentList[index].getUpdateCtrl.text = commentList[index].comment;
+  static Obx commentContent(CommentsVM c, List<comm.Datum> commentList,
+      int index, postId, postIdIndex, level, Function()? callback) {
+    commentList[index].getUpdateCtrl.text = commentList[index].comment!;
     commentList[index].getUpdateCtrl.selection = TextSelection.fromPosition(
       TextPosition(offset: commentList[index].getUpdateCtrl.text.length),
     );
     return Obx(
       () => //c.
-          commentList[index].getIsUpating.value
+          commentList[index].getIsUpating!.value
               ? Container(
                   margin: EdgeInsets.only(left: 12.w, right: 12.w),
                   child: Row(
@@ -1494,11 +2123,11 @@ class PostWidget {
                             //c.
                             commentList[index].comment =
                                 commentList[index].getUpdateCtrl.text;
-                            commentList[index].getIsUpating.value = false;
+                            commentList[index].getIsUpating!.value = false;
                             c.showCommentTextField = true;
                             c.update();
-                            c.updateComment(
-                                commentList, index, postId, postIdIndex);
+                            c.updateComment(commentList, index, postId,
+                                postIdIndex, callback);
                           }
                         },
                         child: Text("Update",
@@ -1511,7 +2140,7 @@ class PostWidget {
                       InkWell(
                         onTap: () {
                           //c.
-                          commentList[index].getIsUpating.value = false;
+                          commentList[index].getIsUpating!.value = false;
                           c.showCommentTextField = true;
                           c.update();
                         },
@@ -1526,29 +2155,45 @@ class PostWidget {
                 )
               : Text(
                   //c.
-                  commentList[index].comment,
+                  commentList[index].comment!,
                   style: AppStyles.interRegularStyle(
                       fontSize: 15, color: AppColors.textColor),
                 ),
     );
   }
 
-  static Widget commentCard(BuildContext context, c, commentList, int index,
-      postId, postIdIndex, level) {
+  static Widget commentCard(
+      BuildContext context,
+      CommentsVM c,
+      List<comm.Datum> commentList,
+      int index,
+      postId,
+      postIdIndex,
+      level,
+      Function()? callback) {
     return Column(
       children: [
-        commentBody(context, commentList, index, c, level, postId, postIdIndex),
-        commentReplier(c, commentList, index, postId, postIdIndex, level),
+        commentBody(context, commentList, index, c, level, postId, postIdIndex,
+            callback),
+        commentReplier(
+            c, commentList, index, postId, postIdIndex, level, callback),
         sizedBoxH(height: 15),
         viewAllComment(c, commentList, index, postId, level),
-        childCommentList(
-            c, commentList, index, context, postId, postIdIndex, level + 0.8),
+        childCommentList(c, commentList, index, context, postId, postIdIndex,
+            level + 0.8, callback),
       ],
     );
   }
 
-  static Widget commentBody(BuildContext context, commentList, int index, c,
-      level, postId, postIdIndex) {
+  static Widget commentBody(
+      BuildContext context,
+      List<comm.Datum> commentList,
+      int index,
+      CommentsVM c,
+      level,
+      postId,
+      postIdIndex,
+      Function()? callback) {
     debugPrint("level in combod $level");
     return InkWell(
       onTap: () async {
@@ -1600,7 +2245,7 @@ class PostWidget {
               ),
               onPressed: () {
                 Navigator.pop(context, AppStrings.edit);
-                commentList[index].getIsUpating.value = true;
+                commentList[index].getIsUpating!.value = true;
                 c.showCommentTextField = false;
                 c.update();
               },
@@ -1614,7 +2259,8 @@ class PostWidget {
               ),
               onPressed: () {
                 Navigator.pop(context, AppStrings.delete);
-                c.deleteComment(commentList, index, postId, postIdIndex);
+                c.deleteComment(
+                    commentList, index, postId, postIdIndex, callback);
               },
             ),
           );
@@ -1640,7 +2286,7 @@ class PostWidget {
         child: Row(
           children: [
             //c.
-            commentList[index].userInfoData.profilePic.toString().isNotEmpty
+            commentList[index].userInfoData!.profilePic.toString().isNotEmpty
                 ? InkWell(
                     onTap: () async {
                       // if (c.userId.toString() ==
@@ -1651,7 +2297,7 @@ class PostWidget {
                       // }
                       SearchUser.setId =
                           //c.
-                          commentList[index].userInfoData.userId!.toString();
+                          commentList[index].userInfoData!.userId!.toString();
                       //c.dontReload = true;
                       Get.back();
                       await Get.delete<FriendUserProfileScreenVM>();
@@ -1660,7 +2306,10 @@ class PostWidget {
                     child: MyAvatar(
                       url: ApiInterface.profileImgUrl +
                           //c.
-                          commentList[index].userInfoData.profilePic.toString(),
+                          commentList[index]
+                              .userInfoData!
+                              .profilePic
+                              .toString(),
                       radiusAll: 16,
                       width: 40,
                       height: 40,
@@ -1677,7 +2326,7 @@ class PostWidget {
                       // }
                       SearchUser.setId =
                           //c.
-                          commentList[index].userInfoData.userId!.toString();
+                          commentList[index].userInfoData!.userId!.toString();
                       //c.dontReload = true;
                       Get.back();
                       await Get.delete<FriendUserProfileScreenVM>();
@@ -1699,13 +2348,13 @@ class PostWidget {
                   InkWell(
                       onTap: () async {
                         //if (c.userId.toString() ==
-                      //     commentList[index].userInfoData.userId!.toString()) {
-                      //   Get.back();
-                      //   c.bsv.changePage(4);
-                      //   return;
-                      // }
+                        //     commentList[index].userInfoData.userId!.toString()) {
+                        //   Get.back();
+                        //   c.bsv.changePage(4);
+                        //   return;
+                        // }
                         SearchUser.setId = //c.
-                            commentList[index].userInfoData.userId!.toString();
+                            commentList[index].userInfoData!.userId!.toString();
                         //c.dontReload = true;
                         Get.back();
                         await Get.delete<FriendUserProfileScreenVM>();
@@ -1713,30 +2362,33 @@ class PostWidget {
                       },
                       child: Text(
                         //c.
-                        commentList[index].userInfoData.firstName.toString() +
+                        commentList[index].userInfoData!.firstName.toString() +
                             " " +
                             //c.
-                            commentList[index].userInfoData.lastName.toString(),
+                            commentList[index]
+                                .userInfoData!
+                                .lastName
+                                .toString(),
                         style: AppStyles.interSemiBoldStyle(
                             fontSize: 16, color: AppColors.textColor),
                       )),
                   sizedBoxH(height: 2),
-                  commentContent(
-                      c, commentList, index, postId, postIdIndex, level),
+                  commentContent(c, commentList, index, postId, postIdIndex,
+                      level, callback),
                   sizedBoxH(height: 5),
                   Row(
                     children: [
                       InkWell(
                         onTap: () {
                           var isLiked =
-                              commentList[index].isCommentLikeByUser.value;
-                          if (commentList[index].isCommentLikeByUser.value ==
+                              commentList[index].isCommentLikeByUser!.value;
+                          if (commentList[index].isCommentLikeByUser!.value ==
                               0) {
-                            commentList[index].commentLikeCount.value++;
-                            commentList[index].isCommentLikeByUser.value = 1;
+                            commentList[index].commentLikeCount!.value++;
+                            commentList[index].isCommentLikeByUser!.value = 1;
                           } else {
-                            commentList[index].commentLikeCount.value--;
-                            commentList[index].isCommentLikeByUser.value = 0;
+                            commentList[index].commentLikeCount!.value--;
+                            commentList[index].isCommentLikeByUser!.value = 0;
                           }
                           c.update();
                           if (isLiked == 0) {
@@ -1749,7 +2401,7 @@ class PostWidget {
                               children: [
                                 Icon(
                                     commentList[index]
-                                                .isCommentLikeByUser
+                                                .isCommentLikeByUser!
                                                 .value ==
                                             0
                                         ? Icons.thumb_up_outlined
@@ -1759,7 +2411,7 @@ class PostWidget {
                                 sizedBoxW(width: 3),
                                 Text(
                                     commentList[index]
-                                        .commentLikeCount
+                                        .commentLikeCount!
                                         .value
                                         .toString(),
                                     style: AppStyles.interRegularStyle(
@@ -1788,7 +2440,7 @@ class PostWidget {
                 ],
               ),
             ),
-            Obx(() => commentList[index].getIsUpating.value
+            Obx(() => commentList[index].getIsUpating!.value
                 ? Container()
                 : Text(getTime(//c.
                         commentList[index].createdAt.toString()),
@@ -1802,11 +2454,12 @@ class PostWidget {
     );
   }
 
-  static Widget viewAllComment(c, commentList, int index, postId, level) {
+  static Widget viewAllComment(
+      CommentsVM c, List<comm.Datum> commentList, int index, postId, level) {
     return //c.
-        commentList[index].repliedToCount > 0
+        commentList[index].repliedToCount! > 0
             ? Obx(() => //!c.
-                !commentList[index].getHideViewReplyText
+                !commentList[index].getHideViewReplyText!
                     ? Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1911,7 +2564,7 @@ class PostWidget {
                               ),
                               itemCount: list.length, //25, //c.list.length,
                               itemBuilder: (context, index) {
-                                return userCard(c,list, index, type);
+                                return userCard(c, list, index, type);
                               }),
                         )
                 ],
@@ -1924,32 +2577,32 @@ class PostWidget {
         ));
   }
 
-  static Widget userCard(c,list, index, type) {
+  static Widget userCard(c, list, index, type) {
     return InkWell(
       onTap: () async {
         if (type == 0) {
           //if (c.userId.toString() ==
-                      //     list[index].userId!.toString()) {
-                      //   Get.back();
-                      //   c.bsv.changePage(4);
-                      //   return;
-                      // }
+          //     list[index].userId!.toString()) {
+          //   Get.back();
+          //   c.bsv.changePage(4);
+          //   return;
+          // }
           SearchUser.setId = list[index].userId!.toString();
         } else if (type == 2) {
-           //if (c.userId.toString() ==
-                      //     list[index].userInfo.userId!.toString()) {
-                      //   Get.back();
-                      //   c.bsv.changePage(4);
-                      //   return;
-                      // }
+          //if (c.userId.toString() ==
+          //     list[index].userInfo.userId!.toString()) {
+          //   Get.back();
+          //   c.bsv.changePage(4);
+          //   return;
+          // }
           SearchUser.setId = list[index].userInfo.userId!.toString();
         } else {
           //if (c.userId.toString() ==
-                      //     list[index].jioMeUserList.userId!.toString()) {
-                      //   Get.back();
-                      //   c.bsv.changePage(4);
-                      //   return;
-                      // }
+          //     list[index].jioMeUserList.userId!.toString()) {
+          //   Get.back();
+          //   c.bsv.changePage(4);
+          //   return;
+          // }
           SearchUser.setId = list[index].jioMeUserList.userId!.toString();
         }
         Get.back();
@@ -2139,9 +2792,9 @@ class MyVideoPlayer extends StatelessWidget {
               )
             : const Center(
                 child: CircularProgressIndicator(
-              color: AppColors.orangePrimary,
-              strokeWidth: 0.5,
-            )),
+                color: AppColors.orangePrimary,
+                strokeWidth: 0.5,
+              )),
         Positioned(
             child: Align(
                 alignment: Alignment.bottomLeft,
@@ -2247,9 +2900,254 @@ class MyAvatar extends StatelessWidget {
                             ),
                           );
                         },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: Text(
+                              "Unable to load image",
+                              style: AppStyles.interMediumStyle(fontSize: 14),
+                            ),
+                          );
+                        },
                       )
                     : Image.asset(url!, fit: BoxFit.cover),
       ),
     );
+  }
+}
+
+class ActivitySearchedCard extends StatelessWidget {
+  const ActivitySearchedCard(
+      {required this.activity, this.onTap, this.margin, Key? key})
+      : super(key: key);
+
+  final PostOrActivity activity;
+  final VoidCallback? onTap;
+  final EdgeInsets? margin;
+
+  @override
+  Widget build(BuildContext context) {
+    //EVENT CARD TEMP HIDE START
+    return Container(
+      margin: margin ?? EdgeInsets.only(left: 22.w, right: 22.w, top: 16.h),
+      decoration: BoxDecoration(
+        color: AppColors.lightGray,
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      child: Material(
+        borderRadius: BorderRadius.circular(16.r),
+        type: MaterialType.transparency,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16.r),
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                isValidString(activity.coverImage)
+                    ? MyAvatar(
+                        url: ApiInterface.profileImgUrl +
+                            activity.coverImage.toString(),
+                        width: 64,
+                        height: 64,
+                        radiusAll: 25.6,
+                        isNetwork: true,
+                      )
+                    : MyAvatar(
+                        url: AppImage.sampleAvatar,
+                        width: 64,
+                        height: 64,
+                        radiusAll: 25.6,
+                      ),
+                sizedBoxW(width: 14),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            activity.activityName.toString(),
+                            style: AppStyles.interSemiBoldStyle(
+                                fontSize: 16, color: AppColors.textColor),
+                          ),
+                        )
+                      ],
+                    ),
+                    sizedBoxH(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${activity.activityDate.toString()} by ",
+                          style: AppStyles.interRegularStyle(
+                              fontSize: 13.2, color: AppColors.hintTextColor),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  (activity.group != null &&
+                                          activity.group is Map)
+                                      ? activity.group["groupName"].toString()
+                                      : isValidString(activity.group)
+                                          ? activity.group.toString()
+                                          : "N/A",
+                                  style: AppStyles.interMediumStyle(
+                                      fontSize: 13.2,
+                                      color: AppColors.editBorderColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ))
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    //sizedBoxH(height: isProfilePost ? 16 : 0),
+    //EVENT CARD TEMP HIDE END
+  }
+}
+
+class GroupSearchedCard extends StatelessWidget {
+  const GroupSearchedCard(
+      {required this.group, this.onTap, this.onJoinTapped, Key? key})
+      : super(key: key);
+
+  final GroupData group;
+  final VoidCallback? onTap;
+  final VoidCallback? onJoinTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    //EVENT CARD TEMP HIDE START
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        //borderRadius: BorderRadius.circular(16.r),
+      ),
+      child: Material(
+        //borderRadius: BorderRadius.circular(16.r),
+        type: MaterialType.transparency,
+        child: InkWell(
+          //borderRadius: BorderRadius.circular(16.r),
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 22.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                isValidString(group.group!.groupImage.toString())
+                    ? MyAvatar(
+                        url: ApiInterface.profileImgUrl +
+                            group.group!.groupImage.toString(),
+                        width: 64,
+                        height: 64,
+                        radiusAll: 25.6,
+                        isNetwork: true,
+                      )
+                    : MyAvatar(
+                        url: AppImage.avatar2,
+                        width: 64,
+                        height: 64,
+                        radiusAll: 25.6,
+                      ),
+                sizedBoxW(width: 14),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            group.group!.groupName.toString(),
+                            style: AppStyles.interSemiBoldStyle(
+                                fontSize: 16, color: AppColors.textColor),
+                          ),
+                        )
+                      ],
+                    ),
+                    sizedBoxH(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${group.memberCount.toString()} members",
+                          style: AppStyles.interRegularStyle(
+                              fontSize: 13.2, color: AppColors.hintTextColor),
+                        ),
+                      ],
+                    )
+                  ],
+                )),
+                group.isMember!
+                    ? Container()
+                    : Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100.r),
+                            color: group.isJoinedGroup!
+                                ? AppColors.disabledColor
+                                : group.isMember!
+                                    ? AppColors.disabledColor
+                                    : null,
+                            gradient: group.isJoinedGroup!
+                                ? null
+                                : !group.isMember!
+                                    ? const LinearGradient(colors: [
+                                        Color(0xffFFD036),
+                                        Color(0xffFFA43C)
+                                      ], transform: GradientRotation(240) //120
+                                        )
+                                    : null),
+                        child: Material(
+                          type: MaterialType.transparency,
+                          borderRadius: BorderRadius.circular(100.r),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(100.r),
+                            onTap: group.isJoinedGroup! ? null : onJoinTapped,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 25.w, vertical: 10.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100.r),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    group.isJoinedGroup! ? "Pending" : "Join",
+                                    style: AppStyles.interMediumStyle(
+                                        fontSize: 14.4, color: AppColors.white),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    //sizedBoxH(height: isProfilePost ? 16 : 0),
+    //EVENT CARD TEMP HIDE END
   }
 }

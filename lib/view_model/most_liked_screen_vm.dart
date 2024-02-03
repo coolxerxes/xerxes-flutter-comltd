@@ -1,14 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:jyo_app/repository/registration_repo/registration_repo_impl.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/utils/secured_storage.dart';
+import 'package:jyo_app/view_model/group_suggestion_screen_vm.dart';
 
 import '../models/registration_model/interest_data_response.dart';
 import '../resources/app_routes.dart';
-import 'package:http/http.dart' as http;
 
 class MostLikedScreenVM extends GetxController {
   RegistrationRepoImpl registrationRepoImpl = RegistrationRepoImpl();
@@ -36,7 +37,6 @@ class MostLikedScreenVM extends GetxController {
   }
 
   Future<void> saveIntrests({bool? goToNext = true}) async {
-    //saveIntrestPostman();
     var userId = await SecuredStorage.readStringValue(Keys.userId);
     var data = {"userId": userId, "intrestIds": selectedIntrestIds};
     await registrationRepoImpl.saveIntrest(data).then((response) async {
@@ -44,7 +44,10 @@ class MostLikedScreenVM extends GetxController {
         if (goToNext!) {
           await SecuredStorage.writeStringValue(
               Keys.interests, jsonEncode(data));
-          getToNamed(groupSuggestionScreenRoute);
+          getToNamed(
+            groupSuggestionScreenRoute,
+          );
+          Get.find<GroupSuggestionScreenVM>().init();
         }
       } else {
         showAppDialog(msg: response.message.toString());
@@ -52,25 +55,6 @@ class MostLikedScreenVM extends GetxController {
     }).onError((error, stackTrace) {
       showAppDialog(msg: "ERRORR" + error.toString());
     });
-  }
-
-  Future<void> saveIntrestPostman() async {
-    var headers = {'Content-Type': 'application/json'};
-    var request = http.Request('POST',
-        Uri.parse('https://main-prod.jioyouout.com/api/v1/user/saveIntrest'));
-    request.body = json.encode({
-      "userId": "4",
-      "intrestIds": [1]
-    });
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      debugPrint(await response.stream.bytesToString());
-    } else {
-      debugPrint(response.reasonPhrase);
-    }
   }
 
   bool isIntrestListEmpty({bool reInitList = true}) {

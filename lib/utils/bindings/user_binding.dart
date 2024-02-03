@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:jyo_app/view_model/activity_details_screen_vm.dart';
 import 'package:jyo_app/view_model/birthday_screen_vm.dart';
 import 'package:jyo_app/view_model/calendar_srceen_vm.dart';
 import 'package:jyo_app/view_model/create_activity_screen_vm.dart';
@@ -6,11 +7,13 @@ import 'package:jyo_app/view_model/freindlist_screen_vm.dart';
 import 'package:jyo_app/view_model/most_liked_screen_vm.dart';
 import 'package:jyo_app/view_model/otp_screen_vm.dart';
 import 'package:jyo_app/view_model/phone_number_vm.dart';
+import 'package:jyo_app/view_model/qr_screen_vm.dart';
 import 'package:jyo_app/view_model/splash_vm.dart';
 import '../../view_model/account_setting_screen_vm.dart';
 import '../../view_model/base_screen_vm.dart';
 import '../../view_model/blocked_user_screen_vm.dart';
 import '../../view_model/chat_screen_vm.dart';
+import '../../view_model/create_group_screen_vm.dart';
 import '../../view_model/create_post_screen_vm.dart';
 import '../../view_model/delete_acc_screen_vm.dart';
 import '../../view_model/display_name_vm.dart';
@@ -19,7 +22,10 @@ import '../../view_model/explore_screen_vm.dart';
 import '../../view_model/freind_user_profile_screen_vm.dart';
 import '../../view_model/full_screen_image_carousal_vm.dart';
 import '../../view_model/gender_screen_vm.dart';
+import '../../view_model/group_details_screen_vm.dart';
+import '../../view_model/group_list_screen_vm.dart';
 import '../../view_model/group_suggestion_screen_vm.dart';
+import '../../view_model/list_of_save_activites_screen_vm.dart';
 import '../../view_model/login_vm.dart';
 import '../../view_model/message_screen_vm.dart';
 import '../../view_model/notification_screen_vm.dart';
@@ -86,6 +92,7 @@ class MostLikedScreenBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(MostLikedScreenVM());
+    Get.put(GroupSuggestionScreenVM());
   }
 }
 
@@ -265,5 +272,47 @@ class CreateActivityBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(CreateActivityScreenVM());
+  }
+}
+
+class CreateGroupBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(CreateGroupScreenVM());
+  }
+}
+
+class GroupListBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(GroupListScreenVM());
+  }
+}
+
+class GroupDetailsBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(GroupDetailsScreenVM());
+  }
+}
+
+class ListOfSaveActivitiesBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(ListOfSaveActivitiesScreenVM());
+  }
+}
+
+class ActivityDetailsBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(ActivityDetailsScreenVM());
+  }
+}
+
+class QRScreenBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(QrScreenVM());
   }
 }

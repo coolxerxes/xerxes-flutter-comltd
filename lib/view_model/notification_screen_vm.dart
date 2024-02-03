@@ -1,8 +1,11 @@
+import 'package:cometchat/cometchat_sdk.dart';
+import 'package:cometchat/main/cometchat.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/data/local/notification_type.dart';
 import 'package:jyo_app/repository/commetchat_repo/friends_repo/friends_repo_impl.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
+import 'package:jyo_app/repository/group_repo/group_repo_impl.dart';
 import 'package:jyo_app/repository/notification_repo/notification_repo_impl.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/utils/secured_storage.dart';
@@ -10,12 +13,16 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../models/notification_model/pending_friend_req_response_model.dart';
 import '../models/notification_model/notification_history_response.dart' as n;
+import '../repository/activities_repo/activities_repo_impl.dart';
+import 'package:jyo_app/models/activity_model/activity_request_list_model.dart'
+    as r;
 
 class NotificationScreenVM extends GetxController {
   final notificationRepoImpl = NotificationRepoImpl();
   final friendsRepoImpl = FriendsRepoImpl();
   int currentTab = NotificationType.allActivities;
   String? userId = "";
+  String? userName = "";
   List<Datum>? pendingRequests = List.empty(growable: true);
   List<n.Datum>? notifications = List.empty(growable: true);
   List<n.Datum>? notificationsEarlier = List.empty(growable: true);
@@ -28,6 +35,9 @@ class NotificationScreenVM extends GetxController {
 
   Future<void> init() async {
     userId = await SecuredStorage.readStringValue(Keys.userId);
+    userName = (await SecuredStorage.readStringValue(Keys.firstName))! +
+        " " +
+        (await SecuredStorage.readStringValue(Keys.lastName))!;
     await getPendingFriendList();
     await getNotifications();
   }
@@ -45,6 +55,111 @@ class NotificationScreenVM extends GetxController {
       update();
     }).onError((error, stackTrace) {
       showAppDialog(msg: error.toString());
+    });
+  }
+
+  Future<void> acceptRequestToJoin(Map<String, String> data) async {
+    debugPrint("acceptRequestToJoin req $data");
+    await ActivitiesRepoImpl().acceptRequestToJoin(data).then((res) {
+      // if (res.status == 200) {
+
+      //} else {
+      //debugPrint("ARQL RES MSG ${res.message}");
+      showAppDialog(msg: res["message"]);
+      init();
+      //}
+      update();
+    }).onError((error, stackTrace) {
+      debugPrint("ARQL Error ${error.toString()}");
+      update();
+    });
+  }
+
+  Future<void> acceptRequestToJoinGroup(Map<String, String> data,
+      {groupId, uid, name}) async {
+    // {
+    //   "groupId": 1,
+    //   "adminId": 1,
+    //   "role": "ADMIN",
+    //   "userId": 46,
+    //   "isAccept": 0
+    // }
+    debugPrint("acceptRequestToJoin req $data");
+    await GroupRepoImpl()
+        .acceptOrRejectRequestGroup(
+      data,
+    )
+        .then((res) async {
+      // if (res.status == 200) {
+      if (data["isAccept"] == "1") {
+        await addMemberToGroupCometChat(
+            groupId: groupId.toString(),
+            uid: uid.toString(),
+            name: name.toString());
+      }
+      showAppDialog(msg: res.message);
+
+      //} else {
+      debugPrint("ARQL RES MSG ${res.message}");
+      //}
+      update();
+    }).onError((error, stackTrace) {
+      debugPrint("ARQL Error ${error.toString()}");
+      update();
+    });
+  }
+
+  Future<void> acceptOrRejetInvite(Map<String, String> data) async {
+    // {
+    //   "groupId": 1,
+    //   "userId": 46,
+    //   "isAccept": 0
+    // }
+    debugPrint("acceptRejInvite req $data");
+    await GroupRepoImpl().acceptOrRejectInvitation(data).then((res) async {
+      // if (res.status == 200) {
+      if (data["isAccept"] == "1") {
+        await joinToGroupCometChat(
+            groupId: data["groupId"].toString(),
+            userId: userId.toString(),
+            userName: userName.toString());
+      }
+      showAppDialog(msg: res["message"]);
+      //} else {
+      // debugPrint("ARQL RES MSG ${res.message}");
+      //}
+      update();
+    }).onError((error, stackTrace) {
+      debugPrint("ARQL Error ${error.toString()}");
+      update();
+    });
+  }
+
+  Future<void> addMemberToGroupCometChat({groupId, uid, name}) async {
+    CometChat.addMembersToGroup(
+        guid: groupId.toString(),
+        groupMembers: [
+          GroupMember.fromUid(
+            scope: CometChatMemberScope.participant,
+            uid: uid.toString(),
+            name: name.toString(),
+          )
+        ],
+        onSuccess: (Map<String?, String?> result) {
+          debugPrint("chat Group Member added Successfully : $result");
+        },
+        onError: (CometChatException e) {
+          debugPrint(
+              "chat Group Member addition failed with exception: ${e.message}");
+        });
+  }
+
+  Future<void> joinToGroupCometChat({userId, userName, groupId}) async {
+    CometChat.joinGroup(groupId, CometChatGroupType.public,
+        onSuccess: (Group group) {
+      debugPrint("chat Group Joined Successfully : $group ");
+    }, onError: (CometChatException e) {
+      debugPrint("chat Group Joining failed with exception: ${e.message}");
     });
   }
 
@@ -126,10 +241,47 @@ class NotificationScreenVM extends GetxController {
 
   String getLine(String? notificationType) {
     switch (notificationType) {
+      //Group Related
+      case NotificationTypes.createdActivityInsideGroup:
+        return "created an activity:";
+      case NotificationTypes.sentJoinGroupRequest:
+        return "has requested for approval to join";
+      case NotificationTypes.acceptGroupJoinRequest:
+        return "has approved your application to join";
+      case NotificationTypes.sentJoinGroupInvitaion:
+        return "invite you to";
+      case NotificationTypes.joinGroup:
+      case NotificationTypes.acceptJoinGroupInvitation:
+        return "has just joined the";
+      case NotificationTypes.pramotedToAdmin:
+        return "You have been promoted to admin in";
+      case NotificationTypes.pramotedToSupAdmin:
+        return "You have been promoted to super admin in";
+
+      //Activity Related
+      case NotificationTypes.pramottedToSubHost:
+        return "You have been promoted to sub-host in";
+      case NotificationTypes.promottedToHost:
+        return "You have been promoted to host in";
+      case NotificationTypes.sentRequestToJoinActivity:
+        return "has requested for approval to join";
+      case NotificationTypes.acceptActivityJoinRequest:
+        return "has approved your application to join";
+      case NotificationTypes.joinActivity:
+      case NotificationTypes.acceptJoinActivityInvitation:
+        return "has just joined the";
+      case NotificationTypes.sentJoinActivityInvitation:
+        return "invite you to";
+      case NotificationTypes.commentActivity:
+        return "commented on your activity";
+
+      //Friends Related
       case NotificationTypes.accetpFriendReq:
         return "accepted your friend request";
       case NotificationTypes.friendReqSent:
         return "send you a friend request";
+
+      //Post Related
       case NotificationTypes.commentPost:
         return "commented on your post";
       case NotificationTypes.jioMePost:
@@ -198,9 +350,59 @@ class NotificationScreenVM extends GetxController {
     });
   }
 
+  Future<void> acceptActivityInvite({index, activityId, type, data}) async {
+    // var data = {
+    //   "userId": userId.toString(),
+    //   "activityId": activityId.toString()
+    // };
+    debugPrint("acceptActivityInvite data $data");
+    await ActivitiesRepoImpl().acceptInvite(data)!.then((res) {
+      if (res.status == 200) {
+        showAppDialog(msg: res.message);
+
+        // if (type! == "1") {
+        //   pendingRequests!.removeAt(index);
+        // } else if (type == "2") {
+        //   notifications!.removeAt(index);
+        // } else if (type == "3") {
+        //   notificationsEarlier!.removeAt(index);
+        // }
+      } else {
+        showAppDialog(msg: res.message);
+      }
+      getNotifications();
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: error.toString());
+    });
+  }
+
   // Future<void> makeFriend(Map data,
   //     {required Function(CcAddFreindResponse)? onSuccess,
   //     required Function(Object)? onError}) async {}
+  Future<void> rejectActivityInvite({index, activityId, type, data}) async {
+    // var data = {
+    //   "userId": userId.toString(),
+    //   "activityId": activityId.toString()
+    // };
+    debugPrint("acceptActivityInvite data $data");
+    await ActivitiesRepoImpl().rejectInvite(data)!.then((res) {
+      if (res.status == 200) {
+        showAppDialog(msg: res.message);
+        // if (type! == "1") {
+        //   pendingRequests!.removeAt(index);
+        // } else if (type == "2") {
+        //   notifications!.removeAt(index);
+        // } else if (type == "3") {
+        //   notificationsEarlier!.removeAt(index);
+        // }
+      } else {
+        showAppDialog(msg: res.message);
+      }
+      getNotifications();
+    }).onError((error, stackTrace) {
+      showAppDialog(msg: error.toString());
+    });
+  }
 }
 
 class NotificationType {

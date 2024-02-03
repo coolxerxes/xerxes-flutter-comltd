@@ -1,23 +1,36 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/data/remote/api_interface.dart';
 import 'package:jyo_app/data/remote/endpoints.dart';
+import 'package:jyo_app/models/posts_model/post_and_activity_model.dart';
 import 'package:jyo_app/resources/app_colors.dart';
 import 'package:jyo_app/resources/app_image.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/resources/app_strings.dart';
 import 'package:jyo_app/resources/app_styles.dart';
+import 'package:jyo_app/utils/DynamicLinkHandler.dart';
 import 'package:jyo_app/utils/app_widgets/app_bar.dart';
+import 'package:jyo_app/utils/app_widgets/app_gradient_btn.dart';
 import 'package:jyo_app/utils/common.dart';
+import 'package:jyo_app/view/qr_screen_view.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
+import 'package:jyo_app/view_model/activity_details_screen_vm.dart';
+import 'package:jyo_app/view_model/posts_and_activities_vm.dart';
 import 'package:jyo_app/view_model/profile_screen_vm.dart';
+import 'package:latlong2/latlong.dart';
 
+import '../data/local/user_search_model.dart';
 import '../utils/app_widgets/app_icon_button.dart';
+import '../utils/secured_storage.dart';
 import '../view_model/freindlist_screen_vm.dart';
+import 'explore_screen_view.dart';
 
 class ProfileScreenView extends StatelessWidget {
   const ProfileScreenView({Key? key}) : super(key: key);
@@ -33,7 +46,9 @@ class ProfileScreenView extends StatelessWidget {
                   color: 0xffffffff,
                   leading: [
                     MyIconButton(
-                      onTap: () {},
+                      onTap: () async {
+                        Get.toNamed(qrScreenRoute);
+                      },
                       icon: AppBarIcons.actionQRCodeScanSvg,
                       isSvg: true,
                       color: 0xffFFA43C,
@@ -250,7 +265,7 @@ class ProfileScreenView extends StatelessWidget {
                                 : Row(
                                     children: [
                                       Text(
-                                        "@"+c.userName!,
+                                        "@" + c.userName!,
                                         style: AppStyles.interRegularStyle(
                                             fontSize: 15.0,
                                             color: AppColors.hintTextColor),
@@ -282,6 +297,7 @@ class ProfileScreenView extends StatelessWidget {
                               children: [
                                 InkWell(
                                     onTap: () async {
+                                      SearchUser.setId = c.userId;
                                       await Get.delete<FriendlistScreenVM>(
                                           force: true);
                                       getToNamed(friendlistScreenRoute);
@@ -531,7 +547,34 @@ class ProfileScreenView extends StatelessWidget {
                                         );
                                       }),
                                     )
-                          : Column()
+                          : c.isLoadingActs!
+                              ? SizedBox(
+                                  height: 150.h,
+                                  child: const Center(
+                                      child: CircularProgressIndicator(
+                                    color: AppColors.orangePrimary,
+                                  )),
+                                )
+                              : c.postsVM.activitiesList.isEmpty
+                                  ? SizedBox(
+                                      height: 150.h,
+                                      child: Center(
+                                          child: Text(
+                                        "No activities available",
+                                        style: AppStyles.interRegularStyle(),
+                                      )),
+                                    )
+                                  : Column(
+                                      children: List.generate(
+                                          c.postsVM.activitiesList.length,
+                                          (index) {
+                                        return ActivityWidget.activity(
+                                            c.postsVM.activitiesList[index],
+                                            c.postsVM,
+                                            c,
+                                            isProfile: true);
+                                      }),
+                                    )
                     ],
                   ),
                 )));
@@ -643,3 +686,413 @@ class ProfileScreenView extends StatelessWidget {
 //   }
 
 // }
+
+class ActivityWidget {
+  static Widget activity(
+      PostOrActivity activity, GetxController c, GetxController pc,
+      {bool isFromExplore = false,
+      bool isProfile = false,
+      EdgeInsets? padding,
+      EdgeInsets? margin,
+      double? radius = 0.0,
+      int color = 0xffFFFFFF,
+      Function()? onPreTap,
+      bool? showCoverInsteadOfMap = false}) {
+    return InkWell(
+      onTap: () {
+        if (onPreTap != null) {
+          onPreTap();
+        }
+        Get.delete<ActivityDetailsScreenVM>();
+        getToNamed(activityDetailsScreenRoute, argument: {
+          "id": activity.activityId ?? activity.id,
+          "isFromExplore": isFromExplore
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(getContext()).size.width * 0.9,
+        margin: margin,
+        decoration: BoxDecoration(
+            color: Color(color),
+            borderRadius: BorderRadius.circular(radius!.r)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(radius.r),
+                color: Color(color),
+              ),
+              padding: padding ??
+                  EdgeInsets.symmetric(horizontal: 22.w, vertical: 24.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                          child: Column(
+                        children: [
+                          showCoverInsteadOfMap!
+                              ? Container()
+                              : Row(
+                                  children: [
+                                    MyAvatar(
+                                      url: AppIcons.crownPng,
+                                      width: 12,
+                                      height: 8,
+                                    ),
+                                    sizedBoxW(width: 2),
+                                    Expanded(
+                                      child: Text(
+                                        (activity.group != null &&
+                                                activity.group is Map)
+                                            ? activity.group["groupName"]
+                                                .toString()
+                                            : isValidString(activity.group)
+                                                ? activity.group.toString()
+                                                : "N/A",
+                                        style: AppStyles.interMediumStyle(
+                                            fontSize: 12.8),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                          showCoverInsteadOfMap
+                              ? Container()
+                              : sizedBoxH(height: 2),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  isValidString(activity.activityName)
+                                      ? activity.activityName.toString()
+                                      : "",
+                                  style: AppStyles.interSemiBoldStyle(
+                                      fontSize: 18.8),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      )),
+                      sizedBoxW(width: 10),
+                      InkWell(
+                        onTap: () {
+                          activity.isSaved = !activity.isSaved!;
+                          pc.update();
+                          (c as PostsAndActivitiesVM).saveActivity({
+                            "activityId": activity.activityId ?? activity.id,
+                            "userId": c.userId.toString(),
+                            "isSaved": activity.isSaved! ? "1" : "0"
+                          });
+                        },
+                        child: MyAvatar(
+                          url: activity.isSaved ?? false
+                              ? AppIcons.bookmarkSvg
+                              : AppIcons.bookmarkUs,
+                          isSVG: true,
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                  sizedBoxH(height: 12),
+                  IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 136.h,
+                          width: MediaQuery.of(getContext()).size.width / 2.5,
+                          decoration: BoxDecoration(
+                            color: AppColors.lightGray,
+                            borderRadius: BorderRadius.circular(16.r),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16.r),
+                            child: Stack(
+                              children: [
+                                showCoverInsteadOfMap
+                                    ? MyAvatar(
+                                        url: ApiInterface.postImgUrl +
+                                            activity.coverImage.toString(),
+                                        radiusAll: 16,
+                                        height: 136,
+                                        width: MediaQuery.of(getContext())
+                                                .size
+                                                .width /
+                                            2.5,
+                                        isNetwork: true,
+                                      )
+                                    : activity.location!.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                              "No location\nfound",
+                                              style: AppStyles.interMediumStyle(
+                                                  fontSize: 12),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          )
+                                        : FlutterMap(
+                                            //mapController: c.mapController,
+
+                                            options: MapOptions(
+                                                minZoom: 5,
+                                                maxZoom: 18,
+                                                zoom: 16,
+                                                center: LatLng(
+                                                    activity.location![0],
+                                                    activity.location![1]),
+                                                onTap: (tapPosition, point) {
+                                                  debugPrint(
+                                                      "Lat long onTaped ${point.latitude}, ${point.longitude}");
+                                                }),
+                                            children: [
+                                              TileLayer(
+                                                urlTemplate: MapConstants
+                                                    .tempTemplateUrl,
+                                                additionalOptions: const {
+                                                  "access_token":
+                                                      MapConstants.accessToken,
+                                                },
+                                                userAgentPackageName:
+                                                    MapConstants
+                                                        .userAgentPackageName,
+                                              ),
+                                              MarkerLayer(
+                                                  markers: activity.markers!),
+                                            ],
+                                          ),
+                                Positioned(
+                                    child: Container(
+                                  color: Colors.transparent,
+                                  height: 136.h,
+                                  width:
+                                      MediaQuery.of(getContext()).size.width /
+                                          2.5,
+                                ))
+                              ],
+                            ),
+                          ),
+                        ),
+                        sizedBoxW(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              !showCoverInsteadOfMap
+                                  ? Container()
+                                  : Row(
+                                      children: [
+                                        MyAvatar(
+                                          url: AppIcons.crownPng,
+                                          width: 12,
+                                          height: 8,
+                                        ),
+                                        sizedBoxW(width: 2),
+                                        Expanded(
+                                          child: Text(
+                                            (activity.group != null &&
+                                                    activity.group is Map)
+                                                ? activity.group["groupName"]
+                                                    .toString()
+                                                : isValidString(activity.group)
+                                                    ? activity.group.toString()
+                                                    : "N/A",
+                                            style: AppStyles.interMediumStyle(
+                                                fontSize: 12.8,
+                                                color:
+                                                    AppColors.editBorderColor),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                              !showCoverInsteadOfMap
+                                  ? Container()
+                                  : sizedBoxH(height: 2),
+                              isValidString(activity.activityDate)
+                                  ? Text(
+                                      isValidString(activity.activityDate)
+                                          ? activity.activityDate.toString()
+                                          : "",
+                                      style: AppStyles.interMediumStyle(
+                                          fontSize: 14,
+                                          color: AppColors.orangePrimary),
+                                    )
+                                  : Container(),
+                              sizedBoxH(height: 8),
+                              Row(
+                                children: [
+                                  MyAvatar(
+                                    url: AppIcons.pinStroke,
+                                    height: 16,
+                                    width: 16,
+                                    isSVG: true,
+                                  ),
+                                  sizedBoxW(width: 2),
+                                  Text(
+                                    "4.2 Km",
+                                    style: AppStyles.interRegularStyle(
+                                        fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              sizedBoxH(height: 8),
+                              Row(
+                                children: [
+                                  Stack(
+                                      children:
+                                          // Row(
+                                          //     mainAxisSize:
+                                          //         MainAxisSize.min,
+                                          //     children:
+                                          List.generate(
+                                              activity.members!.length > 3
+                                                  ? 3
+                                                  : activity.members!.length,
+                                              (index) {
+                                    return Container(
+                                      margin: EdgeInsets.only(left: index * 22),
+                                      child: Container(
+                                          width: 32.h,
+                                          height: 32.w,
+                                          // margin: EdgeInsets.only() ,
+                                          padding: const EdgeInsets.all(1.5),
+                                          decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      12.8.r)),
+                                          child: isValidString(activity
+                                                  .members![index].profilePic)
+                                              ? MyAvatar(
+                                                  url: ApiInterface
+                                                          .profileImgUrl +
+                                                      activity.members![index]
+                                                          .profilePic!,
+                                                  height: 32.h,
+                                                  width: 32.w,
+                                                  radiusAll: 12.8.r,
+                                                  isNetwork: true,
+                                                )
+                                              : Container()),
+                                    );
+                                  }) //),
+                                      //],
+                                      ),
+                                  activity.members!.length > 3
+                                      ? Container(
+                                          width: 32.h,
+                                          height: 32.w,
+                                          // margin: EdgeInsets.only() ,
+                                          padding: const EdgeInsets.all(1.5),
+                                          decoration: BoxDecoration(
+                                              color: AppColors.tabBkgColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      12.8.r)),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              MyAvatar(
+                                                url: AppIcons
+                                                    .profile, //activity.members![index].url
+                                                height: 8.h,
+                                                width: 8.w,
+                                                radiusAll: 0.r,
+                                                isSVG: true,
+                                                //isNetwork: true,
+                                              ),
+                                              Text(
+                                                (activity.activityParticipantsCount -
+                                                        3)
+                                                    .toString(),
+                                                style:
+                                                    AppStyles.interMediumStyle(
+                                                        fontSize: 12.2,
+                                                        color: AppColors
+                                                            .hintTextColor),
+                                              )
+                                            ],
+                                          ))
+                                      : SizedBox(
+                                          width: 32.h,
+                                          height: 32.w,
+                                        ),
+
+                                  // Text(
+                                  //   markers.length > 3
+                                  //       ? ("+" +
+                                  //           (markers.length -
+                                  //                   3)
+                                  //               .toString())
+                                  //       : "",
+                                  //   style: AppStyles
+                                  //       .interMediumStyle(
+                                  //     color:
+                                  //         AppColors.white,
+                                  //   ),
+                                  // )
+                                ],
+                              ),
+                              sizedBoxH(height: 16),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: AppGradientButton(
+                                      btnText: "Join Activity",
+                                      onPressed: () async {
+                                        activity.isJoinedActivity = true;
+                                        pc.update();
+
+                                        await (c as PostsAndActivitiesVM)
+                                            .joinActivity({
+                                          "userId": (c).userId.toString(),
+                                          "activityId":
+                                              activity.activityId ?? activity.id
+                                        });
+                                      },
+                                      isDisabled: ((activity.isMember ??
+                                              false) ||
+                                          (activity.isJoinedActivity ?? false)),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            !showCoverInsteadOfMap
+                ? sizedBoxH(height: 8)
+                : sizedBoxH(height: 0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Widget wrapper({Widget? child}) {
+    return Container(
+        width: 32.w,
+        height: 32.h,
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          border: Border.all(color: Colors.white, width: 1.50),
+          borderRadius: BorderRadius.circular(12.8.r),
+        ),
+        child: child!);
+  }
+}

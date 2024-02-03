@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:jyo_app/data/local/post_edit_model.dart';
+import 'package:jyo_app/data/remote/api_interface.dart';
 import 'package:jyo_app/resources/app_colors.dart';
 import 'package:jyo_app/resources/app_image.dart';
 import 'package:jyo_app/resources/app_routes.dart';
@@ -29,323 +33,421 @@ class CreateActivityScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CreateActivityScreenVM>(builder: (c) {
-      return SafeArea(
-        child: Scaffold(
-          appBar: MyAppBar(
-            leading: [
-              Text(
-                AppStrings.cancel,
-                style: AppStyles.interMediumStyle(
-                    fontSize: 18, color: AppColors.hintTextColor),
-              )
-            ],
-          ),
-          body: ListView(
-            children: [
-              sizedBoxH(height: 16),
-              //Section1
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 22.w),
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: Column(
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        MyAvatar(
-                          url: AppImage.avatar3,
-                          height: 72,
-                          width: 72,
-                          radiusAll: 28.8,
-                        ),
-                        Positioned(
-                            top: 60.h,
-                            left: 28.h,
-                            child: Container(
-                              height: 20.h,
-                              width: 20.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.white,
-                                borderRadius: BorderRadius.circular(100.r),
-                              ),
-                              child: Center(
-                                child: Image.asset(AppIcons.crownPng),
-                              ),
-                            ))
-                      ],
-                    ),
-                    sizedBoxH(height: 10),
-                    Text(
-                      "Banjamin Tan",
-                      style: AppStyles.interSemiBoldStyle(fontSize: 16),
-                    ),
-                    sizedBoxH(height: 8),
-                    Center(
-                      child: Text(
-                        AppStrings.createActivityHelperText,
-                        style: AppStyles.interRegularStyle(
-                            fontSize: 15, color: AppColors.editBorderColor),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              sizedBoxH(height: 34),
-
-              //Section 2
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 22.w),
-                child: Column(
-                  children: [
-                    AppTextField(
-                      controller: c.activityNameCtrl,
-                      margin: const EdgeInsets.all(0),
-                      style: AppStyles.interRegularStyle(),
-                      hintText: AppStrings.activityName,
-                    ),
-                    sizedBoxH(height: 20),
-                    Container(
-                        height: 144.h, //52,
-                        margin: const EdgeInsets.all(
-                            0), //EdgeInsets.symmetric(horizontal: 22),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10.0.r),
-                              bottomRight: Radius.circular(10.0.r),
-                              topLeft: Radius.circular(10.0.r),
-                              topRight: Radius.circular(10.0.r),
-                            ),
-                            color: AppColors.texfieldColor),
-                        child: TextField(
-                            controller: c.aboutCtrl,
-                            maxLines: null,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: AppStrings.aboutAct,
-                                hintStyle: AppStyles.interRegularStyle(
-                                    fontSize: 20,
-                                    color: AppColors.hintTextColor),
-                                contentPadding: EdgeInsets.only(
-                                    left: 14.w,
-                                    bottom:
-                                        MediaQuery.of(context).size.width <= 400
-                                            ? 8.h
-                                            : 0.0)),
-                            style: AppStyles.interRegularStyle())),
-                    sizedBoxH(height: 20),
-                    SettingListTile(
-                      onTap: () {
-                        showFlexibleBottomSheet(
-                          initHeight: 0.75,
-                          isExpand: true,
-                          minHeight: 0,
-                          maxHeight: 0.85,
-                          //isCollapsible: true,
-                          bottomSheetColor: Colors.transparent,
-                          context: getContext(),
-                          builder: (a, b, d) {
-                            return categorySheet(b);
-                          },
-                          anchors: [0, 0.75, 0.85],
-                          isSafeArea: true,
-                        );
-                      },
-                      text: AppStrings.category,
-                      icon: Row(
-                        mainAxisSize: MainAxisSize.min,
+      return WillPopScope(
+        onWillPop: () async {
+          PostEdit.setPostOrActivity = null;
+          return true;
+        },
+        child: SafeArea(
+          child: Scaffold(
+            appBar: MyAppBar(
+              leading: [
+                InkWell(
+                  onTap: () {
+                    PostEdit.setPostOrActivity = null;
+                    Get.back();
+                  },
+                  child: Text(
+                    AppStrings.cancel,
+                    style: AppStyles.interMediumStyle(
+                        fontSize: 18, color: AppColors.hintTextColor),
+                  ),
+                )
+              ],
+            ),
+            body: ListView(
+              children: [
+                sizedBoxH(height: 16),
+                //Section1
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 22.w),
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: Column(
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
                         children: [
-                          Text(
-                            "Non Profit, Sports, Pets",
-                            style: AppStyles.interRegularStyle(
-                              fontSize: 16,
-                            ),
+                          MyAvatar(
+                            url: c.profileImg.trim().isEmpty
+                                ? AppImage.sampleAvatar
+                                : ApiInterface.profileImgUrl + c.profileImg,
+                            height: 72,
+                            width: 72,
+                            isNetwork: c.profileImg.trim().isNotEmpty,
+                            radiusAll: 28.8,
                           ),
-                          sizedBoxW(width: 3),
-                          const Icon(
-                            Icons.keyboard_arrow_right,
-                            color: AppColors.textColor,
-                          )
-                        ],
-                      ),
-                    ),
-                    sizedBoxH(height: 20),
-                    SettingListTile(
-                      onTap: () {
-                        c.showCal = !c.showCal!;
-                        c.update();
-                      },
-                      text: AppStrings.selectDate,
-                      icon: Text(
-                        "Fri, 24 May",
-                        style: AppStyles.interRegularStyle(fontSize: 16),
-                      ),
-                      radiusBottomRight: 0.0,
-                      radiusBottomLeft: 0.0,
-                    ),
-                    !c.showCal! ? Container(): Container(
-                      color: AppColors.texfieldColor,
-                      child: TableCalendar(
-                        firstDay: DateTime.now(),
-                        focusedDay: c.selectedDateTime!,
-                        lastDay: DateTime(2100),
-                        headerVisible: true,
-                        calendarBuilders: const CalendarBuilders(),
-                        calendarStyle: CalendarStyle(
-                          outsideDaysVisible: false,
-                          defaultTextStyle:
-                              AppStyles.interMediumStyle(fontSize: 20)!,
-                          weekendTextStyle:
-                              AppStyles.interMediumStyle(fontSize: 20)!,
-                          selectedTextStyle: AppStyles.interMediumStyle(
-                              fontSize: 20, color: AppColors.iosBlue)!,
-                          selectedDecoration: BoxDecoration(
-                              color: AppColors.iosBlue.withOpacity(0.15),
-                              shape: BoxShape.circle),
-                          //isTodayHighlighted: false,
-                          todayTextStyle: AppStyles.interMediumStyle(
-                              fontSize: 20, color: AppColors.iosBlue)!,
-                          todayDecoration: const BoxDecoration(
-                              color: Colors.transparent,
-                              shape: BoxShape.circle),
-                          disabledTextStyle: AppStyles.interMediumStyle(
-                              fontSize: 20, color: AppColors.calDisColor)!,
-                        ),
-                        headerStyle:
-                            const HeaderStyle(formatButtonVisible: false),
-                        daysOfWeekStyle: DaysOfWeekStyle(
-                            weekdayStyle: AppStyles.interRegularStyle(
-                                fontSize: 18, color: AppColors.calDisColor)!,
-                            weekendStyle: AppStyles.interRegularStyle(
-                                fontSize: 18, color: AppColors.calDisColor)!),
-                        currentDay: DateTime.now(),
-                        calendarFormat: CalendarFormat.month,
-                        selectedDayPredicate: (day) {
-                          return isSameDay(c.selectedDateTime, day);
-                        },
-                        onDaySelected: (selectedDay, focusedDay) async {
-                          debugPrint("selectedDay $selectedDay");
-                          c.selectedDateTime = selectedDay;
-                          c.selectedDate = DateFormat("yyyy-MM-dd")
-                              .format(c.selectedDateTime!);
-                          c.update();
-                        },
-                      ),
-                    ),
-
-                    MyDivider(),
-                    SettingListTile(
-                      onTap: (() {
-                        c.showTime = !c.showTime!;
-                        c.update();
-                      }),
-                      text: AppStrings.time,
-                      icon: Text(
-                        "6.00 PM",
-                        style: AppStyles.interRegularStyle(fontSize: 16),
-                      ),
-                      radiusBottomLeft: c.showTime! ? 0.0 : 10,
-                      radiusBottomRight: c.showTime! ? 0.0 : 10,
-                      radiusTopLeft: 0.0,
-                      radiusTopRight: 0.0,
-                    ),
-                    !c.showTime! ? Container():Container(
-                      padding: EdgeInsets.only(bottom: 18.h),
-                      color: AppColors.texfieldColor,
-                      child: Column(
-                        children: [
-                          TimePickerSpinner(
-                            is24HourMode: false,
-                            normalTextStyle: AppStyles.interMediumStyle(
-                                fontSize: 23, color: AppColors.hintTextColor),
-                            highlightedTextStyle:
-                                AppStyles.interSemiBoldStyle(fontSize: 24),
-                            spacing: 20,
-                            itemHeight: 60,
-                            isForce2Digits: false,
-                            onTimeChange: (time) {
-                              c.update(); // setState(() {
-                              //   _dateTime = time;
-                              // });
-                            },
-                          ),
-                          InkWell(
-                              onTap: () {
-                                c.showTime = false;
-                                c.update();
-                              },
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10.h, horizontal: 15.w),
-                                child: Text(
-                                  AppStrings.done,
-                                  style: AppStyles.interMediumStyle(),
+                          Positioned(
+                              top: 60.h,
+                              left: 28.h,
+                              child: Container(
+                                height: 20.h,
+                                width: 20.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(100.r),
+                                ),
+                                child: Center(
+                                  child: Image.asset(AppIcons.crownPng),
                                 ),
                               ))
                         ],
                       ),
-                    ),
-                    sizedBoxH(height: 20),
-                    SettingListTile(
-                      onTap: () {
-                        showFlexibleBottomSheet(
-                          initHeight: 0.75,
-                          isExpand: true,
-                          minHeight: 0,
-                          maxHeight: 0.85,
-                          //isCollapsible: true,
-                          bottomSheetColor: Colors.transparent,
-                          context: getContext(),
-                          builder: (a, b, d) {
-                            return locationSheet(b);
-                          },
-                          anchors: [0, 0.75, 0.85],
-                          isSafeArea: true,
-                        );
-                      },
-                      text: AppStrings.location,
-                      icon: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "Starbuck Coffe Bishan",
-                            style: AppStyles.interRegularStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          sizedBoxW(width: 3),
-                          const Icon(
-                            Icons.keyboard_arrow_right,
-                            color: AppColors.textColor,
-                          )
-                        ],
+                      sizedBoxH(height: 10),
+                      Text(
+                        c.firstName + " " + c.lastName,
+                        style: AppStyles.interSemiBoldStyle(fontSize: 16),
                       ),
-                    ),
-                    sizedBoxH(height: 67),
-                    // AppGradientButton(
-                    //   btnText: AppStrings.continuee,
-                    //   onPressed: () {
-                    //     getToNamed(createActivityScreen2Route);
-                    //   },
-                    //   height: 47,
-                    //   width: double.infinity,
-                    // ),
-                  ],
+                      sizedBoxH(height: 8),
+                      Center(
+                        child: Text(
+                          AppStrings.createActivityHelperText,
+                          style: AppStyles.interRegularStyle(
+                              fontSize: 15, color: AppColors.editBorderColor),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            ],
+                sizedBoxH(height: 34),
+
+                //Section 2
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 22.w),
+                  child: Column(
+                    children: [
+                      AppTextField(
+                        controller: c.activityNameCtrl,
+                        margin: const EdgeInsets.all(0),
+                        style: AppStyles.interRegularStyle(),
+                        contentPaddingTop: Platform.isIOS ? 16 : null,
+                        hintText: AppStrings.activityName,
+                      ),
+                      sizedBoxH(height: 20),
+                      Container(
+                          height: 144.h, //52,
+                          margin: const EdgeInsets.all(
+                              0), //EdgeInsets.symmetric(horizontal: 22),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10.0.r),
+                                bottomRight: Radius.circular(10.0.r),
+                                topLeft: Radius.circular(10.0.r),
+                                topRight: Radius.circular(10.0.r),
+                              ),
+                              color: AppColors.texfieldColor),
+                          child: TextField(
+                              controller: c.aboutCtrl,
+                              maxLines: null,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: AppStrings.aboutAct,
+                                  hintStyle: AppStyles.interRegularStyle(
+                                      fontSize: 20,
+                                      color: AppColors.hintTextColor),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 14.w,
+                                      bottom:
+                                          MediaQuery.of(context).size.width <=
+                                                  400
+                                              ? 8.h
+                                              : 0.0)),
+                              style: AppStyles.interRegularStyle())),
+                      sizedBoxH(height: 20),
+                      SettingListTile(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        onTap: () {
+                          showFlexibleBottomSheet(
+                            initHeight: 0.75,
+                            isExpand: true,
+                            minHeight: 0,
+                            maxHeight: 0.85,
+                            //isCollapsible: true,
+                            bottomSheetColor: Colors.transparent,
+                            context: getContext(),
+                            builder: (a, b, d) {
+                              return categorySheet(b);
+                            },
+                            anchors: [0, 0.75, 0.85],
+                            isSafeArea: true,
+                          );
+                        },
+                        text: AppStrings.category,
+                        icon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 150.w,
+                              child: Text(
+                                c.selectedCategories,
+                                style: AppStyles.interRegularStyle(
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                            sizedBoxW(width: 3),
+                            const Icon(
+                              Icons.keyboard_arrow_right,
+                              color: AppColors.textColor,
+                            )
+                          ],
+                        ),
+                      ),
+                      sizedBoxH(height: 20),
+                      SettingListTile(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        onTap: () {
+                          c.showCal = !c.showCal!;
+                          c.update();
+                        },
+                        text: AppStrings.selectDate,
+                        icon: Text(
+                          formatDateToEEEDDMMMFormat(c.selectedDateTime),
+                          style: AppStyles.interRegularStyle(fontSize: 16),
+                        ),
+                        radiusBottomRight: 0.0,
+                        radiusBottomLeft: 0.0,
+                      ),
+                      !c.showCal!
+                          ? Container()
+                          : Container(
+                              color: AppColors.texfieldColor,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    color: AppColors.texfieldColor,
+                                    child: TableCalendar(
+                                      firstDay: DateTime.now(),
+                                      focusedDay: c.selectedDateTime!,
+                                      lastDay: DateTime(2100),
+                                      headerVisible: true,
+                                      calendarBuilders:
+                                          const CalendarBuilders(),
+                                      calendarStyle: CalendarStyle(
+                                        outsideDaysVisible: false,
+                                        defaultTextStyle:
+                                            AppStyles.interMediumStyle(
+                                                fontSize: 20)!,
+                                        weekendTextStyle:
+                                            AppStyles.interMediumStyle(
+                                                fontSize: 20)!,
+                                        selectedTextStyle:
+                                            AppStyles.interMediumStyle(
+                                                fontSize: 20,
+                                                color: AppColors.iosBlue)!,
+                                        selectedDecoration: BoxDecoration(
+                                            color: AppColors.iosBlue
+                                                .withOpacity(0.15),
+                                            shape: BoxShape.circle),
+                                        //isTodayHighlighted: false,
+
+                                        todayTextStyle:
+                                            AppStyles.interMediumStyle(
+                                                fontSize: 20,
+                                                color: AppColors.iosBlue)!,
+                                        todayDecoration: const BoxDecoration(
+                                            color: Colors.transparent,
+                                            shape: BoxShape.circle),
+                                        disabledTextStyle:
+                                            AppStyles.interMediumStyle(
+                                                fontSize: 20,
+                                                color: AppColors.calDisColor)!,
+                                      ),
+                                      headerStyle: HeaderStyle(
+                                          leftChevronVisible: false,
+                                          rightChevronVisible: false,
+                                          formatButtonVisible: false,
+                                          headerMargin: EdgeInsets.symmetric(
+                                              horizontal: 12.w),
+                                          titleTextStyle:
+                                              (AppStyles.interSemiBoldStyle(
+                                            fontSize: 18,
+                                          ))!),
+                                      daysOfWeekStyle: DaysOfWeekStyle(
+                                          weekdayStyle:
+                                              AppStyles.interRegularStyle(
+                                                  fontSize: 18,
+                                                  color:
+                                                      AppColors.calDisColor)!,
+                                          weekendStyle:
+                                              AppStyles.interRegularStyle(
+                                                  fontSize: 18,
+                                                  color:
+                                                      AppColors.calDisColor)!),
+                                      currentDay: DateTime.now(),
+                                      calendarFormat: CalendarFormat.month,
+                                      selectedDayPredicate: (day) {
+                                        return isSameDay(
+                                            c.selectedDateTime, day);
+                                      },
+                                      onDaySelected:
+                                          (selectedDay, focusedDay) async {
+                                        debugPrint("selectedDay $selectedDay");
+                                        c.selectedDateTime = selectedDay;
+                                        c.selectedDate =
+                                            DateFormat("yyyy-MM-dd")
+                                                .format(c.selectedDateTime!);
+                                        c.update();
+                                      },
+                                    ),
+                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        c.showCal = false;
+                                        c.update();
+                                      },
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10.h, horizontal: 15.w),
+                                        child: Text(
+                                          AppStrings.done,
+                                          style: AppStyles.interMediumStyle(),
+                                        ),
+                                      ))
+                                ],
+                              ),
+                            ),
+
+                      MyDivider(),
+                      SettingListTile(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        onTap: (() {
+                          c.showTime = !c.showTime!;
+                          c.update();
+                        }),
+                        text: AppStrings.time,
+                        icon: Text(
+                          formatDateToHMMAormat(c.selectedTime), //"6.00 PM",
+                          style: AppStyles.interRegularStyle(fontSize: 16),
+                        ),
+                        radiusBottomLeft: c.showTime! ? 0.0 : 10,
+                        radiusBottomRight: c.showTime! ? 0.0 : 10,
+                        radiusTopLeft: 0.0,
+                        radiusTopRight: 0.0,
+                      ),
+                      !c.showTime!
+                          ? Container()
+                          : GestureDetector(
+                              onVerticalDragStart: (o) {},
+                              onVerticalDragDown: (o) {},
+                              onVerticalDragEnd: (o) {},
+                              onVerticalDragUpdate: (o) {},
+                              onVerticalDragCancel: () {},
+                              child: Container(
+                                padding: EdgeInsets.only(bottom: 18.h),
+                                color: AppColors.texfieldColor,
+                                child: Column(
+                                  children: [
+                                    TimePickerSpinner(
+                                      is24HourMode: false,
+                                      normalTextStyle:
+                                          AppStyles.interMediumStyle(
+                                              fontSize: 23,
+                                              color: AppColors.hintTextColor),
+                                      highlightedTextStyle:
+                                          AppStyles.interSemiBoldStyle(
+                                              fontSize: 24),
+                                      spacing: 20,
+                                      time: c.selectedTime,
+                                      itemHeight: 60,
+                                      isForce2Digits: true,
+                                      onTimeChange: (time) {
+                                        c.selectedTime = time;
+                                        debugPrint("selTime ${c.selectedTime}");
+                                        c.update(); // setState(() {
+                                        //   _dateTime = time;
+                                        // });
+                                      },
+                                    ),
+                                    InkWell(
+                                        onTap: () {
+                                          c.showTime = false;
+                                          c.update();
+                                        },
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.h, horizontal: 15.w),
+                                          child: Text(
+                                            AppStrings.done,
+                                            style: AppStyles.interMediumStyle(),
+                                          ),
+                                        ))
+                                  ],
+                                ),
+                              )),
+                      sizedBoxH(height: 20),
+                      SettingListTile(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        onTap: () {
+                          showFlexibleBottomSheet(
+                            initHeight: 0.75,
+                            isExpand: true,
+                            minHeight: 0,
+                            maxHeight: 0.85,
+                            //isCollapsible: true,
+                            bottomSheetColor: Colors.transparent,
+                            context: getContext(),
+                            builder: (a, b, d) {
+                              return locationSheet(b);
+                            },
+                            anchors: [0, 0.75, 0.85],
+                            isSafeArea: true,
+                          );
+                        },
+                        text: AppStrings.location,
+                        icon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            //Expanded(
+                            //child:
+                            c.selectedLocation != null
+                                ? Text(
+                                    c.selectedLocation?.text ?? "",
+                                    style: AppStyles.interRegularStyle(
+                                      fontSize: 16,
+                                    ),
+                                  )
+                                : Container(),
+                            //),
+                            sizedBoxW(width: 3),
+                            const Icon(
+                              Icons.keyboard_arrow_right,
+                              color: AppColors.textColor,
+                            )
+                          ],
+                        ),
+                      ),
+                      sizedBoxH(height: 67),
+                      // AppGradientButton(
+                      //   btnText: AppStrings.continuee,
+                      //   onPressed: () {
+                      //     getToNamed(createActivityScreen2Route);
+                      //   },
+                      //   height: 47,
+                      //   width: double.infinity,
+                      // ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            floatingActionButton: AppGradientButton(
+                margin: EdgeInsets.only(
+                  left: 30.w,
+                ),
+                width: double.infinity,
+                height: 47,
+                btnText: AppStrings.continuee,
+                onPressed: () {
+                  c.validatePage1();
+                }),
           ),
-          floatingActionButton: AppGradientButton(
-              margin: EdgeInsets.only(
-                left: 30.w,
-              ),
-              width: double.infinity,
-              height: 47,
-              btnText: AppStrings.continuee,
-              onPressed: () {
-                getToNamed(createActivityScreen2Route);
-              }),
         ),
       );
     });
@@ -396,8 +498,11 @@ class CreateActivityScreenView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100.r),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(100.r),
-                              onTap: () {
-                                getToNamed(chooseLocationOnMapScreenRoute);
+                              onTap: () async {
+                                Get.back();
+                                await getToNamed(
+                                    chooseLocationOnMapScreenRoute);
+                                c.update();
                               },
                               child: Center(
                                   child: Row(
@@ -429,7 +534,16 @@ class CreateActivityScreenView extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(vertical: 16.h, horizontal: 22.w),
                     child: SearchTextField(
-                        controller: TextEditingController(),
+                        controller: c.mapSearchCtrl,
+                        onChanged: (t) {
+                          if (t.trim().isEmpty) {
+                            c.mapSearchResults!.clear();
+                            c.update();
+                          } else {
+                            c.searchPlaces(t.trim());
+                          }
+                        },
+                        hint: "Search location",
                         icon: true,
                         radius: 30),
                   ),
@@ -446,74 +560,103 @@ class CreateActivityScreenView extends StatelessWidget {
                   Expanded(
                     child: SingleChildScrollView(
                         controller: b,
-                        child: Column(
-                          children: List.generate(15, (index) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 22.w, vertical: 16.h),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  MyAvatar(
-                                    width: 40,
-                                    height: 40,
-                                    radiusAll: 80,
-                                    url: AppImage.place,
-                                    isSVG: true,
-                                  ),
-                                  sizedBoxW(width: 12),
-                                  Expanded(
+                        child: c.isFetchingLocs!
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                    color: AppColors.orangePrimary),
+                              )
+                            : Column(
+                                children: List.generate(
+                                    c.mapSearchResults!.length, (index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      //lng
+                                      debugPrint(
+                                          "Lat lng ${c.mapSearchResults![index].center![0]} ");
+                                      //lat
+                                      debugPrint(
+                                          "Lat lng ${c.mapSearchResults![index].center![1]} ");
+                                      c.selectedLocation =
+                                          c.mapSearchResults![index];
+                                      Get.back();
+                                    },
                                     child: Container(
-                                      decoration: const BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                        color: AppColors.btnStrokeColor,
-                                      ))),
-                                      child: Column(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 22.w, vertical: 16.h),
+                                      child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                  child: Text(
-                                                "Starbucks coffe Bishan",
-                                                style: AppStyles
-                                                    .interSemiBoldStyle(
-                                                        fontSize: 16,
-                                                        textOverflow:
-                                                            TextOverflow
-                                                                .ellipsis),
-                                              )),
-                                            ],
+                                          MyAvatar(
+                                            width: 40,
+                                            height: 40,
+                                            radiusAll: 80,
+                                            url: AppImage.place,
+                                            isSVG: true,
                                           ),
-                                          sizedBoxW(width: 6),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                  child: Text(
-                                                "51 Bishan Street 13, #01-02 Bishan Community Club, Singapore 579799",
-                                                style:
-                                                    AppStyles.interRegularStyle(
-                                                        fontSize: 14,
-                                                        textOverflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                        color: AppColors
-                                                            .editBorderColor),
-                                              )),
-                                            ],
-                                          ),
-                                          sizedBoxH(height: 20)
+                                          sizedBoxW(width: 12),
+                                          Expanded(
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                  border: Border(
+                                                      bottom: BorderSide(
+                                                color: AppColors.btnStrokeColor,
+                                              ))),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                          child: Text(
+                                                        c.mapSearchResults![index]
+                                                                .text ??
+                                                            "",
+                                                        //"Starbucks coffe Bishan",
+                                                        style: AppStyles
+                                                            .interSemiBoldStyle(
+                                                                fontSize: 16,
+                                                                textOverflow:
+                                                                    TextOverflow
+                                                                        .ellipsis),
+                                                      )),
+                                                    ],
+                                                  ),
+                                                  sizedBoxW(width: 6),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                          child: Text(
+                                                        c
+                                                                .mapSearchResults![
+                                                                    index]
+                                                                .properties
+                                                                ?.address ??
+                                                            "",
+                                                        //"51 Bishan Street 13, #01-ishan Community Club, Singapore 579799",
+                                                        style: AppStyles
+                                                            .interRegularStyle(
+                                                                fontSize: 14,
+                                                                textOverflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                color: AppColors
+                                                                    .editBorderColor),
+                                                      )),
+                                                    ],
+                                                  ),
+                                                  sizedBoxH(height: 20)
+                                                ],
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            );
-                          }),
-                        )),
+                                  );
+                                }),
+                              )),
                   ),
                 ],
               )),
@@ -572,7 +715,16 @@ class CreateActivityScreenView extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(vertical: 16.h, horizontal: 22.w),
                     child: SearchTextField(
-                        controller: TextEditingController(),
+                        controller: c.searchCtrl,
+                        onChanged: (t) {
+                          if (t.trim().isEmpty) {
+                            c.list.clear();
+                            c.list.addAll(c.baseList);
+                            c.update();
+                          } else {
+                            c.search(t.trim());
+                          }
+                        },
                         icon: true,
                         radius: 10),
                   ),
@@ -622,6 +774,8 @@ class CreateActivityScreenView extends StatelessWidget {
                                         c.list[index].setIsSelected =
                                             !c.list[index].getIsSelected!;
                                         //c.isIntrestListEmpty();
+
+                                        c.afterCategoriesSelected(c, c.list);
                                         c.update();
                                       },
                                       child: Row(
@@ -650,8 +804,11 @@ class CreateActivityScreenView extends StatelessWidget {
               )),
           bottomNavigationBar: Padding(
             padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 10.h),
-            child:
-                AppGradientButton(btnText: AppStrings.save, onPressed: () {}),
+            child: AppGradientButton(
+                btnText: AppStrings.save,
+                onPressed: () {
+                  Get.back();
+                }),
           ),
         );
       }),

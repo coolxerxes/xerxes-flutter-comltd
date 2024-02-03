@@ -1,7 +1,9 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member, avoid_init_to_null
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:http_parser/http_parser.dart';
@@ -12,11 +14,13 @@ import 'package:jyo_app/utils/secured_storage.dart';
 
 import '../data/remote/api_interface.dart';
 import '../data/remote/endpoints.dart';
+import '../resources/app_colors.dart';
 
 class SetProfilePicScreenVM extends GetxController {
   NotificationRepoImpl notificationRepoImpl = NotificationRepoImpl();
 
   XFile? selectedAvatar;
+  CroppedFile? selectedAvatarC;
 
   String? userPropic;
   bool? isEnabled = false;
@@ -33,10 +37,42 @@ class SetProfilePicScreenVM extends GetxController {
     SecuredStorage.initiateSecureStorage();
   }
 
+  Future<void> cropImage() async {
+    selectedAvatarC = await ImageCropper().cropImage(
+      sourcePath: selectedAvatar!.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        // CropAspectRatioPreset.ratio3x2,
+        // CropAspectRatioPreset.original,
+        // CropAspectRatioPreset.ratio4x3,
+        // CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: AppColors.orangePrimary,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Cropper',
+          aspectRatioLockEnabled: true,
+        ),
+        // WebUiSettings(
+        //   context: context,
+        // ),
+      ],
+    );
+  }
+
   void pickImage(ImageSource source) async {
     selectedAvatar = await ImagePicker().pickImage(source: source);
     if (selectedAvatar != null) {
-      addPropicApi();
+      await cropImage();
+      if (selectedAvatarC != null) {
+        addPropicApi();
+      }
     }
     update();
   }
@@ -69,8 +105,8 @@ class SetProfilePicScreenVM extends GetxController {
       });
 
       //[4] ADD IMAGE TO UPLOAD
-      if (selectedAvatar != null) {
-        var file = await dio.MultipartFile.fromFile(selectedAvatar!.path,
+      if (selectedAvatarC != null) {
+        var file = await dio.MultipartFile.fromFile(selectedAvatarC!.path,
             filename: "profile_pic_" + DateTime.now().toIso8601String(),
             contentType: MediaType(
               "image",
@@ -81,7 +117,7 @@ class SetProfilePicScreenVM extends GetxController {
       }
 
       //[5] SEND TO SERVER
-      if (selectedAvatar != null) {
+      if (selectedAvatarC != null) {
         var response = await dioRequest.post(
           ApiInterface.baseUrl +
               Endpoints.user +
@@ -98,7 +134,7 @@ class SetProfilePicScreenVM extends GetxController {
           isEnabled = true;
           await SecuredStorage.writeStringValue(
               Keys.profile, userPropic.toString());
-         // await notificationApi();
+          // await notificationApi();
           isUploading = false;
           //isNotUploading = true;
         } else {
@@ -109,7 +145,6 @@ class SetProfilePicScreenVM extends GetxController {
         }
         update();
         //Navigator.of(context).pop();
-
       } else {
         //Navigator.of(context).pop();
         // isNotUploading = true;
@@ -123,7 +158,6 @@ class SetProfilePicScreenVM extends GetxController {
       if (err.response == null) {
         debugPrint("Error 1");
         //isNotUploading = true;
-
       }
       if (err.response != null && err.response!.statusCode == 413) {
         debugPrint("Error 413");
