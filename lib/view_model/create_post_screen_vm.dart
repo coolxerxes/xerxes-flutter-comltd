@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jyo_app/data/local/post_edit_model.dart';
-import 'package:jyo_app/models/group_suggestion_model/accept_or_reject_group_invite.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
 import 'package:jyo_app/repository/post_repo/post_repo_impl.dart';
 import 'package:jyo_app/repository/profile_repo/profile_repo_impl.dart';
@@ -358,20 +357,19 @@ class CreatePostScreenVM extends GetxController {
   }
 
   void search(String t) {
-    friends!
-        .assignAll(searchedFriends!.where((Datum p0) => (t.toString().isEmpty
-            ? true
-            : (p0.user!.firstName.toString().toLowerCase() +
-                    " " + //.contains(t.toString().toLowerCase()) ||
-                    p0.user!.lastName.toString().toLowerCase())
-                // (p0.user!.firstName
-                //         .toString()
-                //         .toLowerCase()
-                //         .contains(t.toString().toLowerCase()) ||
-                //     p0.user!.lastName
-                //         .toString()
-                //         .toLowerCase()
-                .contains(t.toString().toLowerCase()))));
+    friends!.assignAll(searchedFriends!.where((Datum p0) => (t
+            .toString()
+            .isEmpty
+        ? true
+        : ("${p0.user!.firstName.toString().toLowerCase()} ${p0.user!.lastName.toString().toLowerCase()}")
+            // (p0.user!.firstName
+            //         .toString()
+            //         .toLowerCase()
+            //         .contains(t.toString().toLowerCase()) ||
+            //     p0.user!.lastName
+            //         .toString()
+            //         .toLowerCase()
+            .contains(t.toString().toLowerCase()))));
   }
 
   Future<void> fetchPostPrivacy() async {

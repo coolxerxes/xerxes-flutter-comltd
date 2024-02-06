@@ -70,7 +70,7 @@ class PhoneNumberVM extends GetxController {
       var status = await Permission.phone.status;
       if (!status.isGranted) {
         final result = await Permission.phone.request();
-        if (result. isGranted) {
+        if (result.isGranted) {
           getDeviceInformation();
         }
         if (result.isPermanentlyDenied) {
@@ -87,7 +87,7 @@ class PhoneNumberVM extends GetxController {
     code = await countryPicker.showPicker(context: context);
     if (code != null) {
       cCode = code!.dialCode;
-      flage = code!.flagImage;
+      flage = code!.flagImage();
       if (phoneNoCtr.text.trim().length == 8 &&
           isChangingPhoneNo! &&
           ((cCode.toString().trim() + phoneNoCtr.text.trim()) !=
@@ -98,7 +98,7 @@ class PhoneNumberVM extends GetxController {
       } else {
         if (isChangingPhoneNo!) {
           isEnabled = false;
-        update();
+          update();
         }
       }
       update();
@@ -129,7 +129,7 @@ class PhoneNumberVM extends GetxController {
 //      debugPrint("RESPONSE ${response?.status}");
       if (response.status == 200) {
         existingPhNo = response.data!.hpNo.toString().trim();
-        existingCCode = "+" + response.data!.countryCode.toString().trim();
+        existingCCode = "+${response.data!.countryCode.toString().trim()}";
       } else {
         showAppDialog(msg: response.message.toString());
       }

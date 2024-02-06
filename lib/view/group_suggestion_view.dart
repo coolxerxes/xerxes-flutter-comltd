@@ -16,7 +16,6 @@ import '../models/group_suggestion_model/group_list_model.dart';
 import '../resources/app_image.dart';
 import '../utils/app_widgets/registration_top_nav.dart';
 import '../view_model/group_suggestion_screen_vm.dart';
-import '../view_model/most_liked_screen_vm.dart';
 
 class GroupSuggestionScreenView extends StatelessWidget {
   const GroupSuggestionScreenView({Key? key}) : super(key: key);
@@ -194,7 +193,7 @@ class GroupCard extends StatelessWidget {
                     children: [
                       Expanded(
                           child: Text(
-                        groupData!.memberCount.toString() + " members",
+                        "${groupData!.memberCount} members",
                         style: AppStyles.interRegularStyle(
                             fontSize: 14.0, color: AppColors.hintTextColor),
                         textAlign: TextAlign.start,

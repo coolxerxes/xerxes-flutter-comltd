@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/resources/app_colors.dart';
 import 'package:jyo_app/resources/app_image.dart';
-import 'package:jyo_app/utils/app_widgets/app_bar.dart';
 import 'package:jyo_app/view_model/qr_screen_vm.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -37,6 +36,7 @@ class QrScreenView extends StatelessWidget {
                         transform: GradientRotation(240) //120
 
                         )),
+                alignment: Alignment.center,
                 child: Container(
                   width: 250,
                   height: 250,
@@ -44,19 +44,18 @@ class QrScreenView extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(32)),
                 ),
-                alignment: Alignment.center,
               ),
               controller.isGenerateQrCode
-                  ? CircularProgressIndicator(
+                  ? const CircularProgressIndicator(
                       color: AppColors.orangePrimary,
                     )
                   : QrImageView(
                       data: controller.qrData,
                       size: 200,
-                      embeddedImage: AssetImage(AppImage.jioLogoQr),
+                      embeddedImage: const AssetImage(AppImage.jioLogoQr),
                       gapless: true,
                       embeddedImageStyle:
-                          QrEmbeddedImageStyle(size: Size(20, 20)),
+                          const QrEmbeddedImageStyle(size: Size(20, 20)),
                     ),
             ],
           ),

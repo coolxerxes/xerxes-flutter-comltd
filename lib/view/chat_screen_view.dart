@@ -1,7 +1,6 @@
-import 'package:cometchat/cometchat_sdk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart' as uikit;
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as uikit;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/resources/app_colors.dart';
@@ -46,7 +45,7 @@ class ChatScreenView extends StatelessWidget {
             ],
             middle: [
               c.conversation != null
-                  ? (c.conversation!.conversationWith as User)
+                  ? (c.conversation!.conversationWith as uikit.User)
                           .avatar!
                           .trim()
                           .isEmpty
@@ -57,7 +56,7 @@ class ChatScreenView extends StatelessWidget {
                           radiusAll: 16,
                         )
                       : MyAvatar(
-                          url: (c.conversation!.conversationWith as User)
+                          url: (c.conversation!.conversationWith as uikit.User)
                               .avatar!,
                           height: 40,
                           width: 40,
@@ -88,7 +87,7 @@ class ChatScreenView extends StatelessWidget {
               sizedBoxW(width: 8),
               Text(
                 c.conversation != null
-                    ? (c.conversation!.conversationWith as User).name
+                    ? (c.conversation!.conversationWith as uikit.User).name
                     : c.group != null
                         ? ("${c.group!.name.toString()}\n${c.group!.membersCount.toString()} members")
                         : "",
@@ -117,7 +116,7 @@ class ChatScreenView extends StatelessWidget {
                                     onPressed: () {}),
                                 CupertinoActionSheetAction(
                                   child: Text(
-                                    AppStrings.blockUser + " user",
+                                    "${AppStrings.blockUser} user",
                                     style: AppStyles.interRegularStyle(
                                         color: Colors.red),
                                   ),
@@ -139,7 +138,7 @@ class ChatScreenView extends StatelessWidget {
                                     c.messageList.clear();
                                     c.update();
                                     c.deleteConvo(c.receiver!.uid,
-                                        CometChatConversationType.user);
+                                        uikit.CometChatConversationType.user);
                                     c.init();
                                     Get.offNamed(chatScreenRoute,
                                         preventDuplicates: false);
@@ -148,15 +147,15 @@ class ChatScreenView extends StatelessWidget {
                                 )
                               ],
                                   cancelButton: CupertinoActionSheetAction(
+                                    isDefaultAction: true,
+                                    onPressed: () {
+                                      Navigator.pop(context, AppStrings.cancel);
+                                    },
                                     child: Text(
                                       AppStrings.cancel,
                                       style: AppStyles.interRegularStyle(
                                           color: AppColors.iosBlue),
                                     ),
-                                    isDefaultAction: true,
-                                    onPressed: () {
-                                      Navigator.pop(context, AppStrings.cancel);
-                                    },
                                   )),
                         );
                       },
@@ -183,7 +182,7 @@ class ChatScreenView extends StatelessWidget {
                 )
               : uikit.CometChatMessageList(
                   group: c.group,
-                  user: c.conversation?.conversationWith as User?,
+                  user: c.conversation?.conversationWith as uikit.User?,
                   messageListStyle: const uikit.MessageListStyle(),
 
                   theme: uikit.CometChatTheme(
@@ -329,7 +328,8 @@ class ChatScreenView extends StatelessWidget {
                               child: uikit.CometChatMessageComposer(
                                 group: c.group,
                                 user: c.conversation != null
-                                    ? c.conversation!.conversationWith as User
+                                    ? c.conversation!.conversationWith
+                                        as uikit.User
                                     : null,
                                 hideLiveReaction: true,
                                 placeholderText: AppStrings.saySomething,

@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/models/posts_model/TSuggestedPeople.dart';
-import 'package:jyo_app/repository/freinds_repo/freinds_repo.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
 import 'package:jyo_app/repository/post_repo/post_repo_impl.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';

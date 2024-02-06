@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:bottom_sheet/bottom_sheet.dart';
@@ -281,7 +280,7 @@ class TimelineScreenView extends StatelessWidget {
                                                     'POST'
                                                 ? PostWidget.post(
                                                     c.postsVM, c, index)
-                                                : SizedBox();
+                                                : const SizedBox();
                                           }),
                                           if (c.tSuggestedPeople!.data!
                                               .isNotEmpty)
@@ -291,7 +290,8 @@ class TimelineScreenView extends StatelessWidget {
                                                   height: 8.h,
                                                 ),
                                                 Container(
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       vertical: 24,
                                                       horizontal: 22),
                                                   color: Colors.white,
@@ -436,7 +436,8 @@ class TimelineScreenView extends StatelessWidget {
 
   suggestedPeople(TimelineScreenVM c, int index) {
     return Container(
-      padding: EdgeInsetsDirectional.symmetric(vertical: 24, horizontal: 22),
+      padding:
+          const EdgeInsetsDirectional.symmetric(vertical: 24, horizontal: 22),
       height: 192,
       width: 304,
       decoration: BoxDecoration(
@@ -554,7 +555,8 @@ class TimelineScreenView extends StatelessWidget {
                       height: 4.h,
                     ),
                     Text(
-                      '${c.tSuggestedPeople!.data![index].userInfo!.biography ?? ''}',
+                      c.tSuggestedPeople!.data![index].userInfo!.biography ??
+                          '',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: AppStyles.interRegularStyle(fontSize: 13),
@@ -564,7 +566,7 @@ class TimelineScreenView extends StatelessWidget {
               )
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Row(
             children: [
               !c.tSuggestedPeople!.data![index].isRequestSent!
@@ -619,15 +621,15 @@ class TimelineScreenView extends StatelessWidget {
                                 )
                               ],
                                   cancelButton: CupertinoActionSheetAction(
+                                    isDefaultAction: true,
+                                    onPressed: () {
+                                      Navigator.pop(context, AppStrings.cancel);
+                                    },
                                     child: Text(
                                       AppStrings.cancel,
                                       style: AppStyles.interRegularStyle(
                                           color: AppColors.iosBlue),
                                     ),
-                                    isDefaultAction: true,
-                                    onPressed: () {
-                                      Navigator.pop(context, AppStrings.cancel);
-                                    },
                                   )),
                         );
                       },
@@ -663,7 +665,7 @@ class TimelineScreenView extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100.r),
                   child: Container(
-                    padding: EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(6),
                     color: AppColors.btnStrokeColor,
                     child: SvgPicture.asset(
                       AppIcons.closeSvg,
@@ -686,7 +688,7 @@ class PostWidget {
   static activity(TimelineScreenVM c, index) {
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 22.w),
       child: Column(
         children: [
@@ -913,9 +915,7 @@ class PostWidget {
                                   // c.bsv.changePage(4);
                                 },
                                 child: Text(
-                                  orgC.firstName.toString() +
-                                      " " +
-                                      orgC.lastName.toString(),
+                                  "${orgC.firstName} ${orgC.lastName}",
                                   style: AppStyles.interSemiBoldStyle(
                                       fontSize: 16, color: AppColors.black),
                                 ),
@@ -935,13 +935,7 @@ class PostWidget {
                                   }
                                 },
                                 child: Text(
-                                  c.postsList[index].userInfo!.userInfo!
-                                          .firstName
-                                          .toString() +
-                                      " " +
-                                      c.postsList[index].userInfo!.userInfo!
-                                          .lastName
-                                          .toString(),
+                                  "${c.postsList[index].userInfo!.userInfo!.firstName} ${c.postsList[index].userInfo!.userInfo!.lastName}",
                                   style: AppStyles.interSemiBoldStyle(
                                       fontSize: 16, color: AppColors.black),
                                 ),
@@ -998,16 +992,16 @@ class PostWidget {
                                     )
                                   ],
                                       cancelButton: CupertinoActionSheetAction(
-                                        child: Text(
-                                          AppStrings.cancel,
-                                          style: AppStyles.interRegularStyle(
-                                              color: AppColors.iosBlue),
-                                        ),
                                         isDefaultAction: true,
                                         onPressed: () {
                                           Navigator.pop(
                                               context, AppStrings.cancel);
                                         },
+                                        child: Text(
+                                          AppStrings.cancel,
+                                          style: AppStyles.interRegularStyle(
+                                              color: AppColors.iosBlue),
+                                        ),
                                       )),
                             );
                           },
@@ -1079,11 +1073,8 @@ class PostWidget {
                                         color: AppColors.ageColor),
                                     children: [
                                       TextSpan(
-                                        text: c.postsList[index].tagUserInfo!
-                                                .userData!.firstName! +
-                                            " " +
-                                            c.postsList[index].tagUserInfo!
-                                                .userData!.lastName!,
+                                        text:
+                                            "${c.postsList[index].tagUserInfo!.userData!.firstName!} ${c.postsList[index].tagUserInfo!.userData!.lastName!}",
                                         style: AppStyles.interMediumStyle(
                                             fontSize: 15,
                                             color: AppColors.orangePrimary),
@@ -1145,15 +1136,13 @@ class PostWidget {
                                     String? fullPath;
                                     if (Platform.isIOS) {
                                       tempDir = await getTemporaryDirectory();
-                                      fullPath = tempDir
-                                              .absolute.path + //tempDir!.path
-                                          "/${c.postsList[index].document![idx].s3Name.toString()}"; //"/boo2.pdf'";
+                                      fullPath =
+                                          "${tempDir.absolute.path}/${c.postsList[index].document![idx].s3Name.toString()}"; //"/boo2.pdf'";
                                     } else if (Platform.isAndroid) {
                                       tempDir =
                                           await getExternalStorageDirectory(); //await getTemporaryDirectory();
-                                      fullPath = tempDir!
-                                              .absolute.path + //tempDir!.path
-                                          "/${c.postsList[index].document![idx].s3Name.toString()}"; //"/boo2.pdf'";
+                                      fullPath =
+                                          "${tempDir!.absolute.path}/${c.postsList[index].document![idx].s3Name.toString()}"; //"/boo2.pdf'";
                                     }
 
                                     debugPrint(
@@ -2040,7 +2029,7 @@ class PostWidget {
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText:
-                                  "Reply to ${commentList[index].userInfoData!.firstName.toString() + " " + commentList[index].userInfoData!.lastName.toString()}")),
+                                  "Reply to ${"${commentList[index].userInfoData!.firstName} ${commentList[index].userInfoData!.lastName}"}")),
                     ),
                     sizedBoxW(width: 8),
                     InkWell(
@@ -2270,14 +2259,14 @@ class PostWidget {
           builder: (BuildContext context) => CupertinoActionSheet(
               actions: actions,
               cancelButton: CupertinoActionSheetAction(
-                child: Text(
-                  AppStrings.cancel,
-                  style: AppStyles.interRegularStyle(color: AppColors.iosBlue),
-                ),
                 isDefaultAction: true,
                 onPressed: () {
                   Navigator.pop(context, AppStrings.cancel);
                 },
+                child: Text(
+                  AppStrings.cancel,
+                  style: AppStyles.interRegularStyle(color: AppColors.iosBlue),
+                ),
               )),
         );
       },
@@ -2362,13 +2351,7 @@ class PostWidget {
                       },
                       child: Text(
                         //c.
-                        commentList[index].userInfoData!.firstName.toString() +
-                            " " +
-                            //c.
-                            commentList[index]
-                                .userInfoData!
-                                .lastName
-                                .toString(),
+                        "${commentList[index].userInfoData!.firstName} ${commentList[index].userInfoData!.lastName}",
                         style: AppStyles.interSemiBoldStyle(
                             fontSize: 16, color: AppColors.textColor),
                       )),
@@ -2690,16 +2673,10 @@ class PostWidget {
                 Expanded(
                   child: Text(
                     type == 2
-                        ? list[index].userInfo.firstName.toString() +
-                            " " +
-                            list[index].userInfo.lastName.toString()
+                        ? "${list[index].userInfo.firstName} ${list[index].userInfo.lastName}"
                         : type == 1
-                            ? list[index].jioMeUserList.firstName.toString() +
-                                " " +
-                                list[index].jioMeUserList.lastName.toString()
-                            : list[index].firstName.toString() +
-                                " " +
-                                list[index].lastName.toString(),
+                            ? "${list[index].jioMeUserList.firstName} ${list[index].jioMeUserList.lastName}"
+                            : "${list[index].firstName} ${list[index].lastName}",
                     style: AppStyles.interMediumStyle(fontSize: 15.4),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,

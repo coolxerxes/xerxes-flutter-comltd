@@ -11,15 +11,15 @@ class TSuggestedPeople {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -31,11 +31,11 @@ class Data {
   int? id;
   String? hpNo;
   int? countryCode;
-  Null? email;
+  Null email;
   String? providerKey;
   String? imNo;
   String? lastLogin;
-  Null? lastUpdate;
+  Null lastUpdate;
   bool? isOverviewed;
   int? overviewStep;
   bool? isDelete;
@@ -73,27 +73,26 @@ class Data {
     isDelete = json['isDelete'];
     createdDate = json['createdDate'];
     isRequestSent = false;
-    userInfo = json['userInfo'] != null
-        ? new UserInfo.fromJson(json['userInfo'])
-        : null;
+    userInfo =
+        json['userInfo'] != null ? UserInfo.fromJson(json['userInfo']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['hpNo'] = this.hpNo;
-    data['countryCode'] = this.countryCode;
-    data['email'] = this.email;
-    data['providerKey'] = this.providerKey;
-    data['imNo'] = this.imNo;
-    data['lastLogin'] = this.lastLogin;
-    data['lastUpdate'] = this.lastUpdate;
-    data['isOverviewed'] = this.isOverviewed;
-    data['overviewStep'] = this.overviewStep;
-    data['isDelete'] = this.isDelete;
-    data['createdDate'] = this.createdDate;
-    if (this.userInfo != null) {
-      data['userInfo'] = this.userInfo!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['hpNo'] = hpNo;
+    data['countryCode'] = countryCode;
+    data['email'] = email;
+    data['providerKey'] = providerKey;
+    data['imNo'] = imNo;
+    data['lastLogin'] = lastLogin;
+    data['lastUpdate'] = lastUpdate;
+    data['isOverviewed'] = isOverviewed;
+    data['overviewStep'] = overviewStep;
+    data['isDelete'] = isDelete;
+    data['createdDate'] = createdDate;
+    if (userInfo != null) {
+      data['userInfo'] = userInfo!.toJson();
     }
     return data;
   }
@@ -152,22 +151,22 @@ class UserInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['userId'] = this.userId;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['fullName'] = this.fullName;
-    data['username'] = this.username;
-    data['biography'] = this.biography;
-    data['gender'] = this.gender;
-    data['qrcode'] = this.qrcode;
-    data['profilePic'] = this.profilePic;
-    data['birthday'] = this.birthday;
-    data['privateAccount'] = this.privateAccount;
-    data['privateActivity'] = this.privateActivity;
-    data['appearanceSearch'] = this.appearanceSearch;
-    data['lastUpdate'] = this.lastUpdate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['userId'] = userId;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['fullName'] = fullName;
+    data['username'] = username;
+    data['biography'] = biography;
+    data['gender'] = gender;
+    data['qrcode'] = qrcode;
+    data['profilePic'] = profilePic;
+    data['birthday'] = birthday;
+    data['privateAccount'] = privateAccount;
+    data['privateActivity'] = privateActivity;
+    data['appearanceSearch'] = appearanceSearch;
+    data['lastUpdate'] = lastUpdate;
     return data;
   }
 }

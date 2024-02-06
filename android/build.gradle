@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.6.10'
+    ext.kotlin_version = '1.9.22'
     repositories {
         google()
         mavenCentral()
@@ -7,12 +7,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.0'
+        classpath 'com.android.tools.build:gradle:7.2.1'
         // START: FlutterFire Configuration
         classpath 'com.google.gms:google-services:4.3.10'
         // END: FlutterFire Configuration
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.huawei.agconnect:agcp:1.5.2.300'
+        classpath "com.huawei.agconnect:agcp:1.7.1.300"
     }
 }
 
@@ -20,7 +20,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven {url 'https://developer.huawei.com/repo/'}
+        maven {
+            url 'https://developer.huawei.com/repo/'
+            url "https://dl.cloudsmith.io/public/cometchat/cometchat/maven/"
+        }
     }
 }
 
@@ -32,6 +35,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

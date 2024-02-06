@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +26,7 @@ class PostOrActivityModel {
 
     if (res is TimelineResponseModel) {
       for (var i = 0; i < res.data!.length; i++) {
-        print('------' + res.data![i].activityParticipantsCount.toString());
+        print('------${res.data![i].activityParticipantsCount}');
         postsOrActivities.add(PostOrActivity(
           activityId: res.data![i].activityId,
           attachment: res.data![i].attachment,

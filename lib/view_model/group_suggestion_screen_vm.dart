@@ -1,21 +1,13 @@
-import 'dart:developer';
-import 'package:cometchat/cometchat_sdk.dart' as c;
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as c;
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:jyo_app/repository/group_repo/group_repo.dart';
 import 'package:jyo_app/repository/group_repo/group_repo_impl.dart';
-import 'package:jyo_app/resources/app_image.dart';
-import 'package:jyo_app/view_model/most_liked_screen_vm.dart';
-import 'package:jyo_app/view_model/posts_and_activities_vm.dart';
 
-import '../models/group_suggestion_model/group_list_model.dart';
 import '../models/group_suggestion_model/group_suggestion_model.dart';
-import '../repository/freinds_repo/freinds_repo_impl.dart';
 import '../utils/common.dart';
 import '../utils/secured_storage.dart';
-import 'base_screen_vm.dart';
 
 class GroupSuggestionScreenVM extends GetxController {
   List<GroupSuggestionItem> list = List.empty(growable: true);
@@ -41,14 +33,14 @@ class GroupSuggestionScreenVM extends GetxController {
 
     if (tListGroupSuggestion!.status == 200) {
       list.clear();
-      tListGroupSuggestion!.data!.forEach((element) {
+      for (var element in tListGroupSuggestion!.data!) {
         list.add(GroupSuggestionItem(
             id: element.id,
             heading: "${element.groupName}",
             member: "${element.memberCount}",
             image: '${element.groupImage}',
             isJoinedGroup: element.isJoinedGroup));
-      });
+      }
     } else {
       showAppDialog(msg: tListGroupSuggestion!.message.toString());
     }
@@ -69,16 +61,16 @@ class GroupSuggestionScreenVM extends GetxController {
     String lastName = (await SecuredStorage.readStringValue(Keys.lastName))!;
     await groupRepoImpl.requestToJoin({
       "userId": userId.toString(),
-      "groupId": list![index].id.toString()
+      "groupId": list[index].id.toString()
     }).then((res) {
       if (res.status == 200) {
-        list![index].isJoinedGroup = !list![index].isJoinedGroup!;
+        list[index].isJoinedGroup = !list[index].isJoinedGroup!;
         if (res.data!.status.toString().trim() == "Approved") {
           //join group.
           addMemberToGroupCometChat(
-              groupId: list![index].id.toString(),
+              groupId: list[index].id.toString(),
               userId: userId.toString(),
-              userName: firstName + " " + lastName);
+              userName: "$firstName $lastName");
         }
       } else {
         showAppDialog(msg: res.message);

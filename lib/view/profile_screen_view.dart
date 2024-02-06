@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,11 +13,9 @@ import 'package:jyo_app/resources/app_image.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/resources/app_strings.dart';
 import 'package:jyo_app/resources/app_styles.dart';
-import 'package:jyo_app/utils/DynamicLinkHandler.dart';
 import 'package:jyo_app/utils/app_widgets/app_bar.dart';
 import 'package:jyo_app/utils/app_widgets/app_gradient_btn.dart';
 import 'package:jyo_app/utils/common.dart';
-import 'package:jyo_app/view/qr_screen_view.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
 import 'package:jyo_app/view_model/activity_details_screen_vm.dart';
 import 'package:jyo_app/view_model/posts_and_activities_vm.dart';
@@ -28,7 +24,6 @@ import 'package:latlong2/latlong.dart';
 
 import '../data/local/user_search_model.dart';
 import '../utils/app_widgets/app_icon_button.dart';
-import '../utils/secured_storage.dart';
 import '../view_model/freindlist_screen_vm.dart';
 import 'explore_screen_view.dart';
 
@@ -242,7 +237,7 @@ class ProfileScreenView extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  c.firstName! + " " + c.lastName!,
+                                  "${c.firstName!} ${c.lastName!}",
                                   style: AppStyles.interSemiBoldStyle(
                                       fontSize: 18.0),
                                 ),
@@ -265,7 +260,7 @@ class ProfileScreenView extends StatelessWidget {
                                 : Row(
                                     children: [
                                       Text(
-                                        "@" + c.userName!,
+                                        "@${c.userName!}",
                                         style: AppStyles.interRegularStyle(
                                             fontSize: 15.0,
                                             color: AppColors.hintTextColor),

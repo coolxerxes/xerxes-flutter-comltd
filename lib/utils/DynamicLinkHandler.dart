@@ -55,8 +55,8 @@ class DynamicLinkHandler {
       //add urlPrefix as per point 3.2
       uriPrefix: 'https://jioyouout.page.link',
       //add link as per point 4.7
-      link: Uri.parse('https://jioyouout.page.link/${itemId}'),
-      androidParameters: AndroidParameters(
+      link: Uri.parse('https://jioyouout.page.link/$itemId'),
+      androidParameters: const AndroidParameters(
         //android/app/build.gradle
         packageName: 'com.jioyouout',
         minimumVersion: 0,
@@ -67,7 +67,7 @@ class DynamicLinkHandler {
       // d: DynamicLinkParameters(
       //   shortDynamicLinkPathLength: ShortDynamicLinkPathLength.short,
       // ),
-      iosParameters: IOSParameters(
+      iosParameters: const IOSParameters(
         bundleId: 'com.jioyouout',
         minimumVersion: '0',
       ),

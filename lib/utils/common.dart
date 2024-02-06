@@ -1,4 +1,4 @@
-import 'package:cometchat/cometchat_sdk.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +8,6 @@ import 'package:jyo_app/utils/dialog_service/dialog_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jyo_app/utils/secured_storage.dart';
 
-import '../resources/app_colors.dart';
 import '../resources/app_strings.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -44,19 +43,19 @@ void showAppDialog(
     builder: (BuildContext context) {
       List<CupertinoDialogAction> actions = List.empty(growable: true);
       actions.add(CupertinoDialogAction(
-        child: Text(btnText ?? AppStrings.okay),
         onPressed: onPressed ??
             () {
               Navigator.pop(context);
             },
+        child: Text(btnText ?? AppStrings.okay),
       ));
       if (btnText2 != null) {
         actions.add(CupertinoDialogAction(
-          child: Text(btnText2),
           onPressed: onPressed2 ??
               () {
                 Navigator.pop(context);
               },
+          child: Text(btnText2),
         ));
       }
       return CupertinoAlertDialog(

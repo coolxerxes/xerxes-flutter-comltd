@@ -26,17 +26,17 @@ class LoginVM extends GetxController {
   void fbLogin() async {
     showAppDialog(msg: "Facebook login is comming soon.");
     //Will Uncomment it later, NOT TO BE DELETED!
-    // final result =
-    //     await FacebookAuth.i.login(permissions: ["public_profile", "email"]);
-    // if (result.status == LoginStatus.success) {
-    //   final requestData = await FacebookAuth.i.getUserData(
-    //     fields: "email,name",
-    //   );
+    final result =
+        await FacebookAuth.i.login(permissions: ["public_profile", "email"]);
+    if (result.status == LoginStatus.success) {
+      final requestData = await FacebookAuth.i.getUserData(
+        fields: "email,name",
+      );
 
-    //   fbUserData = requestData;
-    //   debugPrint("FB_USER_DATA $fbUserData");
-    //   update();
-    // }
+      fbUserData = requestData;
+      debugPrint("FB_USER_DATA $fbUserData");
+      update();
+    }
   }
 
   void googleLogin() async {

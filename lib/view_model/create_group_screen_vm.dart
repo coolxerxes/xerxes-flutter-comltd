@@ -1,5 +1,5 @@
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -116,9 +116,9 @@ class CreateGroupScreenVM extends GetxController {
       if (list[i].getIsSelected!) {
         count++;
         if (count == 1) {
-          c.selectedCategories = c.selectedCategories + "${list[i].name}";
+          c.selectedCategories = "${c.selectedCategories}${list[i].name}";
         } else {
-          c.selectedCategories = c.selectedCategories + ", ${list[i].name}";
+          c.selectedCategories = "${c.selectedCategories}, ${list[i].name}";
         }
       }
     }
@@ -195,25 +195,24 @@ class CreateGroupScreenVM extends GetxController {
         showAppDialog(msg: res.message!.toString());
       }
     }).onError((error, stackTrace) {
-      showAppDialog(msg: "ERROR " + error.toString());
+      showAppDialog(msg: "ERROR $error");
     });
   }
 
   void searchFriends(String t) {
-    friends!
-        .assignAll(searchedFriends!.where((f.Datum p0) => (t.toString().isEmpty
-            ? true
-            : (p0.user!.firstName.toString().toLowerCase() +
-                    " " + //.contains(t.toString().toLowerCase()) ||
-                    p0.user!.lastName.toString().toLowerCase())
-                //  (p0.user!.firstName
-                //         .toString()
-                //         .toLowerCase()
-                //         .contains(t.toString().toLowerCase()) ||
-                //     p0.user!.lastName
-                //         .toString()
-                //         .toLowerCase()
-                .contains(t.toString().toLowerCase()))));
+    friends!.assignAll(searchedFriends!.where((f.Datum p0) => (t
+            .toString()
+            .isEmpty
+        ? true
+        : ("${p0.user!.firstName.toString().toLowerCase()} ${p0.user!.lastName.toString().toLowerCase()}")
+            //  (p0.user!.firstName
+            //         .toString()
+            //         .toLowerCase()
+            //         .contains(t.toString().toLowerCase()) ||
+            //     p0.user!.lastName
+            //         .toString()
+            //         .toLowerCase()
+            .contains(t.toString().toLowerCase()))));
   }
 
   void search(String query) {

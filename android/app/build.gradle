@@ -40,10 +40,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-        checkReleaseBuilds false
-    }
 
     defaultConfig {
         applicationId "com.jioyouout"
@@ -69,12 +65,12 @@ android {
         //    storePassword keystoreProperties['storePassword']
         // }
 
-        debug {
-            keyAlias 'jyokey'
-            keyPassword 'jyokey'
-            storeFile file('jyokey.jks')
-            storePassword 'jyokey'
-        }
+        // debug {
+        //     keyAlias 'jyokey'
+        //     keyPassword 'jyokey'
+        //     storeFile file('jyokey.jks')
+        //     storePassword 'jyokey'
+        // }
     }
 
     buildTypes {
@@ -100,6 +96,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    lint {
+        checkReleaseBuilds false
+        disable 'InvalidPackage'
+    }
 }
 
 flutter {
@@ -109,5 +109,5 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.multidex:multidex:2.0.1"
-    implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
+    implementation 'com.cometchat:chat-sdk-android:4.0.4'
 }

@@ -1,4 +1,4 @@
-import 'package:cometchat/cometchat_sdk.dart' as c;
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as c;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/models/group_suggestion_model/group_list_model.dart';
@@ -143,7 +143,7 @@ class SearchScreenVM extends GetxController {
           addMemberToGroupCometChat(
               groupId: groupResults[index].groupId.toString(),
               userId: userId.toString(),
-              userName: firstName + " " + lastName);
+              userName: "$firstName $lastName");
         }
       } else {
         showAppDialog(msg: res.message);

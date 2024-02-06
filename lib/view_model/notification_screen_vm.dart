@@ -1,5 +1,4 @@
-import 'package:cometchat/cometchat_sdk.dart';
-import 'package:cometchat/main/cometchat.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/data/local/notification_type.dart';
@@ -14,8 +13,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../models/notification_model/pending_friend_req_response_model.dart';
 import '../models/notification_model/notification_history_response.dart' as n;
 import '../repository/activities_repo/activities_repo_impl.dart';
-import 'package:jyo_app/models/activity_model/activity_request_list_model.dart'
-    as r;
 
 class NotificationScreenVM extends GetxController {
   final notificationRepoImpl = NotificationRepoImpl();
@@ -35,9 +32,8 @@ class NotificationScreenVM extends GetxController {
 
   Future<void> init() async {
     userId = await SecuredStorage.readStringValue(Keys.userId);
-    userName = (await SecuredStorage.readStringValue(Keys.firstName))! +
-        " " +
-        (await SecuredStorage.readStringValue(Keys.lastName))!;
+    userName =
+        "${(await SecuredStorage.readStringValue(Keys.firstName))!} ${(await SecuredStorage.readStringValue(Keys.lastName))!}";
     await getPendingFriendList();
     await getNotifications();
   }

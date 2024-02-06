@@ -1,6 +1,5 @@
-
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
 import 'package:jyo_app/utils/common.dart';
@@ -35,17 +34,17 @@ class ChatScreenVM extends GetxController
   void init() async {
     user = await CometChat.getLoggedInUser();
     sender = user;
-    if(conversation!=null)
-    {receiver = conversation!.conversationWith as User;}
+    if (conversation != null) {
+      receiver = conversation!.conversationWith as User;
+    }
     _dateString = DateTime.now().millisecondsSinceEpoch.toString();
     _uiMessageListener = "${_dateString}UI_message_listener";
     //textEditingController = TextEditingController(text: text);
 
     CometChatMessageEvents.addMessagesListener(_uiMessageListener, this);
     //CometChatUIEvents.addUiListener(_uiEventListener, this);
-    
 
-     //TEMP Comment.
+    //TEMP Comment.
     // MessagesRequest messagesRequest =
     //     (MessagesRequestBuilder()..uid = receiver!.uid).build();
 

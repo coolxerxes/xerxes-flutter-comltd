@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:cometchat/cometchat_sdk.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as mt;
 import 'package:get/get.dart';
@@ -85,13 +85,13 @@ class GroupDetailsScreenVM extends GetxController {
       },
     );
     userId = (await SecuredStorage.readStringValue(Keys.userId))!;
-    userName = (await SecuredStorage.readStringValue(Keys.firstName))! +
-        " " +
-        (await SecuredStorage.readStringValue(Keys.lastName))!;
+    userName =
+        "${(await SecuredStorage.readStringValue(Keys.firstName))!} ${(await SecuredStorage.readStringValue(Keys.lastName))!}";
     postsVM.afterInit(this, endpoint: Endpoints.activity);
     if (!withoutArg) {
       groupId = Get.arguments["groupId"].toString();
-      isAppStartingFromNotification = Get.arguments["isAppStartingFromNotification"]??false;
+      isAppStartingFromNotification =
+          Get.arguments["isAppStartingFromNotification"] ?? false;
     }
     createTabs();
     //if (Get.arguments != null) {
@@ -262,20 +262,19 @@ class GroupDetailsScreenVM extends GetxController {
   }
 
   void searchInvities(String t) {
-    friends!
-        .assignAll(searchedFriends!.where((f.Datum p0) => (t.toString().isEmpty
-            ? true
-            : (p0.user!.firstName.toString().toLowerCase() +
-                    " " + //.contains(t.toString().toLowerCase()) ||
-                    p0.user!.lastName.toString().toLowerCase())
-                // (p0.user!.firstName
-                //         .toString()
-                //         .toLowerCase()
-                //         .contains(t.toString().toLowerCase()) ||
-                //     p0.user!.lastName
-                //         .toString()
-                //         .toLowerCase()
-                .contains(t.toString().toLowerCase()))));
+    friends!.assignAll(searchedFriends!.where((f.Datum p0) => (t
+            .toString()
+            .isEmpty
+        ? true
+        : ("${p0.user!.firstName.toString().toLowerCase()} ${p0.user!.lastName.toString().toLowerCase()}")
+            // (p0.user!.firstName
+            //         .toString()
+            //         .toLowerCase()
+            //         .contains(t.toString().toLowerCase()) ||
+            //     p0.user!.lastName
+            //         .toString()
+            //         .toLowerCase()
+            .contains(t.toString().toLowerCase()))));
   }
 
   Future<void> getActivities() async {
@@ -297,13 +296,12 @@ class GroupDetailsScreenVM extends GetxController {
   }
 
   void search(String t) {
-    searchedMembers!
-        .assignAll(membersList.where((m.Datum p0) => (t.toString().isEmpty
-            ? true
-            : (p0.user!.userInfo!.firstName.toString().toLowerCase() +
-                    " " + //.contains(t.toString().toLowerCase()) ||
-                    p0.user!.userInfo!.lastName.toString().toLowerCase())
-                .contains(t.toString().toLowerCase()))));
+    searchedMembers!.assignAll(membersList.where((m.Datum p0) => (t
+            .toString()
+            .isEmpty
+        ? true
+        : ("${p0.user!.userInfo!.firstName.toString().toLowerCase()} ${p0.user!.userInfo!.lastName.toString().toLowerCase()}")
+            .contains(t.toString().toLowerCase()))));
   }
 
   Future<void> getParticipants(Map data) async {
@@ -408,9 +406,7 @@ class GroupDetailsScreenVM extends GetxController {
           GroupMember.fromUid(
             scope: CometChatMemberScope.participant,
             uid: user!.id.toString(),
-            name: user.userInfo!.firstName.toString() +
-                " " +
-                user.userInfo!.lastName.toString(),
+            name: "${user.userInfo!.firstName} ${user.userInfo!.lastName}",
           )
         ],
         onSuccess: (Map<String?, String?> result) {

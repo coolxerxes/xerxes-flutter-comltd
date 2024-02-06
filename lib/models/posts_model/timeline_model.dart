@@ -6,7 +6,6 @@ import 'dart:convert';
 
 import 'package:video_player/video_player.dart';
 
-import '../activity_model/activity_details_model.dart';
 import '../activity_model/fetch_activities_model.dart';
 import 'get_post_by_user_model.dart';
 
@@ -134,7 +133,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         activityHost: json['activityHost'] != null
-            ? new UserData.fromJson(json['activityHost'])
+            ? UserData.fromJson(json['activityHost'])
             : null,
         category: json["category"] == null
             ? []

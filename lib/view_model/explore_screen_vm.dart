@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +18,6 @@ import 'package:jyo_app/view_model/posts_and_activities_vm.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
-import '../data/local/map_filter.dart';
 import '../data/local/sort_card_data.dart';
 import '../data/remote/api_interface.dart';
 import '../data/remote/endpoints.dart';
@@ -197,21 +196,21 @@ class ExploreScreenVM extends GetxController {
         return;
       }
     } else {
-      bool _serviceEnabled;
-      PermissionStatus _permissionGranted;
+      bool serviceEnabled;
+      PermissionStatus permissionGranted;
 
-      _serviceEnabled = await location.serviceEnabled();
-      if (!_serviceEnabled) {
-        _serviceEnabled = await location.requestService();
-        if (!_serviceEnabled) {
+      serviceEnabled = await location.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await location.requestService();
+        if (!serviceEnabled) {
           return;
         }
       }
 
-      _permissionGranted = await location.hasPermission();
-      if (_permissionGranted == PermissionStatus.denied) {
-        _permissionGranted = await location.requestPermission();
-        if (_permissionGranted != PermissionStatus.granted) {
+      permissionGranted = await location.hasPermission();
+      if (permissionGranted == PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted != PermissionStatus.granted) {
           return;
         }
       }
@@ -300,7 +299,7 @@ class ExploreScreenVM extends GetxController {
         CometChatConstants.authKey; //Replace with the auth key of app
     User user = User(
         uid: userId.toString(),
-        name: firstName! + " " + lastName!,
+        name: "${firstName!} ${lastName!}",
         avatar: faceUrl); //Replace with name and uid of user
 
     CometChat.createUser(user, authKey, onSuccess: (User user) {
@@ -396,8 +395,7 @@ class ExploreScreenVM extends GetxController {
                         [eventList[i].eventId.toString()]))[0];
                     pc.showPopupsOnlyFor([eventList[i].marker!]);
                     update();
-                    debugPrint(
-                        "My internal tap " + eventList[i].eventId.toString());
+                    debugPrint("My internal tap ${eventList[i].eventId}");
                   },
                   child: Container(
                       width: 42.h,
@@ -425,7 +423,7 @@ class ExploreScreenVM extends GetxController {
           eventList[i].setMarker = markers[i];
         }
       }
-      
+
       //   } else {
       //     debugPrint("MapFilteredAct ${res.message.toString()}");
       //   }
