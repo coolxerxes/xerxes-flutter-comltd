@@ -6,7 +6,6 @@ import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:device_information/device_information.dart';
 import 'package:jyo_app/data/local/condition_model.dart' as cd;
 import 'package:jyo_app/repository/profile_repo/profile_repo_impl.dart';
 import 'package:jyo_app/repository/registration_repo/registration_repo_impl.dart';
@@ -15,6 +14,8 @@ import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/utils/secured_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
+
+import 'package:uuid/uuid.dart';
 
 class PhoneNumberVM extends GetxController {
   RegistrationRepoImpl registrationRepoImpl = RegistrationRepoImpl();
@@ -25,7 +26,7 @@ class PhoneNumberVM extends GetxController {
 
   String? cCode = "+65";
   Widget? flage = null;
-  String? imeiNo = "";
+  final String uuid = const Uuid().v4();
   bool? isEnabled = false;
   bool? isChangingPhoneNo = false;
   String? existingPhNo = "";
@@ -70,7 +71,7 @@ class PhoneNumberVM extends GetxController {
       var status = await Permission.phone.status;
       if (!status.isGranted) {
         final result = await Permission.phone.request();
-        if (result. isGranted) {
+        if (result.isGranted) {
           getDeviceInformation();
         }
         if (result.isPermanentlyDenied) {
@@ -98,7 +99,7 @@ class PhoneNumberVM extends GetxController {
       } else {
         if (isChangingPhoneNo!) {
           isEnabled = false;
-        update();
+          update();
         }
       }
       update();
@@ -108,8 +109,8 @@ class PhoneNumberVM extends GetxController {
   Future<void> getDeviceInformation() async {
     try {
       //platformVersion = await DeviceInformation.platformVersion;
-      imeiNo = await DeviceInformation.deviceIMEINumber;
-      debugPrint("IMEI NO ${imeiNo.toString()}");
+      // uuid = const Uuid().v4();
+      // debugPrint("IMEI NO ${uuid.toString()}");
       //modelName = await DeviceInformation.deviceModel;
       //manufacturer = await DeviceInformation.deviceManufacturer;
       //apiLevel =  await DeviceInformation.apiLevel;
@@ -142,7 +143,7 @@ class PhoneNumberVM extends GetxController {
     dynamic data = {};
     data["hpNo"] = phoneNoCtr.text.trim();
     data["countryCode"] = cCode.toString();
-    data["imNo"] = imeiNo.toString().trim();
+    data["imNo"] = uuid.toString().trim();
     debugPrint("DATA ${jsonEncode(data)}");
     await registrationRepoImpl.sendOtp(data).then((response) {
 //      debugPrint("RESPONSE ${response?.status}");
@@ -161,7 +162,7 @@ class PhoneNumberVM extends GetxController {
     dynamic data = {};
     data["hpNo"] = phoneNoCtr.text.trim();
     data["countryCode"] = cCode.toString();
-    data["imNo"] = imeiNo.toString().trim();
+    data["imNo"] = uuid.toString().trim();
     data["userId"] = userId;
     debugPrint("DATA ${jsonEncode(data)}");
     await profileRepoImpl.changePhoneNumber(data).then((response) {
@@ -180,7 +181,7 @@ class PhoneNumberVM extends GetxController {
     if (phoneNoCtr.text.isEmpty) {
       return;
     }
-    if (imeiNo.toString().trim().isEmpty) {
+    if (uuid.toString().trim().isEmpty) {
       showAppDialog(
           msg: "Need required permissions to continue",
           onPressed: () {

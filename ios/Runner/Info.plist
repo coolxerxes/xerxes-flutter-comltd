@@ -74,14 +74,32 @@
     
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
- <key>CFBundleTypeRole</key>
- <string>Editor</string>
- <key>CFBundleURLName</key>
-    <string>namnp.page.link</string>
- <key>CFBundleURLSchemes</key>
- <array>
-  <string>https</string>
- </array>
+
+ <key>CFBundleURLTypes</key>
+<array>
+    <!-- <dict> -->
+        <!-- <key>CFBundleURLSchemes</key>
+        <array>
+            <string>fbxxxxxxxxxxxxx</string>
+        </array> -->
+    <!-- </dict> -->
+	<dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+			<key>CFBundleURLName</key>
+    		<string>namnp.page.link</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+              <string>com.googleusercontent.apps.191667118813-t2a99hnk33fiaanlr6ka613bv3s1t92n</string>
+			  <string>https</string>
+            </array>
+          </dict>
+</array>
+
+<!-- <key>FacebookAppID</key>
+<string>xxxxxxxxxx</string>
+<key>FacebookDisplayName</key>
+<string>Name</string> -->
 
 </dict>
 </plist>

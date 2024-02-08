@@ -58,7 +58,7 @@ class OtpScreenVM extends GetxController {
     dynamic data = {};
     data["hpNo"] = phoneNumberVM.phoneNoCtr.text.trim();
     data["countryCode"] = phoneNumberVM.cCode.toString();
-    data["imNo"] = phoneNumberVM.imeiNo.toString().trim();
+    data["imNo"] = phoneNumberVM.uuid.toString().trim();
     data["currentCode"] = otp.toString().trim();
 
     debugPrint("DATA ${jsonEncode(data)}");
@@ -79,7 +79,7 @@ class OtpScreenVM extends GetxController {
         await SecuredStorage.writeStringValue(
             Keys.userId, response.data!.userId.toString());
         await SecuredStorage.writeBoolValue(
-            Keys.isOverviewed, response.data!.isOverviewed??false);
+            Keys.isOverviewed, response.data!.isOverviewed ?? false);
         await SecuredStorage.writeStringValue(
             Keys.overviewStep, response.data!.overviewStep.toString());
         await SecuredStorage.writeStringValue(
@@ -177,7 +177,7 @@ class OtpScreenVM extends GetxController {
     dynamic data = {};
     data["hpNo"] = phoneNumberVM.phoneNoCtr.text.trim();
     data["countryCode"] = phoneNumberVM.cCode.toString();
-    data["imNo"] = phoneNumberVM.imeiNo.toString().trim();
+    data["imNo"] = phoneNumberVM.uuid.toString().trim();
     data["currentCode"] = otp.toString().trim();
     data["userId"] = userId;
 

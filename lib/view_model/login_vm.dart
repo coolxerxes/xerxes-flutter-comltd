@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:device_information/device_information.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -12,6 +11,8 @@ import 'package:jyo_app/repository/profile_repo/profile_repo_impl.dart';
 import 'package:jyo_app/repository/registration_repo/registration_repo_impl.dart';
 import 'package:jyo_app/utils/secured_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:uuid/uuid.dart';
 
 import '../resources/app_routes.dart';
 import '../utils/common.dart';
@@ -21,7 +22,7 @@ class LoginVM extends GetxController {
   ProfileRepoImpl profileRepoImpl = ProfileRepoImpl();
   Map? fbUserData;
   GoogleSignInAccount? googleUserData;
-  String? imeiNo = "";
+  final String uuid = const Uuid().v4();
 
   void fbLogin() async {
     showAppDialog(msg: "Facebook login is comming soon.");
@@ -52,15 +53,29 @@ class LoginVM extends GetxController {
         await signIn(providerKey, email);
       } else {
         showAppDialog(
-          msg: "Unable to login via Google",
+          msg: "Unable to login via Google test",
         );
       }
     } catch (e) {
+      print(e);
       showAppDialog(msg: "Unable to login via Google");
     }
   }
 
-  void appleLogin() async {}
+  Future<void> appleLogin() async {
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      await signIn(credential.userIdentifier, credential.email);
+    } catch (e) {
+      showAppDialog(msg: "Unable to login via Apple");
+    }
+  }
 
   void googleLogOut() async {
     final googleSignIn = GoogleSignIn();
@@ -75,7 +90,7 @@ class LoginVM extends GetxController {
     fbUserData = null;
   }
 
-  void appleLogOut() {}
+  Future<void> appleLogOut() async {}
 
   void logOutAll() {
     googleLogOut();
@@ -84,7 +99,7 @@ class LoginVM extends GetxController {
   }
 
   Future<void> signIn(providerKey, email) async {
-    if (imeiNo.toString().trim().isEmpty) {
+    if (uuid.toString().trim().isEmpty) {
       showAppDialog(
           msg: "Need required permissions to continue",
           onPressed: () {
@@ -96,7 +111,7 @@ class LoginVM extends GetxController {
     var data = {
       //"email":email,
       "providerKey": providerKey.toString(),
-      "imNo": imeiNo.toString()
+      "imNo": uuid.toString()
     };
     debugPrint("DATA A $data");
     await registrationRepoImpl.signIn(data).then((response) async {
@@ -130,8 +145,8 @@ class LoginVM extends GetxController {
   Future<void> getDeviceInformation() async {
     try {
       //platformVersion = await DeviceInformation.platformVersion;
-      imeiNo = await DeviceInformation.deviceIMEINumber;
-      debugPrint("IMEI NO ${imeiNo.toString()}");
+      // uuid = const Uuid().v4();
+      // debugPrint("IMEI NO ${uuid.toString()}");
       //modelName = await DeviceInformation.deviceModel;
       //manufacturer = await DeviceInformation.deviceManufacturer;
       //apiLevel =  await DeviceInformation.apiLevel;

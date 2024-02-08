@@ -11,6 +11,7 @@ import 'package:jyo_app/data/remote/api_interface.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/utils/app_widgets/app_bar.dart';
 import 'package:jyo_app/utils/app_widgets/app_gradient_btn.dart';
+import 'package:jyo_app/utils/app_widgets/share_modals.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/view/create_post_screen_view.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
@@ -115,43 +116,57 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                     !c.postsVM.activitiesList[0].isMember!)
                                 ? Container()
                                 : MyIconButton(
-                                    onTap: () {
+                                    onTap: () async {
                                       //getToNamed(createGroupScreenRoute);
-                                      showAppDialog(
-                                        msg:
-                                            "Are you sure you want to share this as post.",
-                                        btnText: "Yes",
-                                        btnText2: "No",
-                                        onPressed: () async {
-                                          Get.back();
-                                          getToNamed(createPostScreenRoute,
-                                              argument: {
-                                                "coverImage": c
-                                                    .postsVM
-                                                    .activitiesList[0]
-                                                    .coverImage!,
-                                                "activityName": c
-                                                    .postsVM
-                                                    .activitiesList[0]
-                                                    .activityName,
-                                                "activityDate": c
-                                                    .postsVM
-                                                    .activitiesList[0]
-                                                    .activityDate,
-                                                "group": c.postsVM
-                                                    .activitiesList[0].group,
-                                                "activityId": c
-                                                    .postsVM
-                                                    .activitiesList[0]
-                                                    .activityId
-                                              });
-                                          // await c.shareActivityAsPost({
-                                          //   "activityId": c.activityId.toString(),
-                                          //   "userId": c.userId.toString(),
-                                          //   "groupId": null
-                                          // });
+                                      await shareModals(
+                                        context,
+                                        onCreatePostTap: () async {
+                                          Navigator.of(context,
+                                                  rootNavigator: false)
+                                              .pop();
+                                          await c.shareActivityAsPost({
+                                            "userId": c.userId.toString(),
+                                            "activityId":
+                                                c.activityId.toString(),
+                                            "groupId": null,
+                                          });
                                         },
                                       );
+                                      // showAppDialog(
+                                      //   msg:
+                                      //       "Are you sure you want to share this as post.",
+                                      //   btnText: "Yes",
+                                      //   btnText2: "No",
+                                      //   onPressed: () async {
+                                      //     Get.back();
+                                      //     getToNamed(createPostScreenRoute,
+                                      //         argument: {
+                                      //           "coverImage": c
+                                      //               .postsVM
+                                      //               .activitiesList[0]
+                                      //               .coverImage!,
+                                      //           "activityName": c
+                                      //               .postsVM
+                                      //               .activitiesList[0]
+                                      //               .activityName,
+                                      //           "activityDate": c
+                                      //               .postsVM
+                                      //               .activitiesList[0]
+                                      //               .activityDate,
+                                      //           "group": c.postsVM
+                                      //               .activitiesList[0].group,
+                                      //           "activityId": c
+                                      //               .postsVM
+                                      //               .activitiesList[0]
+                                      //               .activityId
+                                      //         });
+                                      //     // await c.shareActivityAsPost({
+                                      //     //   "activityId": c.activityId.toString(),
+                                      //     //   "userId": c.userId.toString(),
+                                      //     //   "groupId": null
+                                      //     // });
+                                      //   },
+                                      // );
                                     },
                                     icon: AppBarIcons.shareHSvg,
                                     isSvg: true,
@@ -962,7 +977,7 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                               30 /* Ex. hours:1 */), // on iOS, you can set alarm notification after your event.
                                       // url: 'https://www.example.com', // on iOS, you can set url to your event.
                                     ),
-                                    androidParams: AndroidParams(
+                                    androidParams: const AndroidParams(
                                       emailInvites: [], // on Android, you can add invite emails to your event.
                                     ),
                                   );

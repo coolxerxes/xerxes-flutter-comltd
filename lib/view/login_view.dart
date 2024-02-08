@@ -10,6 +10,7 @@ import 'package:jyo_app/resources/app_strings.dart';
 import 'package:jyo_app/resources/app_styles.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/view_model/login_vm.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../utils/app_widgets/signin_button.dart';
 
@@ -26,7 +27,6 @@ class LoginView extends StatelessWidget {
                 child: ListView(
               shrinkWrap: true,
               children: [
-                
                 sizedBoxH(
                   height: 120,
                 ),
@@ -35,15 +35,22 @@ class LoginView extends StatelessWidget {
                   width: 96.w,
                   child: Image.asset(AppImage.jioLogo),
                 ),
-                 sizedBoxH(
+                sizedBoxH(
                   height: 91,
                 ),
-                Platform.isIOS ? SignInButton(
-                  iconPath: AppIcons.appleIcon,
-                  btnText: AppStrings.signInWith + AppStrings.apple,
-                  onPressed: () {},
-                ) : Container(),
-                 sizedBoxH(
+                Platform.isIOS
+                    ? Container(
+                        margin: EdgeInsets.symmetric(horizontal: 48.w),
+                        child: SignInWithAppleButton(
+                          height: 48.5,
+                          iconAlignment: IconAlignment.left,
+                          style: SignInWithAppleButtonStyle.black,
+                          borderRadius: BorderRadius.circular(100),
+                          onPressed: c.appleLogin,
+                        ),
+                      )
+                    : Container(),
+                sizedBoxH(
                   height: 16,
                 ),
                 SignInButton(
@@ -51,7 +58,7 @@ class LoginView extends StatelessWidget {
                   btnText: AppStrings.signInWith + AppStrings.google,
                   onPressed: c.googleLogin,
                 ),
-                 sizedBoxH(
+                sizedBoxH(
                   height: 16,
                 ),
                 SignInButton(
@@ -59,7 +66,7 @@ class LoginView extends StatelessWidget {
                   btnText: AppStrings.signInWith + AppStrings.facebook,
                   onPressed: c.fbLogin,
                 ),
-                 sizedBoxH(
+                sizedBoxH(
                   height: 16,
                 ),
                 SignInButton(
@@ -69,7 +76,7 @@ class LoginView extends StatelessWidget {
                     getToNamed(phoneNumberRoute);
                   },
                 ),
-                 sizedBoxH(
+                sizedBoxH(
                   height: 26,
                 ),
                 Center(
@@ -96,4 +103,3 @@ class LoginView extends StatelessWidget {
     );
   }
 }
-
