@@ -89,6 +89,10 @@ class AppIcons {
   static const subCrown = "assets/images/crown_sub.png";
 
   static String grpMsg = "assets/images/grp_msg.svg";
+
+  static String link = "assets/images/link.png";
+  static String copyLink = "assets/images/copy_link.svg";
+  static String sendToFriend = "assets/images/send_to_friend.svg";
 }
 
 class NavIcons {

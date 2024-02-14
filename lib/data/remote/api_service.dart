@@ -67,7 +67,8 @@ class ApiService extends ApiInterface {
             Endpoints.createOrUpdateUserInfo),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -95,7 +96,8 @@ class ApiService extends ApiInterface {
     final response = await client.post(
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.create),
         headers: {
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -107,12 +109,13 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(
-          ApiInterface.baseUrl + Endpoints.metaData + Endpoints.getAllIntrest),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.metaData +
+            Endpoints.getAllIntrest),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -126,7 +129,8 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.saveIntrest),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -138,12 +142,11 @@ class ApiService extends ApiInterface {
   Future? getUserInfo(dynamic id) async {
     var client = http.Client();
     dynamic responseJson;
-    final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl + Endpoints.user + id),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+    final response = await client
+        .get(Uri.parse(ApiInterface.baseUrl + Endpoints.user + id), headers: {
+      if (await authorizationToken != null)
+        'Authorization': (await authorizationToken)!
+    });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -157,7 +160,8 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.accountSetting),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -170,14 +174,14 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl +
-          Endpoints.user +
-          Endpoints.notificationSetting +
-          id),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.notificationSetting +
+            id),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -192,7 +196,8 @@ class ApiService extends ApiInterface {
             Endpoints.updateNotification),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -205,12 +210,12 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(
-          ApiInterface.baseUrl + Endpoints.user + Endpoints.postPrivacy + id),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(
+            ApiInterface.baseUrl + Endpoints.user + Endpoints.postPrivacy + id),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -224,7 +229,8 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.updatePrivacy),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -240,7 +246,8 @@ class ApiService extends ApiInterface {
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.blockUsers),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -253,15 +260,15 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl +
-          Endpoints.user +
-          Endpoints.friend +
-          Endpoints.blockedUserList +
-          id),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.friend +
+            Endpoints.blockedUserList +
+            id),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -271,12 +278,12 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(
-          ApiInterface.baseUrl + Endpoints.user + Endpoints.friendList + id),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(
+            ApiInterface.baseUrl + Endpoints.user + Endpoints.friendList + id),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -290,7 +297,8 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.postHidefrom),
         headers: <String, String>{
           // 'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -308,7 +316,8 @@ class ApiService extends ApiInterface {
             Endpoints.changePhoneNumber),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -325,7 +334,8 @@ class ApiService extends ApiInterface {
             Endpoints.checkChangePhoneNoOTP),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -355,7 +365,8 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.deleteAccount),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -367,12 +378,14 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(
-          ApiInterface.baseUrl + Endpoints.user + Endpoints.getMyVouchers + id),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.getMyVouchers +
+            id),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -387,7 +400,8 @@ class ApiService extends ApiInterface {
             Endpoints.sendSignInNotification),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -400,17 +414,17 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl +
-          Endpoints.user +
-          Endpoints.friend +
-          "search/" +
-          name! +
-          "/" +
-          userId.toString()),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.friend +
+            "search/" +
+            name! +
+            "/" +
+            userId.toString()),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -426,7 +440,8 @@ class ApiService extends ApiInterface {
             Endpoints.profile),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -444,7 +459,8 @@ class ApiService extends ApiInterface {
             Endpoints.sentRequest),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -462,7 +478,8 @@ class ApiService extends ApiInterface {
             Endpoints.accept),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -479,7 +496,8 @@ class ApiService extends ApiInterface {
             Endpoints.friend.substring(0, (Endpoints.friend.length - 1))),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -497,7 +515,8 @@ class ApiService extends ApiInterface {
             Endpoints.block),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -509,15 +528,15 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl +
-          Endpoints.user +
-          Endpoints.friend +
-          Endpoints.pendingRequestList +
-          id.toString()),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.friend +
+            Endpoints.pendingRequestList +
+            id.toString()),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -533,7 +552,8 @@ class ApiService extends ApiInterface {
             Endpoints.cancelFriendRequest),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -548,7 +568,8 @@ class ApiService extends ApiInterface {
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.post),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -566,7 +587,8 @@ class ApiService extends ApiInterface {
             Endpoints.byUser),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -589,7 +611,8 @@ class ApiService extends ApiInterface {
       dioRequest.options.headers = {
         'Content-Type': 'multipart/form-data',
         'enctype': 'multipart/form-data',
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        if (await authorizationToken != null)
+          'Authorization': (await authorizationToken)!
       };
 
       //[3] ADDING EXTRA INFO
@@ -652,7 +675,8 @@ class ApiService extends ApiInterface {
             Endpoints.comment),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -670,7 +694,8 @@ class ApiService extends ApiInterface {
             Endpoints.delete),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -688,7 +713,8 @@ class ApiService extends ApiInterface {
             Endpoints.getComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -700,15 +726,15 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl +
-          Endpoints.user +
-          Endpoints.post +
-          Endpoints.getLikeUser +
-          postId),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.post +
+            Endpoints.getLikeUser +
+            postId),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -718,16 +744,16 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl +
-          Endpoints.user +
-          Endpoints.post +
-          postId +
-          "/" +
-          userId),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.post +
+            postId +
+            "/" +
+            userId),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -737,15 +763,15 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl +
-          Endpoints.user +
-          Endpoints.post +
-          Endpoints.getTimeLine +
-          userId),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl +
+            Endpoints.user +
+            Endpoints.post +
+            Endpoints.getTimeLine +
+            userId),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -754,7 +780,9 @@ class ApiService extends ApiInterface {
   Future? getTimeLineNew(Map data) async {
     var headers = {
       'Content-Type': 'application/json',
-      if (await authorizationToken != null) 'Authorization': (await authorizationToken)!};
+      if (await authorizationToken != null)
+        'Authorization': (await authorizationToken)!
+    };
     var request = http.Request(
         'POST', Uri.parse('${ApiInterface.baseUrl}/user/post/getTimeLineNew'));
     debugPrint(
@@ -801,7 +829,8 @@ class ApiService extends ApiInterface {
             Endpoints.jioMe),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -819,7 +848,8 @@ class ApiService extends ApiInterface {
             Endpoints.like),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -834,7 +864,8 @@ class ApiService extends ApiInterface {
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.post),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -852,7 +883,8 @@ class ApiService extends ApiInterface {
             Endpoints.getTagedUser),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -869,7 +901,8 @@ class ApiService extends ApiInterface {
             Endpoints.getMyNotifications),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -887,7 +920,8 @@ class ApiService extends ApiInterface {
             Endpoints.deleteComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -905,7 +939,8 @@ class ApiService extends ApiInterface {
             Endpoints.disLikeComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -923,7 +958,8 @@ class ApiService extends ApiInterface {
             Endpoints.likeComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -941,7 +977,8 @@ class ApiService extends ApiInterface {
             Endpoints.updateComment),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -953,15 +990,15 @@ class ApiService extends ApiInterface {
     var client = http.Client();
     dynamic responseJson;
     final response = await client.get(
-      Uri.parse(ApiInterface.baseUrl + ""
-          // Endpoints.user +
-          // Endpoints.post +
-          // Endpoints.getTimeLine
-          ),
-      headers: {
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
-      }
-    );
+        Uri.parse(ApiInterface.baseUrl + ""
+            // Endpoints.user +
+            // Endpoints.post +
+            // Endpoints.getTimeLine
+            ),
+        headers: {
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
+        });
     responseJson = returnResponse(response);
     return responseJson;
   }
@@ -974,7 +1011,8 @@ class ApiService extends ApiInterface {
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.activity),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -992,7 +1030,8 @@ class ApiService extends ApiInterface {
             Endpoints.byUser),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1009,7 +1048,8 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.activity + id),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1027,7 +1067,8 @@ class ApiService extends ApiInterface {
             Endpoints.acceptOrRejectRequest),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1042,7 +1083,8 @@ class ApiService extends ApiInterface {
         Uri.parse(ApiInterface.baseUrl + Endpoints.user + Endpoints.group),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1060,7 +1102,8 @@ class ApiService extends ApiInterface {
             Endpoints.inviteFriend),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1078,7 +1121,8 @@ class ApiService extends ApiInterface {
             Endpoints.listOfSave),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1096,7 +1140,8 @@ class ApiService extends ApiInterface {
             Endpoints.memberList),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1114,7 +1159,8 @@ class ApiService extends ApiInterface {
             Endpoints.requestList),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1132,7 +1178,8 @@ class ApiService extends ApiInterface {
             Endpoints.requestToJoin),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(dta));
     responseJson = returnResponse(response);
@@ -1150,7 +1197,8 @@ class ApiService extends ApiInterface {
             Endpoints.search),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(dta));
     responseJson = returnResponse(response);
@@ -1168,7 +1216,8 @@ class ApiService extends ApiInterface {
             Endpoints.saveActivity),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1186,7 +1235,8 @@ class ApiService extends ApiInterface {
             Endpoints.shareAsPost),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1204,7 +1254,8 @@ class ApiService extends ApiInterface {
             Endpoints.delete),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1222,7 +1273,8 @@ class ApiService extends ApiInterface {
             Endpoints.details),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1238,7 +1290,8 @@ class ApiService extends ApiInterface {
             ApiInterface.baseUrl + Endpoints.user + Endpoints.overviewSteps),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1256,7 +1309,8 @@ class ApiService extends ApiInterface {
             Endpoints.getActivityByFilter),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1274,7 +1328,8 @@ class ApiService extends ApiInterface {
             Endpoints.getActivitys),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1292,7 +1347,8 @@ class ApiService extends ApiInterface {
             Endpoints.acceptInvite),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1346,7 +1402,8 @@ class ApiService extends ApiInterface {
             Endpoints.invite),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1364,7 +1421,8 @@ class ApiService extends ApiInterface {
             Endpoints.joinActivity),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1382,7 +1440,8 @@ class ApiService extends ApiInterface {
             Endpoints.leaveActivity),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1400,7 +1459,8 @@ class ApiService extends ApiInterface {
             Endpoints.participantsList),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1418,7 +1478,8 @@ class ApiService extends ApiInterface {
             Endpoints.rejectInvite),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1436,7 +1497,8 @@ class ApiService extends ApiInterface {
             Endpoints.requestListToJoin),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1454,7 +1516,8 @@ class ApiService extends ApiInterface {
             Endpoints.acceptRequestToJoin),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1472,7 +1535,8 @@ class ApiService extends ApiInterface {
             Endpoints.search),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1490,7 +1554,8 @@ class ApiService extends ApiInterface {
             Endpoints.myGroup),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1508,7 +1573,8 @@ class ApiService extends ApiInterface {
             Endpoints.details),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1526,7 +1592,8 @@ class ApiService extends ApiInterface {
             Endpoints.acceptOrRejectInvitation),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1544,7 +1611,8 @@ class ApiService extends ApiInterface {
             Endpoints.update),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1562,7 +1630,8 @@ class ApiService extends ApiInterface {
             Endpoints.demoteAdminToMember),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1581,7 +1650,8 @@ class ApiService extends ApiInterface {
             Endpoints.demoteToNormalParticipants),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1599,7 +1669,8 @@ class ApiService extends ApiInterface {
             Endpoints.leave),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1617,7 +1688,8 @@ class ApiService extends ApiInterface {
             Endpoints.memberToAdmin),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1635,7 +1707,8 @@ class ApiService extends ApiInterface {
             Endpoints.removeMember),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1653,7 +1726,8 @@ class ApiService extends ApiInterface {
             Endpoints.removeParticipants),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1672,7 +1746,8 @@ class ApiService extends ApiInterface {
             Endpoints.setHostAndSelfDemote),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1691,7 +1766,8 @@ class ApiService extends ApiInterface {
             Endpoints.setSubHost),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1709,7 +1785,8 @@ class ApiService extends ApiInterface {
             Endpoints.setSuperAdminDemoteToAdmin),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1728,7 +1805,8 @@ class ApiService extends ApiInterface {
             Endpoints.leaveActivityAppointSomeoneAsHost),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1746,7 +1824,8 @@ class ApiService extends ApiInterface {
             Endpoints.leaveAndSetSomeOneAsSuperAdmin),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+          if (await authorizationToken != null)
+            'Authorization': (await authorizationToken)!
         },
         body: jsonEncode(data));
     responseJson = returnResponse(response);
@@ -1762,7 +1841,8 @@ class ApiService extends ApiInterface {
           ApiInterface.baseUrl + Endpoints.suggestionGroups + id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json',
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        if (await authorizationToken != null)
+          'Authorization': (await authorizationToken)!
       },
     );
     responseJson = returnResponse(response);
@@ -1779,7 +1859,8 @@ class ApiService extends ApiInterface {
       body: jsonEncode(data),
       headers: <String, String>{
         'Content-Type': 'application/json',
-        if (await authorizationToken != null) 'Authorization': (await authorizationToken)!
+        if (await authorizationToken != null)
+          'Authorization': (await authorizationToken)!
       },
     );
     responseJson = returnResponse(response);

@@ -13,10 +13,10 @@ packages:
     dependency: "direct main"
     description:
       name: add_2_calendar
-      sha256: "01a5b15a9385eff803cd84da3d7cda71de7ad807b6c88e44a8ad4acbd80f3b7e"
+      sha256: dbcd0bf296fbbe00861a6f101af8cdb3c163a8c3ff5d3c99a4b081c2f37c724f
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.3"
+    version: "2.2.5"
   animated_stack_widget:
     dependency: transitive
     description:
@@ -145,14 +145,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  device_information:
-    dependency: "direct main"
-    description:
-      name: device_information
-      sha256: "26dd2630a9db8e0c55f5685a5d515ed40ded24219f5e7f14dcfae5a2bd1f2ddf"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.4"
   devicelocale:
     dependency: "direct main"
     description:
@@ -985,10 +977,10 @@ packages:
     dependency: transitive
     description:
       name: share_plus_platform_interface
-      sha256: "82ddd4ab9260c295e6e39612d4ff00390b9a7a21f1bb1da771e2f232d80ab8a1"
+      sha256: bdc228d4111f4b7ef2d949e5f13521adab03a386e4013c80ea4a9df79ef1d9d1
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "3.1.2"
   share_plus_web:
     dependency: transitive
     description:
@@ -1017,10 +1009,10 @@ packages:
     dependency: "direct main"
     description:
       name: sign_in_with_apple
-      sha256: "425cf29f6c8730314d08d62a3193319b84f40940f1f6f0d9cea703aaf3205a03"
+      sha256: "0975c23b9f8b30a80e27d5659a75993a093d4cb5f4eb7d23a9ccc586fea634e0"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.0"
+    version: "5.0.0"
   sign_in_with_apple_platform_interface:
     dependency: transitive
     description:
@@ -1058,6 +1050,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  sprintf:
+    dependency: transitive
+    description:
+      name: sprintf
+      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   stack_trace:
     dependency: transitive
     description:
@@ -1203,13 +1203,13 @@ packages:
     source: hosted
     version: "3.0.4"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
-      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      sha256: b715b8d3858b6fa9f68f87d20d98830283628014750c2b09b6f516c1da4af2a7
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.7"
+    version: "4.1.0"
   vector_math:
     dependency: transitive
     description:
@@ -1364,4 +1364,4 @@ packages:
     version: "6.1.0"
 sdks:
   dart: ">=2.19.6 <3.0.0"
-  flutter: ">=3.7.0"
+  flutter: ">=3.7.6"

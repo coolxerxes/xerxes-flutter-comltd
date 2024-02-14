@@ -212,9 +212,10 @@ class AppStrings {
 
   static String sortBy = "Sort by";
 
-  static String radius  = "Radius";
+  static String radius = "Radius";
 
-  static String leaveActivityAsHost = "Leave activity and Appoint someone as Host";
+  static String leaveActivityAsHost =
+      "Leave activity and Appoint someone as Host";
 
   static String removeMember = "Remove member";
 
@@ -224,6 +225,12 @@ class AppStrings {
 
   static String appointAsSA = "Appoint as Super Admin";
   static String noData = "No Data";
+
+  // Share Modals
+  static String shareVia = "Share via";
+  static String createPost = "Create a Post";
+  static String copyLink = "Copy link";
+  static String sendToFriend = "Send to friend";
 }
 
 class Hints {

@@ -1,6 +1,5 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member, avoid_init_to_null
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -93,7 +92,8 @@ class SetProfilePicScreenVM extends GetxController {
 
       //[2] ADDING TOKEN
       dioRequest.options.headers = {
-        //"Authorization": "Bearer " + auth!,
+        // "Authorization": "Bearer " + auth!,
+        'Authorization': (await SecuredStorage.readStringValue(Keys.token)),
         //'Content-Type': 'application/x-www-form-urlencoded'
         'Content-Type': 'multipart/form-data',
         'enctype': 'multipart/form-data'
