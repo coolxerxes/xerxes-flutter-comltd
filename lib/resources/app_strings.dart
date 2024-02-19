@@ -64,8 +64,18 @@ class AppStrings {
   static const addFriend = "Add friend";
   static const requestSent = "Request sent";
   static const deleteMyAcc = "Delete my account";
+  static const violatedContent = "Violated Content";
+  static const reportActivities = [
+    "Name",
+    "Cover",
+    "Description",
+    "Date/Time",
+    "Other"
+  ];
+  static const confirmDeletion = "Confirm Deletion";
   static const deleteAccWarning =
       "This action will delete your account\npermanently.";
+  static const enterOneTimePassword = "Enter one-time password";
   static const myVouchers = "My vouchers";
   static const vouchersDetails = "Vouchers details";
   static const currentVouchers = "Current vouchers";

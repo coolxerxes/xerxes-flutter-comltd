@@ -1,0 +1,70 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginCN",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC07presentE15ModalToAddEvent_10eventStore10completionySo7EKEventC_So0oM0CySbcSgtFTq",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC012presentEventE11DetailModal5event0K5StoreySo7EKEventC_So0mL0CtFTq",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC6handle_6resultySo17FlutterMethodCallC_yypSgctFTq",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginCACycfc",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginCMa",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginCfD",
+            "_$s14add_2_calendar14statusBarStyleSo08UIStatusdE0Vvau",
+            "_add_2_calendarVersionString",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC11createEvent33_338B88452BEB4EC8B11ECF5B942EFAE9LL10eventStore13alarmInterval5title11description8location8timeZone9startDate03endZ06allDay3url4argsSo7EKEventCSo07EKEventQ0C_SdSgS2SSgAV10Foundation04TimeX0VSgAW0Z0VSgA1_SbAVSDySSypGtF",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC012presentEventE11DetailModal5event0K5StoreySo7EKEventC_So0mL0CtF",
+            "_Swift51Overrides",
+            "_add_2_calendarVersionNumber",
+            "_$s14add_2_calendar14statusBarStyleSo08UIStatusdE0Vvp",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC07presentE15ModalToAddEvent_10eventStore10completionySo7EKEventC_So0oM0CySbcSgtF",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC0a7EventToE033_338B88452BEB4EC8B11ECF5B942EFAE9LL4from10completionySDySSypG_ySbcSgtF",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC22getAuthorizationStatus33_338B88452BEB4EC8B11ECF5B942EFAE9LLSo015EKAuthorizationI0VyF",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC23eventEditViewController_15didCompleteWithySo07EKEventhiJ0C_So0nhI6ActionVtF",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC8register4withySo07FlutterF9Registrar_p_tFZ",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginC6handle_6resultySo17FlutterMethodCallC_yypSgctF",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginCACycfC",
+            "_$s14add_2_calendar23SwiftAdd2CalendarPluginCMn",
+            "_$s10Foundation4DateV14add_2_calendarE12millisecondsACSd_tcfC"
+          ],
+          "objc_class": [
+            "_TtC14add_2_calendar23SwiftAdd2CalendarPlugin",
+            "PodsDummy_add_2_calendar",
+            "Add2CalendarPlugin"
+          ]
+        },
+        "text": {
+          "global": [
+            "__Z34_swiftoverride_class_getSuperclassPKN5swift14TargetMetadataINS_9InProcessEEE",
+            "__ZN5swift39swift51override_conformsToSwiftProtocolEPKNS_14TargetMetadataINS_9InProcessEEEPKNS_24TargetProtocolDescriptorIS1_EEN7__swift9__runtime4llvm9StringRefEPFPKNS_35TargetProtocolConformanceDescriptorIS1_EES4_S8_SC_E"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/add_2_calendar.framework/add_2_calendar"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

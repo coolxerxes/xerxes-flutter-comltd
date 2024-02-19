@@ -1,0 +1,140 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s13pushy_flutter12PushyFlutterC12isRegisteredyyyypSgcFTq",
+            "_$s13pushy_flutter12PushyFlutterC8onListen13withArguments9eventSinkSo0D5ErrorCSgypSg_yAJctF",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvpfi",
+            "_$s13pushy_flutter12PushyFlutterC25notificationClickListener8userInfoySDys11AnyHashableVypG_tFTq",
+            "_$s13pushy_flutter13PushyChannelsCMa",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvpWvd",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvpMV",
+            "_$s13pushy_flutter12PushyFlutterC6notify_6resultySo0D10MethodCallC_yypSgctFTq",
+            "_$s13pushy_flutter13PushyChannelsC12eventChannelSSvMZ",
+            "_$s13pushy_flutter12PushyFlutterCMn",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvpMV",
+            "_$s13pushy_flutter12PushyFlutterC11unsubscribe_6resultySo0D10MethodCallC_yypSgctF",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvgTq",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvs",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvM",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvpMV",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvpfi",
+            "_$s13pushy_flutter13PushyChannelsCACycfC",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvs",
+            "_$s13pushy_flutter12PushyFlutterC21toggleMethodSwizzling_6resultySo0dF4CallC_yypSgctFTq",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvgTq",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvg",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvg",
+            "_$s13pushy_flutter13PushyChannelsC13methodChannelSSvau",
+            "_$s13pushy_flutter12PushyFlutterCN",
+            "_$s13pushy_flutter12PushyFlutterCfD",
+            "_$s13pushy_flutter13PushyChannelsC12eventChannelSSvpZ",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvM",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvpfi",
+            "_$s13pushy_flutter12PushyFlutterC10clearBadgeyyyypSgcF",
+            "_$s13pushy_flutter13PushyChannelsC12eventChannelSSvgZ",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvM",
+            "_$s13pushy_flutter12PushyFlutterC9subscribe_6resultySo0D10MethodCallC_yypSgctFTq",
+            "_$s13pushy_flutter13PushyChannelsCfd",
+            "_$s13pushy_flutter13PushyChannelsCMn",
+            "_$s13pushy_flutter12PushyFlutterC8onCancel13withArgumentsSo0D5ErrorCSgypSg_tFTq",
+            "_$s13pushy_flutter13PushyChannelsC13methodChannelSSvpZ",
+            "_$s13pushy_flutter13PushyChannelsC12eventChannelSSvsZ",
+            "_$s13pushy_flutter12PushyFlutterC19notificationHandler4data010completionF0ySDys11AnyHashableVypG_ySo23UIBackgroundFetchResultVXEtF",
+            "_$s13pushy_flutter13PushyChannelsCACycfCTq",
+            "_$s13pushy_flutter12PushyFlutterC24storeStartupNotificationyySDys11AnyHashableVypGFTq",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvMTq",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvpWvd",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvs",
+            "_$s13pushy_flutter13PushyChannelsCN",
+            "_$s13pushy_flutter12PushyFlutterC6handle_6resultySo0D10MethodCallC_yypSgctF",
+            "_$s13pushy_flutter12PushyFlutterC6handle_6resultySo0D10MethodCallC_yypSgctFTq",
+            "_$s13pushy_flutter13PushyChannelsCfD",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvsTq",
+            "_$s13pushy_flutter13PushyChannelsCMm",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvMTq",
+            "_$s13pushy_flutter13PushyChannelsC12eventChannelSSvau",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvsTq",
+            "_$s13pushy_flutter12PushyFlutterC12isRegisteredyyyypSgcF",
+            "_$s13pushy_flutter12PushyFlutterC03getC8Instance0C0AECyF",
+            "_$s13pushy_flutter13PushyChannelsC13methodChannelSSvMZ",
+            "_$s13pushy_flutter12PushyFlutterC9subscribe_6resultySo0D10MethodCallC_yypSgctF",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvg",
+            "_$s13pushy_flutter12PushyFlutterCMa",
+            "_pushy_flutterVersionNumber",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvpWvd",
+            "_$s13pushy_flutter12PushyFlutterC6notify_6resultySo0D10MethodCallC_yypSgctF",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvpMV",
+            "_$s13pushy_flutter12PushyFlutterC8onListen13withArguments9eventSinkSo0D5ErrorCSgypSg_yAJctFTq",
+            "_Swift51Overrides",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvpfi",
+            "_$s13pushy_flutter12PushyFlutterC19setEnterpriseConfig_6resultySo0D10MethodCallC_yypSgctF",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvM",
+            "_$s13pushy_flutter12PushyFlutterC21toggleMethodSwizzling_6resultySo0dF4CallC_yypSgctF",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvgTq",
+            "_$s13pushy_flutter13PushyChannelsC13methodChannelSSvsZ",
+            "_$s13pushy_flutter13PushyChannelsCACycfc",
+            "_$s13pushy_flutter12PushyFlutterC19notificationHandler4data010completionF0ySDys11AnyHashableVypG_ySo23UIBackgroundFetchResultVXEtFTq",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvsTq",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvMTq",
+            "_$s13pushy_flutter12PushyFlutterC17toggleInAppBanner_6resultySo0D10MethodCallC_yypSgctFTq",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvg",
+            "_$s13pushy_flutter13PushyChannelsC13methodChannelSSvgZ",
+            "_$s13pushy_flutter12PushyFlutterC8registeryyyypSgcF",
+            "_$s13pushy_flutter12PushyFlutterC8onCancel13withArgumentsSo0D5ErrorCSgypSg_tF",
+            "_$s13pushy_flutter12PushyFlutterC19setEnterpriseConfig_6resultySo0D10MethodCallC_yypSgctFTq",
+            "_$s13pushy_flutter12PushyFlutterC11application_28didReceiveRemoteNotification22fetchCompletionHandlerSbSo13UIApplicationC_SDys11AnyHashableVypGySo23UIBackgroundFetchResultVctFTq",
+            "_$s13pushy_flutter12PushyFlutterC0A00C0AECSgvMTq",
+            "_$s13pushy_flutter12PushyFlutterC25notificationClickListener8userInfoySDys11AnyHashableVypG_tF",
+            "_$s13pushy_flutter12PushyFlutterCACycfC",
+            "_$s13pushy_flutter12PushyFlutterC11application_28didReceiveRemoteNotification22fetchCompletionHandlerSbSo13UIApplicationC_SDys11AnyHashableVypGySo23UIBackgroundFetchResultVctF",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvgTq",
+            "_$s13pushy_flutter12PushyFlutterC8register4withySo0D15PluginRegistrar_p_tFZ",
+            "_$s13pushy_flutter12PushyFlutterC22hasStartupNotificationSbvpWvd",
+            "_$s13pushy_flutter12PushyFlutterC24storeStartupNotificationyySDys11AnyHashableVypGF",
+            "_$s13pushy_flutter12PushyFlutterC9eventSinkyypSgcSgvs",
+            "_$s13pushy_flutter12PushyFlutterC03getC8Instance0C0AECyFTq",
+            "_$s13pushy_flutter12PushyFlutterC10clearBadgeyyyypSgcFTq",
+            "_$s13pushy_flutter12PushyFlutterCACycfc",
+            "_pushy_flutterVersionString",
+            "_$s13pushy_flutter12PushyFlutterC19startupNotificationSDys11AnyHashableVypGSgvsTq",
+            "_$s13pushy_flutter12PushyFlutterC8registeryyyypSgcFTq",
+            "_$s13pushy_flutter12PushyFlutterC17toggleInAppBanner_6resultySo0D10MethodCallC_yypSgctF",
+            "_$s13pushy_flutter12PushyFlutterC11unsubscribe_6resultySo0D10MethodCallC_yypSgctFTq"
+          ],
+          "objc_class": [
+            "PushyPlugin",
+            "PodsDummy_pushy_flutter",
+            "_TtC13pushy_flutter12PushyFlutter"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/pushy_flutter.framework/pushy_flutter"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

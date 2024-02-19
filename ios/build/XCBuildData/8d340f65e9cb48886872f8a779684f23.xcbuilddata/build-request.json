@@ -1,0 +1,222 @@
+{
+  "buildCommand" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : false,
+    "targets" : null
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42758cc842172da540ffb591e63e38dc1e"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42842ae5723653f6d69da74411f67791a5"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd425fd5cdb9993b1816141f0c012ffa62bd"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd4298fccba7a2febdedb43dddbf2e949fc3"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd429d0a1858a86fd6e6731ed20f88a1e515"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42d3f65728b12dd217475d1283ee417937"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd429176bbd636a13f9582f645f1f0315a8f"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42828dc99e68108e01848c924cebb9b2d5"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42f52a87663484c8c5c2fb376dbe85216c"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd4251e8fd886951a87551ea0aff618ed4ec"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42d57b8bce60a0f11113f4cff532db68d3"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42a408a4c1f668e62161cdeba76f57d50c"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42020791fd2e7b7ddc8fb2658339c42e16"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42b623f22c0d3d037d0450c736133d3c3e"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd429da425bb6d6d5d8dbb95e4afffb82217"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd420be6c76e7b3dde057d7e3e6ad61f30d4"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42dd3a6a519ed4181bf31ea6bc1f18ebc5"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd429b0ee9a6d93c0cfa024bbc34a88b2122"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd4232c61b747d3949a8e639c0653b6048d5"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42718890dfdac589615663a02d43d9af3e"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42312b4bc59bbbe2c06c205bf4da6737f5"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42f10882e1684b8a3dfdec597bc0a47af3"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42405b9bf921a4ff5ebc905907ac59934d"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42c46180aea4e87057640961e6db37df0d"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd4272eabefc63c14dfe52fb0c95ad90294e"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd427a4af56e2729cecfad7b13d62a9a5fa4"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd426dbfa2df59ddcae0f992dedaee8f3553"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42268fd5b8f4cdcb66ae644ff76c16b696"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42450c76a5653368a7f524c38f400e77ff"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd429310eae827d2a9e8ea3efc5cf46f475b"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd424439f26109d05d01c33478cfbe83ed37"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42ed0edb823203207725e2d8697be6bab6"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42bf75f71a2aa7fdc38a7d7d70e6c200c1"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd427f74324bfc5c78140e34d510e26e00c1"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42a763e90526044d2c9ec7cc604e6f5ff7"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd428ade3d9228e13f6e86354c75e8ef92bc"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd429dac9fac004a9055ad38289b6692399f"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd427cb9c58d33d05677fb576674bac57313"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42c283846ee6bbf6294e59b4712edf254e"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42c7508c3a173f39338f076ef697b954c4"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd421f000f066404b97b12e9c4ca84d38d0f"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd429152bf3b88a1e7242d5cb4c469a589c6"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd423b1fcf4d327c1156e0ced23b4ec15153"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd4230037b09fee48cfce1f8562d753688c8"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42ef10255b706f98e1e88fae00855b0968"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42491e8c180771d5cfeb70e64ae43d4196"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42848ff9cf74c635f5324731538a1c853f"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd4254872b53324b870c3c439eeaf7fabcb1"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42903e66fa03d6d27edaa18126a82c20fd"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd428a0a5b40b007f81bee1472e4d0fb23da"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42857bd5cc69376a994ea9cb4969e9388e"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd428efdc4dd0ac29b43123295eca853f4ed"
+    },
+    {
+      "guid" : "18c1723432283e0cc55f10a6dcfd9e0288a783a885d8b0b3beb2e9f90bde3f49"
+    }
+  ],
+  "containerPath" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Runner.xcworkspace",
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "iphoneos",
+      "sdk" : "iphoneos17.0",
+      "sdkVariant" : "iphoneos",
+      "supportedArchitectures" : [
+        "arm64e",
+        "arm64v8",
+        "arm64",
+        "armv8"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/abhishek/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/abhishek/Library/Developer/Xcode/DerivedData/Runner-eqldrawfjjqbkcdgfohrlybcotcv/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/abhishek/Library/Developer/Xcode/DerivedData/Runner-eqldrawfjjqbkcdgfohrlybcotcv/Index.noindex/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ASSETCATALOG_FILTER_FOR_DEVICE_MODEL" : "iPhone14,5",
+          "ASSETCATALOG_FILTER_FOR_DEVICE_OS_VERSION" : "17.2.1",
+          "ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION" : "iPhone14,5",
+          "BUILD_ACTIVE_RESOURCES_ONLY" : "YES",
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "NO",
+          "TARGET_DEVICE_IDENTIFIER" : "00008110-000A10E43A86801E",
+          "TARGET_DEVICE_MODEL" : "iPhone14,5",
+          "TARGET_DEVICE_OS_VERSION" : "17.2.1",
+          "TARGET_DEVICE_PLATFORM_NAME" : "iphoneos"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : true,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

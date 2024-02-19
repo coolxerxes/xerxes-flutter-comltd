@@ -1,0 +1,10 @@
+framework module pushy_flutter {
+  umbrella header "pushy_flutter-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module pushy_flutter.__Swift {
+  exclude header "pushy_flutter-Swift.h"
+}

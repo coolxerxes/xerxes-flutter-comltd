@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/flutter_chat_ui_kit-master.dia",
+    "emit-module-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/flutter_chat_ui_kit-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/flutter_chat_ui_kit-master-emit-module.dia",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/flutter_chat_ui_kit-master.swiftdeps"
+  },
+  "/Users/abhishek/.pub-cache/hosted/pub.dev/flutter_chat_ui_kit-3.0.6-pluto.beta.2/ios/Classes/SwiftFlutterChatUiKitPlugin.swift" : {
+    "const-values" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/SwiftFlutterChatUiKitPlugin.swiftconstvalues",
+    "dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/SwiftFlutterChatUiKitPlugin.d",
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/SwiftFlutterChatUiKitPlugin.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/SwiftFlutterChatUiKitPlugin.o",
+    "llvm-bc" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/SwiftFlutterChatUiKitPlugin.bc",
+    "object" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/SwiftFlutterChatUiKitPlugin.o",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/SwiftFlutterChatUiKitPlugin.swiftdeps",
+    "swiftmodule" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/flutter_chat_ui_kit.build/Objects-normal/arm64/SwiftFlutterChatUiKitPlugin~partial.swiftmodule"
+  }
+}

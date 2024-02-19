@@ -37,4 +37,5 @@ abstract class ActivitiesRepo {
   Future demoteToNormalParticipants(Map data);
   Future removeParticipants(Map data);
   Future? leaveActivityAppointSomeoneAsHost(Map data);
+  Future<dynamic> reportActivity(Map data);
 }

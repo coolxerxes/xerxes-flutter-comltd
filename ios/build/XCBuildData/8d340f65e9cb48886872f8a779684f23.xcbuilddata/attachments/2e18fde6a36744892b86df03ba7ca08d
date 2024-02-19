@@ -1,0 +1,18 @@
+{
+  "" : {
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/cometchat-master.dia",
+    "emit-module-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/cometchat-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/cometchat-master-emit-module.dia",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/cometchat-master.swiftdeps"
+  },
+  "/Users/abhishek/.pub-cache/hosted/pub.dev/cometchat-3.0.6/ios/Classes/SwiftCometchatPlugin.swift" : {
+    "const-values" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/SwiftCometchatPlugin.swiftconstvalues",
+    "dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/SwiftCometchatPlugin.d",
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/SwiftCometchatPlugin.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/SwiftCometchatPlugin.o",
+    "llvm-bc" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/SwiftCometchatPlugin.bc",
+    "object" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/SwiftCometchatPlugin.o",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/SwiftCometchatPlugin.swiftdeps",
+    "swiftmodule" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/Objects-normal/arm64/SwiftCometchatPlugin~partial.swiftmodule"
+  }
+}

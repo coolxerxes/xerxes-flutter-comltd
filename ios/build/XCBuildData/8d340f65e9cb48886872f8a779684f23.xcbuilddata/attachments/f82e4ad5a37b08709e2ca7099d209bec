@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/pushy_flutter-master.dia",
+    "emit-module-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/pushy_flutter-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/pushy_flutter-master-emit-module.dia",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/pushy_flutter-master.swiftdeps"
+  },
+  "/Users/abhishek/.pub-cache/hosted/pub.dev/pushy_flutter-2.0.11/ios/Classes/PushyChannels.swift" : {
+    "const-values" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyChannels.swiftconstvalues",
+    "dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyChannels.d",
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyChannels.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyChannels.o",
+    "llvm-bc" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyChannels.bc",
+    "object" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyChannels.o",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyChannels.swiftdeps",
+    "swiftmodule" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyChannels~partial.swiftmodule"
+  },
+  "/Users/abhishek/.pub-cache/hosted/pub.dev/pushy_flutter-2.0.11/ios/Classes/PushyFlutter.swift" : {
+    "const-values" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyFlutter.swiftconstvalues",
+    "dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyFlutter.d",
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyFlutter.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyFlutter.o",
+    "llvm-bc" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyFlutter.bc",
+    "object" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyFlutter.o",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyFlutter.swiftdeps",
+    "swiftmodule" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/Objects-normal/arm64/PushyFlutter~partial.swiftmodule"
+  }
+}
