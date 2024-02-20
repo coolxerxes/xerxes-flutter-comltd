@@ -1,0 +1,23 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/build/ios/Debug-iphoneos/cometchat/cometchat.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    'type': 'directory',
+    'name': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/build/ios/Debug-iphoneos/cometchat/cometchat.framework/Headers"
+    'contents': [{
+      'type': 'file',
+      'name': "cometchat-Swift.h",
+      'external-contents': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/cometchat.build/unextended-interface-header.h",
+    }]
+    }]
+}

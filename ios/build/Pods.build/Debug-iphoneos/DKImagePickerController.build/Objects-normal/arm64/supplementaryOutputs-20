@@ -1,0 +1,18 @@
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset+Fetch.swift":
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.swiftconstvalues"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.swiftdeps"
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.o"
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.d"
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.dia"
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset.swift":
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset.swiftconstvalues"
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset.d"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset.swiftdeps"
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset.dia"
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset.o"
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset+Export.swift":
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.d"
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.swiftconstvalues"
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.o"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.swiftdeps"
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.dia"

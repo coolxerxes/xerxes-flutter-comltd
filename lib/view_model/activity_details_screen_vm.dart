@@ -379,6 +379,28 @@ class ActivityDetailsScreenVM extends GetxController {
       update();
     });
   }
+
+  Future? reportActivity(String reason) async {
+    var data = {
+      "userId": userId.toString(),
+      "activityId": activityId.toString(),
+      "description": reason,
+    };
+
+    try {
+      await ActivitiesRepoImpl().reportActivity(data).then((value) {
+        if (value['status'] == 200) {
+          showAppDialog(msg: value['message'].toString());
+        } else {
+          showAppDialog(msg: value['message'].toString());
+        }
+        update();
+      });
+    } catch (e) {
+      debugPrint("Report Activity Error ${e.toString()}");
+      update();
+    }
+  }
 }
 
 class ActivityRoles {

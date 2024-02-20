@@ -1,0 +1,23 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Debug-iphoneos/add_2_calendar/add_2_calendar.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/add_2_calendar.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    'type': 'directory',
+    'name': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Debug-iphoneos/add_2_calendar/add_2_calendar.framework/Headers"
+    'contents': [{
+      'type': 'file',
+      'name': "add_2_calendar-Swift.h",
+      'external-contents': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/add_2_calendar.build/unextended-interface-header.h",
+    }]
+    }]
+}

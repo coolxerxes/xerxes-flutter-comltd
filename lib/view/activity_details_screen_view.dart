@@ -11,7 +11,6 @@ import 'package:jyo_app/data/remote/api_interface.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/utils/app_widgets/app_bar.dart';
 import 'package:jyo_app/utils/app_widgets/app_gradient_btn.dart';
-import 'package:jyo_app/utils/app_widgets/share_modals.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/view/create_post_screen_view.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
@@ -118,55 +117,42 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                 : MyIconButton(
                                     onTap: () async {
                                       //getToNamed(createGroupScreenRoute);
-                                      await shareModals(
-                                        context,
-                                        onCreatePostTap: () async {
-                                          Navigator.of(context,
-                                                  rootNavigator: false)
-                                              .pop();
-                                          await c.shareActivityAsPost({
-                                            "userId": c.userId.toString(),
-                                            "activityId":
-                                                c.activityId.toString(),
-                                            "groupId": null,
-                                          });
+
+                                      showAppDialog(
+                                        msg:
+                                            "Are you sure you want to share this as post.",
+                                        btnText: "Yes",
+                                        btnText2: "No",
+                                        onPressed: () async {
+                                          Get.back();
+                                          getToNamed(createPostScreenRoute,
+                                              argument: {
+                                                "coverImage": c
+                                                    .postsVM
+                                                    .activitiesList[0]
+                                                    .coverImage!,
+                                                "activityName": c
+                                                    .postsVM
+                                                    .activitiesList[0]
+                                                    .activityName,
+                                                "activityDate": c
+                                                    .postsVM
+                                                    .activitiesList[0]
+                                                    .activityDate,
+                                                "group": c.postsVM
+                                                    .activitiesList[0].group,
+                                                "activityId": c
+                                                    .postsVM
+                                                    .activitiesList[0]
+                                                    .activityId
+                                              });
+                                          // await c.shareActivityAsPost({
+                                          //   "activityId": c.activityId.toString(),
+                                          //   "userId": c.userId.toString(),
+                                          //   "groupId": null
+                                          // });
                                         },
                                       );
-                                      // showAppDialog(
-                                      //   msg:
-                                      //       "Are you sure you want to share this as post.",
-                                      //   btnText: "Yes",
-                                      //   btnText2: "No",
-                                      //   onPressed: () async {
-                                      //     Get.back();
-                                      //     getToNamed(createPostScreenRoute,
-                                      //         argument: {
-                                      //           "coverImage": c
-                                      //               .postsVM
-                                      //               .activitiesList[0]
-                                      //               .coverImage!,
-                                      //           "activityName": c
-                                      //               .postsVM
-                                      //               .activitiesList[0]
-                                      //               .activityName,
-                                      //           "activityDate": c
-                                      //               .postsVM
-                                      //               .activitiesList[0]
-                                      //               .activityDate,
-                                      //           "group": c.postsVM
-                                      //               .activitiesList[0].group,
-                                      //           "activityId": c
-                                      //               .postsVM
-                                      //               .activitiesList[0]
-                                      //               .activityId
-                                      //         });
-                                      //     // await c.shareActivityAsPost({
-                                      //     //   "activityId": c.activityId.toString(),
-                                      //     //   "userId": c.userId.toString(),
-                                      //     //   "groupId": null
-                                      //     // });
-                                      //   },
-                                      // );
                                     },
                                     icon: AppBarIcons.shareHSvg,
                                     isSvg: true,
@@ -277,11 +263,22 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                                 color: Colors.red),
                                           ),
                                           onPressed: () async {
-                                            Navigator.pop(context,
-                                                AppStrings.reportActivity);
-                                            // await c.postsVM.deleteActivity(
-                                            //     c.activityId.toString().toString(),
-                                            //     c);
+                                            Navigator.of(getContext(),
+                                                    rootNavigator: false)
+                                                .pop();
+                                            showFlexibleBottomSheet(
+                                              initHeight: 0.55,
+                                              isExpand: true,
+                                              minHeight: 0,
+                                              maxHeight: 0.85,
+                                              bottomSheetColor:
+                                                  Colors.transparent,
+                                              context: getContext(),
+                                              builder: (a, b, c) {
+                                                return reportActivity(b);
+                                              },
+                                              isSafeArea: true,
+                                            );
                                           },
                                         ));
                                       }
@@ -1198,21 +1195,21 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                       width: 150.w,
                                       btnText: "Share moments",
                                       onPressed: () async {
-                                        // showAppDialog(
-                                        //   msg:
-                                        //       "Are you sure you want to share this as post.",
-                                        //   btnText: "Yes",
-                                        //   btnText2: "No",
-                                        //   onPressed: () async {
-                                        //     Get.back();
-                                        //     await c.shareActivityAsPost({
-                                        //       "activityId":
-                                        //           c.activityId.toString(),
-                                        //       "userId": c.userId.toString(),
-                                        //       "groupId": null
-                                        //     });
-                                        //   },
-                                        // );
+                                        showAppDialog(
+                                          msg:
+                                              "Are you sure you want to share this as post.",
+                                          btnText: "Yes",
+                                          btnText2: "No",
+                                          onPressed: () async {
+                                            Get.back();
+                                            await c.shareActivityAsPost({
+                                              "activityId":
+                                                  c.activityId.toString(),
+                                              "userId": c.userId.toString(),
+                                              "groupId": null
+                                            });
+                                          },
+                                        );
                                       })
                                   : AppGradientButton(
                                       width: 150.w,
@@ -2148,4 +2145,109 @@ class TabChild extends StatelessWidget {
           ),
         ));
   }
+}
+
+Widget reportActivity(ScrollController b) {
+  return GetBuilder<ActivityDetailsScreenVM>(
+    builder: (c) {
+      return Container(
+        decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(32.r),
+                topRight: Radius.circular(32.r))),
+        child: ListView(
+          controller: b,
+          children: [
+            sizedBoxH(
+              height: 10,
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 54,
+                  height: 4,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: AppColors.disabledColor),
+                )
+              ],
+            ),
+            sizedBoxH(
+              height: 10,
+            ),
+            MyAppBar(
+              leading: [
+                MyIconButton(
+                  onTap: () {
+                    Get.back();
+                  },
+                  icon: AppBarIcons.closeIcon,
+                  isSvg: true,
+                )
+              ],
+              middle: [
+                Text(
+                  AppStrings.reportActivity,
+                  style: AppStyles.interSemiBoldStyle(
+                    fontSize: 16.0,
+                    color: AppColors.textColor,
+                  ),
+                )
+              ],
+            ),
+            sizedBoxH(height: 8),
+            Container(
+              color: const Color(0xffF1F0EE),
+              height: 34,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 22, top: 8),
+                child: Text(
+                  AppStrings.violatedContent,
+                  style: AppStyles.interSemiBoldStyle(fontSize: 18.0),
+                ),
+              ),
+            ),
+            sizedBoxH(height: 6),
+            ListView.builder(
+              itemCount: AppStrings.reportActivities.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                final item = AppStrings.reportActivities[index];
+
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 6.h),
+                  height: 52,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: const Color(0xffF1F0EE),
+                  ),
+                  padding: const EdgeInsets.only(left: 12),
+                  child: ListTile(
+                    onTap: () async {
+                      Navigator.of(context, rootNavigator: false).pop();
+                      await c.reportActivity(item);
+                    },
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      item,
+                      style: AppStyles.interMediumStyle(),
+                    ),
+                    trailing: const Icon(
+                      Icons.keyboard_arrow_right,
+                      size: 34,
+                      color: AppColors.textColor,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

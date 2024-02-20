@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:jyo_app/utils/app_widgets/share_modals.dart';
 import 'package:jyo_app/view/activity_details_screen_view.dart';
 import 'package:jyo_app/view/profile_screen_view.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
+import 'package:jyo_app/view_model/activity_details_screen_vm.dart';
 import 'package:jyo_app/view_model/create_activity_screen_vm.dart';
 import 'package:jyo_app/view_model/create_group_screen_vm.dart';
 import 'package:jyo_app/view_model/group_details_screen_vm.dart';
@@ -71,21 +73,41 @@ class GroupDetailsScreenView extends StatelessWidget {
                       //:
                       [
                           MyIconButton(
-                            onTap: () {
-                              //getToNamed(createGroupScreenRoute);
-                              showAppDialog(
-                                msg:
-                                    "Are you sure you want to share this as post.",
-                                btnText: "Yes",
-                                btnText2: "No",
-                                onPressed: () async {
-                                  Get.back();
-                                  // await c.shareActivityAsPost({
-                                  //   "activityId": c.activityId.toString(),
-                                  //   "userId": c.userId.toString(),
-                                  //   "groupId": null
-                                  // });
+                            onTap: () async {
+                              // //getToNamed(createGroupScreenRoute);
+                              // showAppDialog(
+                              //   msg:
+                              //       "Are you sure you want to share this as post.",
+                              //   btnText: "Yes",
+                              //   btnText2: "No",
+                              //   onPressed: () async {
+                              //     Get.back();
+                              //     // await c.shareActivityAsPost({
+                              //     //   "activityId": c.activityId.toString(),
+                              //     //   "userId": c.userId.toString(),
+                              //     //   "groupId": null
+                              //     // });
+                              //   },
+                              // );
+
+                              await shareModals(
+                                context,
+                                onCreatePostTap: () async {
+                                  final ActivityDetailsScreenVM
+                                      activityDetailsScreenVM =
+                                      Get.put(ActivityDetailsScreenVM());
+                                  Navigator.of(context, rootNavigator: false)
+                                      .pop();
+                                  await activityDetailsScreenVM
+                                      .shareActivityAsPost({
+                                    "userId": c.userId.toString(),
+                                    "activityId": null,
+                                    "groupId": c.groupId.toString(),
+                                  });
                                 },
+                                onShareTap: () async => await c.shareVia(),
+                                onCopyLinkTap: () async => await c.copyLink(),
+                                onSendToFriend: () async {},
                               );
                             },
                             icon: AppBarIcons.shareHSvg,

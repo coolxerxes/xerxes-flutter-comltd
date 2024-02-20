@@ -1,0 +1,18 @@
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoGalleryScrollView.swift":
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryScrollView.d"
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryScrollView.dia"
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryScrollView.swiftconstvalues"
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryScrollView.o"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryScrollView.swiftdeps"
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKPhotoGallery/DKPhotoGallery/Transition/DKPhotoGalleryTransitionDismiss.swift":
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionDismiss.dia"
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionDismiss.o"
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionDismiss.swiftconstvalues"
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionDismiss.d"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionDismiss.swiftdeps"
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKPhotoGallery/DKPhotoGallery/Transition/DKPhotoGalleryTransitionController.swift":
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionController.o"
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionController.d"
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionController.dia"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionController.swiftdeps"
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoGalleryTransitionController.swiftconstvalues"

@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-master.dia",
+    "emit-module-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-master-emit-module.dia",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-master.swiftdeps"
+  },
+  "/Users/abhishek/.pub-cache/hosted/pub.dev/path_provider_foundation-2.1.2/ios/Classes/messages.g.swift" : {
+    "const-values" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.swiftconstvalues",
+    "dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.d",
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.o",
+    "llvm-bc" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.bc",
+    "object" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.o",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.swiftdeps",
+    "swiftmodule" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g~partial.swiftmodule"
+  },
+  "/Users/abhishek/.pub-cache/hosted/pub.dev/path_provider_foundation-2.1.2/ios/Classes/PathProviderPlugin.swift" : {
+    "const-values" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.swiftconstvalues",
+    "dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.d",
+    "diagnostics" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.dia",
+    "index-unit-output-path" : "/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.o",
+    "llvm-bc" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.bc",
+    "object" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.o",
+    "swift-dependencies" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.swiftdeps",
+    "swiftmodule" : "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin~partial.swiftmodule"
+  }
+}

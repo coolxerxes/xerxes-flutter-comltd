@@ -950,7 +950,7 @@ packages:
     source: hosted
     version: "0.3.4"
   share_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: share_plus
       sha256: f582d5741930f3ad1bf0211d358eddc0508cc346e5b4b248bd1e569c995ebb7a

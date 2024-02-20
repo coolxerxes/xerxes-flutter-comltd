@@ -1,14 +1,21 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:io';
+
 import 'package:cometchat/cometchat_sdk.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as mt;
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:jyo_app/data/remote/api_interface.dart';
 import 'package:jyo_app/repository/group_repo/group_repo_impl.dart';
+import 'package:jyo_app/utils/DynamicLinkHandler.dart';
 import 'package:jyo_app/utils/common.dart';
 import 'package:jyo_app/utils/secured_storage.dart';
 import 'package:jyo_app/view_model/group_list_screen_vm.dart';
 import 'package:jyo_app/view_model/posts_and_activities_vm.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../data/local/tab_data.dart';
 import '../data/remote/endpoints.dart';
@@ -20,6 +27,7 @@ import 'package:jyo_app/models/group_suggestion_model/group_memeber_list_model.d
     as m;
 import 'package:jyo_app/models/activity_model/activity_request_list_model.dart'
     as r;
+import 'package:http/http.dart' as http;
 
 class GroupDetailsScreenVM extends GetxController {
 //  Admin
@@ -91,7 +99,8 @@ class GroupDetailsScreenVM extends GetxController {
     postsVM.afterInit(this, endpoint: Endpoints.activity);
     if (!withoutArg) {
       groupId = Get.arguments["groupId"].toString();
-      isAppStartingFromNotification = Get.arguments["isAppStartingFromNotification"]??false;
+      isAppStartingFromNotification =
+          Get.arguments["isAppStartingFromNotification"] ?? false;
     }
     createTabs();
     //if (Get.arguments != null) {
@@ -493,6 +502,30 @@ class GroupDetailsScreenVM extends GetxController {
       debugPrint("leaveAndSetSomeOneAsSuperAdmin Error ${error.toString()}");
       update();
     });
+  }
+
+  Future<void> copyLink() async {
+    final String? id = await SecuredStorage.readStringValue(Keys.userId);
+    final url = await DynamicLinkHandler()
+        .createDynamicLink(Get.context!, groupId, 'image', id!);
+    await Share.share(url);
+  }
+
+  Future<void> shareVia() async {
+    try {
+      final http.Response response = await http.get(
+          Uri.parse(ApiInterface.profileImgUrl + group!.groupImage.toString()));
+      final directory = await getTemporaryDirectory();
+      final path = directory.path;
+      final file = File('$path/image.jpg');
+      await file.writeAsBytes(response.bodyBytes);
+
+      await Share.shareXFiles([XFile('$path/image.jpg')],
+          text: group?.groupName ?? '');
+    } catch (e) {
+      debugPrint(e.toString());
+      showAppDialog(msg: e.toString());
+    }
   }
 }
 

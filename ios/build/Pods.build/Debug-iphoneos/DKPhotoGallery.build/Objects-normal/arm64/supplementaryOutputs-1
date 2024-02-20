@@ -1,0 +1,18 @@
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/DKPhotoBasePreviewVC.swift":
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBasePreviewVC.dia"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBasePreviewVC.swiftdeps"
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBasePreviewVC.d"
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBasePreviewVC.swiftconstvalues"
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBasePreviewVC.o"
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/PDFPreview/DKPDFView.swift":
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPDFView.dia"
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPDFView.d"
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPDFView.swiftconstvalues"
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPDFView.o"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPDFView.swiftdeps"
+"/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/ImagePreview/DKPhotoBaseImagePreviewVC.swift":
+  dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBaseImagePreviewVC.d"
+  swift-dependencies: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBaseImagePreviewVC.swiftdeps"
+  object: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBaseImagePreviewVC.o"
+  diagnostics: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBaseImagePreviewVC.dia"
+  const-values: "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/DKPhotoGallery.build/Objects-normal/arm64/DKPhotoBaseImagePreviewVC.swiftconstvalues"

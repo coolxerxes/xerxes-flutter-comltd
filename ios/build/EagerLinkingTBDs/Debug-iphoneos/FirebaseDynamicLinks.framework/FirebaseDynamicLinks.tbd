@@ -1,0 +1,106 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_FirebaseDynamicLinksVersionString",
+            "_kFIRDLParameterDeepLinkIdentifier",
+            "_FirebaseDynamicLinksVersionNumber",
+            "_kFIRLoggerDynamicLinks",
+            "_kFIRDLParameterCampaign",
+            "_kFIRDLParameterInviteId",
+            "_kFIRDLReadDeepLinkAfterInstallKey",
+            "_kApiaryRestBaseUrl",
+            "_kFDLResolvedLinkMinAppVersionKey",
+            "_kFIRDLParameterTerm",
+            "_kFIRDLParameterMedium",
+            "_kFIRDLParameterRequestIPVersion",
+            "_FDLUTMParamPrefix",
+            "_kFIRDLParameterMatchMessage",
+            "_kFIRDLParameterContent",
+            "_kFIRDLParameterLink",
+            "_kFirebaseDurableDeepLinkErrorDomain",
+            "_kFIRDLParameterMatchType",
+            "_FDLMessageCodeIntegerFormat",
+            "_kFDLResolvedLinkDeepLinkURLKey",
+            "_kFIRDLParameterMinimumAppVersion",
+            "_kFIRDLParameterWeakMatchEndpoint",
+            "_kFIRDLParameterSource"
+          ],
+          "objc_class": [
+            "FIRDynamicLinkComponentsOptions",
+            "FIRDynamicLinkGoogleAnalyticsParameters",
+            "FIRDynamicLinkSocialMetaTagParameters",
+            "FIRDLDefaultRetrievalProcessV2",
+            "FIRDLJavaScriptExecutor",
+            "FIRDynamicLinkIOSParameters",
+            "FIRDynamicLinkNetworking",
+            "GINArgument",
+            "FIRDynamicLinkOtherPlatformParameters",
+            "PodsDummy_FirebaseDynamicLinks",
+            "FIRDynamicLinkComponentsKeyProvider",
+            "FIRDynamicLinkNavigationInfoParameters",
+            "FIRDynamicLinks",
+            "FDLDeviceHeuristicsHelper",
+            "GINInvocation",
+            "FIRDynamicLinkAndroidParameters",
+            "FIRDLRetrievalProcessFactory",
+            "FIRDLRetrievalProcessResult",
+            "FIRDynamicLinkComponents",
+            "FIRDynamicLinkItunesConnectAnalyticsParameters",
+            "FIRDynamicLink"
+          ]
+        },
+        "text": {
+          "global": [
+            "_FIRDataWithDictionary",
+            "_FIRURLParameterString",
+            "_FIRDLOSVersionSupported",
+            "_FIRDLURLQueryStringFromDictionary",
+            "_FIRDLIsAValidDLWithFDLDomain",
+            "_FDLLog",
+            "_FIRDLDeviceLocale",
+            "_FIRDLMatchTypeStringFromServerString",
+            "_FIRDLCanParseUniversalLinkURL",
+            "_FIRDLCookieRetrievalURL",
+            "_FIRDLDeepLinkURLWithInviteID",
+            "_GINDeviceHeuristicsJSMethodString",
+            "_FIRDLIsURLForAllowedCustomDomain",
+            "_FIRDLDeviceModelName",
+            "_FIRMakeHTTPRequest",
+            "_FIRDLDeviceTimezone",
+            "_FIRDLLogEventToScion",
+            "_FIRDLDictionaryFromQuery",
+            "_FIRDLMatchesShortLinkFormat",
+            "_FIRDLTypeofDeviceHeuristicsJSMethodNameString",
+            "_FIRDLDeviceLocaleRaw",
+            "_FIRDynamicLinkAPIKeyParameter",
+            "_FIRDLAddToAllowListForCustomDomainsArray",
+            "_FIRDLAppInstallationDate",
+            "_FDLMessageCodeForLogIdentifier"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/FirebaseDynamicLinks.framework/FirebaseDynamicLinks"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

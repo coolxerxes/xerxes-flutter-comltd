@@ -1872,4 +1872,21 @@ class ApiService extends ApiInterface {
     // TODO: implement postSugge
     throw UnimplementedError();
   }
+
+  @override
+  Future? reportActivity(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(
+      Uri.parse(ApiInterface.baseUrl + 'user/activity/reportActivity'),
+      body: jsonEncode(data),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        if (await authorizationToken != null)
+          'Authorization': (await authorizationToken)!
+      },
+    );
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
 }
