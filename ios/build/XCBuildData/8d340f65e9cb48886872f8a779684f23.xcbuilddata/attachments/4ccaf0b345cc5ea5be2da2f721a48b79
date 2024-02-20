@@ -1,0 +1,10 @@
+framework module cometchat {
+  umbrella header "cometchat-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module cometchat.__Swift {
+  exclude header "cometchat-Swift.h"
+}

@@ -196,9 +196,14 @@ class ActivitiesRepoImpl extends ActivitiesRepo {
   Future setSubHost(Map data) async {
     return await apiService.setSubHost(data);
   }
-  
+
   @override
   Future leaveActivityAppointSomeoneAsHost(Map data) async {
     return await apiService.leaveActivityAppointSomeoneAsHost(data);
+  }
+
+  @override
+  Future<dynamic> reportActivity(Map data) async {
+    return await apiService.reportActivity(data);
   }
 }

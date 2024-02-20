@@ -1,0 +1,72 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_GoogleUtilitiesVersionNumber",
+            "_kGULLoggerASLClientFacilityName",
+            "_kGULKeychainUtilsErrorDomain",
+            "_GoogleUtilitiesVersionString",
+            "_kGULSecureCodingError",
+            "_kGULHeartbeatStorageDirectory",
+            "_GULNSDataZlibRemainingBytesKey",
+            "_GULNSDataZlibErrorDomain",
+            "_GULNSDataZlibErrorKey"
+          ],
+          "objc_class": [
+            "GULKeychainUtils",
+            "GULHeartbeatDateStorage",
+            "GULAppEnvironmentUtil",
+            "GULHeartbeatDateStorageUserDefaults",
+            "PodsDummy_GoogleUtilities",
+            "GULKeychainStorage",
+            "GULNetworkInfo",
+            "GULLoggerWrapper",
+            "GULURLSessionDataResponse",
+            "GULSecureCoding"
+          ]
+        },
+        "text": {
+          "global": [
+            "_GULLoggerInitializeASL",
+            "_getGULLoggerClient",
+            "_GULLoggerForceDebug",
+            "_GULLogWarning",
+            "_GULIsLoggableLevel",
+            "_GULLogDebug",
+            "_GULLoggerEnableSTDERR",
+            "_GULSetLoggerLevel",
+            "_GULLogNotice",
+            "_GULLogError",
+            "_GULResetLogger",
+            "_GULLogBasic",
+            "_getGULClientQueue",
+            "_getGULLoggerDebugMode",
+            "_GULLogInfo",
+            "_GULLoggerRegisterVersion"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/GoogleUtilities.framework/GoogleUtilities"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

@@ -1,0 +1,23 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/build/ios/Debug-iphoneos/pushy_flutter/pushy_flutter.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    'type': 'directory',
+    'name': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/build/ios/Debug-iphoneos/pushy_flutter/pushy_flutter.framework/Headers"
+    'contents': [{
+      'type': 'file',
+      'name': "pushy_flutter-Swift.h",
+      'external-contents': "/Users/abhishek/Desktop/outside/xerxes-flutter-comltd/ios/build/Pods.build/Debug-iphoneos/pushy_flutter.build/unextended-interface-header.h",
+    }]
+    }]
+}

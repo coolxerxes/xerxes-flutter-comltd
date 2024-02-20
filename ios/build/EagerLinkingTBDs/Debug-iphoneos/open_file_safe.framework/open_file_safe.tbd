@@ -1,0 +1,37 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_open_file_safeVersionString",
+            "_open_file_safeVersionNumber"
+          ],
+          "objc_class": [
+            "PodsDummy_open_file_safe",
+            "OpenFilePlugin"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/open_file_safe.framework/open_file_safe"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

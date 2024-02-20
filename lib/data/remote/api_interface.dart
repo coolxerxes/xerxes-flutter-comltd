@@ -14,7 +14,7 @@ abstract class ApiInterface {
   //  "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4";
 
   Future<dynamic>? sendOtp(Map data);
-  Future<dynamic>?checkOtp(Map data);
+  Future<dynamic>? checkOtp(Map data);
   Future<dynamic>? userCreate(Map data);
   Future<dynamic>? createOrUpdateUserInfo(Map data);
   Future<dynamic>? signIn(Map data);
@@ -98,6 +98,7 @@ abstract class ApiInterface {
   Future<dynamic>? demoteToNormalParticipants(Map data);
   Future<dynamic>? removeParticipants(Map data);
   Future<dynamic>? leaveActivityAppointSomeoneAsHost(Map data);
+  Future<dynamic>? reportActivity(Map data);
 
   //Group
   Future<dynamic>? createGroup(Map data);

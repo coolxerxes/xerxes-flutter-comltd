@@ -1,0 +1,57 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_TIME_UNSET",
+            "_video_player_avfoundationVersionString",
+            "_video_player_avfoundationVersionNumber"
+          ],
+          "objc_class": [
+            "FLTPositionMessage",
+            "FLTTextureMessage",
+            "FLTMixWithOthersMessage",
+            "FLTVideoPlayerPlugin",
+            "FLTVolumeMessage",
+            "FLTLoopingMessage",
+            "FLTAVFoundationVideoPlayerApiCodecReader",
+            "FLTVideoPlayer",
+            "FLTAVFoundationVideoPlayerApiCodecWriter",
+            "FLTCreateMessage",
+            "PodsDummy_video_player_avfoundation",
+            "FLTFrameUpdater",
+            "FLTAVFoundationVideoPlayerApiCodecReaderWriter",
+            "FLTPlaybackSpeedMessage"
+          ]
+        },
+        "text": {
+          "global": [
+            "_FLTAVFoundationVideoPlayerApiSetup",
+            "_FLTGetStandardizedTransformForTrack",
+            "_FLTAVFoundationVideoPlayerApiGetCodec"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/video_player_avfoundation.framework/video_player_avfoundation"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

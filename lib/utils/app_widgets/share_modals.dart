@@ -10,6 +10,9 @@ import 'package:jyo_app/utils/common.dart';
 Future<void> shareModals(
   BuildContext context, {
   void Function()? onCreatePostTap,
+  void Function()? onShareTap,
+  void Function()? onCopyLinkTap,
+  void Function()? onSendToFriend,
 }) async {
   await showModalBottomSheet(
     shape: const RoundedRectangleBorder(
@@ -43,6 +46,7 @@ Future<void> shareModals(
                 _ShareModelsItem(
                   icon: AppBarIcons.shareHSvg,
                   text: AppStrings.shareVia,
+                  onTap: onShareTap,
                 ),
                 sizedBoxW(width: 8),
                 _ShareModelsItem(
@@ -55,11 +59,13 @@ Future<void> shareModals(
                 _ShareModelsItem(
                   icon: AppIcons.copyLink,
                   text: AppStrings.copyLink,
+                  onTap: onCopyLinkTap,
                 ),
                 sizedBoxW(width: 8),
                 _ShareModelsItem(
                   icon: AppIcons.sendToFriend,
                   text: AppStrings.sendToFriend,
+                  onTap: onSendToFriend,
                 ),
               ],
             ),

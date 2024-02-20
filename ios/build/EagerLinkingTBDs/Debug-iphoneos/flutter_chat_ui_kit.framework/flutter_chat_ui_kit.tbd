@@ -1,0 +1,172 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC21interactionControllerSo021UIDocumentInteractionL0CSgvMZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC30createTemporaryURLforVideoFile3urlSo5NSURLCAG_tF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC5toInt8durationSiSgSd_tF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvsTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC0C14ViewControllerSo06UIViewL0CSgvMZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11previewItemSo5NSURLCvpMV",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14viewControllerACSo06UIViewL0CSg_tcfc",
+            "_$s19flutter_chat_ui_kit11audioPlayerSo07AVAudioF0CSgvp",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15checkPermission33_D07BA26E220F2C3965BC52AC2EBC656ELL4args6resultySDySSypG_yypSgctF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11getLocation33_D07BA26E220F2C3965BC52AC2EBC656ELL4args6resultySDySSypG_yypSgctF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11previewItemSo5NSURLCvgTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11previewItemSo5NSURLCvs",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC21interactionControllerSo021UIDocumentInteractionL0CSgvsZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC6handle_6resultySo0F10MethodCallC_yypSgctFTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvgTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC17previewController_0K6ItemAtSo09QLPreviewM0_pSo0oL0C_SitF",
+            "_$s19flutter_chat_ui_kit5SoundO9hashValueSivpMV",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvsTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvpfi",
+            "_$s19flutter_chat_ui_kit5SoundOMn",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC7playUrl33_D07BA26E220F2C3965BC52AC2EBC656ELL4args6resultySDySSypG_yypSgctF",
+            "_$s19flutter_chat_ui_kit14viewControllerSo06UIViewF0CSgvp",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvs",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15locationManagerSo010CLLocationL0CvMZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvpfi",
+            "_$s19flutter_chat_ui_kit13docControllerSo021UIDocumentInteractionF0CSgvau",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvMTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC8pickFile33_D07BA26E220F2C3965BC52AC2EBC656ELL4args6resultySDySSypG_yypSgctF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC9playSound33_D07BA26E220F2C3965BC52AC2EBC656ELL3url6resulty10Foundation3URLV_yypSgctF",
+            "_$s19flutter_chat_ui_kit13docControllerSo021UIDocumentInteractionF0CSgvp",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvg",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvMTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvsTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC21imagePickerController_29didFinishPickingMediaWithInfoySo07UIImagelM0C_SDySo0tlmS3KeyaypGtFTq",
+            "_$s19flutter_chat_ui_kit5SoundO4hash4intoys6HasherVz_tF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15locationManagerSo010CLLocationL0CvsZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16getAuthorizationyyyyXEF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvpWvd",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15locationManagerSo010CLLocationL0CvpZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC27audioPlayerDidFinishPlaying_12successfullyySo07AVAudioL0C_SbtF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginCMn",
+            "_$s19flutter_chat_ui_kit5SoundO21__derived_enum_equalsySbAC_ACtFZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvM",
+            "_$s19flutter_chat_ui_kit15globalRegistrarSo013FlutterPluginF0_pSgvau",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC0C14ViewControllerSo06UIViewL0CSgvgZ",
+            "_$s19flutter_chat_ui_kit15globalRegistrarSo013FlutterPluginF0_pSgvp",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvg",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvpWvd",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC21imagePickerController_29didFinishPickingMediaWithInfoySo07UIImagelM0C_SDySo0tlmS3KeyaypGtF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15locationManagerSo010CLLocationL0CvgZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC0C14ViewControllerSo06UIViewL0CSgvau",
+            "_$s19flutter_chat_ui_kit11audioPlayerSo07AVAudioF0CSgvau",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvM",
+            "_$s19flutter_chat_ui_kit17otherAudioPlayingSbvau",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPicker_18didPickDocumentsAtySo010UIDocumentL14ViewControllerC_Say10Foundation3URLVGtF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15locationManager_22didChangeAuthorizationySo010CLLocationL0C_So21CLAuthorizationStatusVtF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC0C14ViewControllerSo06UIViewL0CSgvpZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC13getAddressMap33_D07BA26E220F2C3965BC52AC2EBC656ELL10placeMarks10methodNameSDySSypGSgSo11CLPlacemarkC_SStF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC29$__lazy_storage_$_previewItem33_D07BA26E220F2C3965BC52AC2EBC656ELLSo5NSURLCSgvpfi",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC37locationManagerDidChangeAuthorizationyySo010CLLocationL0CF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15playCustomSound33_D07BA26E220F2C3965BC52AC2EBC656ELL4args6resultySDySSypG_yypSgctF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16getAuthorizationyyyyXEFTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginCACycfC",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC18presentImagePicker33_D07BA26E220F2C3965BC52AC2EBC656ELLyyF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16presentQuickLook33_D07BA26E220F2C3965BC52AC2EBC656ELLyyF",
+            "_$s19flutter_chat_ui_kit12globalResultyypSgcSgvp",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginCMa",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvpfi",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvM",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginCfD",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14curentLocationSo10CLLocationCSgvpZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC17previewController_0K6ItemAtSo09QLPreviewM0_pSo0oL0C_SitFTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvg",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC10getAddress33_D07BA26E220F2C3965BC52AC2EBC656ELL4args6resultySDySSypG_yypSgctF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11previewItemSo5NSURLCvM",
+            "_$s19flutter_chat_ui_kit5SoundOSQAAMc",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvgTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC27audioPlayerDidFinishPlaying_12successfullyySo07AVAudioL0C_SbtFTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC21presentDocumentPicker33_D07BA26E220F2C3965BC52AC2EBC656ELLyyF",
+            "_Swift51Overrides",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvgTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC20numberOfPreviewItems2inSiSo19QLPreviewControllerC_tF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11previewItemSo5NSURLCvg",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginCACycfc",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvMTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC37locationManagerDidChangeAuthorizationyySo010CLLocationL0CFTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15locationManagerSo010CLLocationL0Cvau",
+            "_$s19flutter_chat_ui_kit12globalResultyypSgcSgvau",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC8register4withySo0fJ9Registrar_p_tFZ",
+            "_$s19flutter_chat_ui_kit5SoundOMa",
+            "_$s19flutter_chat_ui_kit5SoundON",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC15locationManager_22didChangeAuthorizationySo010CLLocationL0C_So21CLAuthorizationStatusVtFTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC0C14ViewControllerSo06UIViewL0CSgvsZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvs",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11previewItemSo5NSURLCvMTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvpMV",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14viewControllerACSo06UIViewL0CSg_tcfCTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvpMV",
+            "_$s19flutter_chat_ui_kit5SoundOSHAAMc",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC6handle_6resultySo0F10MethodCallC_yypSgctF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC5toInt8durationSiSgSd_tFTq",
+            "_$s19flutter_chat_ui_kit5SoundO9hashValueSivg",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPicker_18didPickDocumentsAtySo010UIDocumentL14ViewControllerC_Say10Foundation3URLVGtFTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC21interactionControllerSo021UIDocumentInteractionL0CSgvgZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14curentLocationSo10CLLocationCSgvsZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC30createTemporaryURLforVideoFile3urlSo5NSURLCAG_tFTq",
+            "_$s19flutter_chat_ui_kit14viewControllerSo06UIViewF0CSgvau",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC20numberOfPreviewItems2inSiSo19QLPreviewControllerC_tFTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11cleanResult33_D07BA26E220F2C3965BC52AC2EBC656ELLyyF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14curentLocationSo10CLLocationCSgvau",
+            "_$s19flutter_chat_ui_kit17otherAudioPlayingSbvp",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14viewControllerACSo06UIViewL0CSg_tcfC",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11imagePickerSo07UIImageL10ControllerCvpMV",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginCN",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC8openFile33_D07BA26E220F2C3965BC52AC2EBC656ELL4args6resultySDySSypG_yypSgctF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC11previewItemSo5NSURLCvsTq",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14curentLocationSo10CLLocationCSgvgZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14curentLocationSo10CLLocationCSgvMZ",
+            "_flutter_chat_ui_kitVersionNumber",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC14documentPickerSo010UIDocumentL14ViewControllerCvpWvd",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC10stopPlayer33_D07BA26E220F2C3965BC52AC2EBC656ELL4args6resultySDySSypG_yypSgctF",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC21interactionControllerSo021UIDocumentInteractionL0CSgvpZ",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC21interactionControllerSo021UIDocumentInteractionL0CSgvau",
+            "_flutter_chat_ui_kitVersionString",
+            "_$s19flutter_chat_ui_kit27SwiftFlutterChatUiKitPluginC16filePickerResultyypSgcSgvs"
+          ],
+          "objc_class": [
+            "PodsDummy_flutter_chat_ui_kit",
+            "FlutterChatUiKitPlugin",
+            "_TtC19flutter_chat_ui_kit27SwiftFlutterChatUiKitPlugin"
+          ]
+        },
+        "text": {
+          "global": [
+            "__ZN5swift39swift51override_conformsToSwiftProtocolEPKNS_14TargetMetadataINS_9InProcessEEEPKNS_24TargetProtocolDescriptorIS1_EEN7__swift9__runtime4llvm9StringRefEPFPKNS_35TargetProtocolConformanceDescriptorIS1_EES4_S8_SC_E",
+            "__Z34_swiftoverride_class_getSuperclassPKN5swift14TargetMetadataINS_9InProcessEEE"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/flutter_chat_ui_kit.framework/flutter_chat_ui_kit"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "13",
+        "target": "arm64-ios"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}
