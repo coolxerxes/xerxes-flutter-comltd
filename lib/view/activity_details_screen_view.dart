@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:jyo_app/data/local/post_edit_model.dart';
 import 'package:jyo_app/data/remote/api_interface.dart';
 import 'package:jyo_app/resources/app_routes.dart';
+import 'package:jyo_app/utils/DynamicLinkHandler.dart';
 import 'package:jyo_app/utils/app_widgets/app_bar.dart';
 import 'package:jyo_app/utils/app_widgets/app_gradient_btn.dart';
 import 'package:jyo_app/utils/common.dart';
@@ -17,6 +18,7 @@ import 'package:jyo_app/view/timeline_screen_view.dart';
 import 'package:jyo_app/view_model/activity_details_screen_vm.dart';
 import 'package:jyo_app/view_model/create_activity_screen_vm.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../data/local/user_search_model.dart';
 import '../models/activity_model/activity_details_model.dart';
@@ -1202,12 +1204,14 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                           btnText2: "No",
                                           onPressed: () async {
                                             Get.back();
-                                            await c.shareActivityAsPost({
-                                              "activityId":
-                                                  c.activityId.toString(),
-                                              "userId": c.userId.toString(),
-                                              "groupId": null
-                                            });
+                                            final url =
+                                                await DynamicLinkHandler()
+                                                    .createDynamicLink(
+                                                        context,
+                                                        'Activity',
+                                                        'image',
+                                                        c.activityId);
+                                            await Share.share(url);
                                           },
                                         );
                                       })
