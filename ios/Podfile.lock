@@ -7,10 +7,18 @@ PODS:
   - AppAuth/Core (1.6.2)
   - AppAuth/ExternalUserAgent (1.6.2):
     - AppAuth/Core
-  - cometchat (3.0.6):
-    - CometChatPro (= 3.0.911)
+  - CocoaMQTT (2.1.0):
+    - CocoaMQTT/Core (= 2.1.0)
+  - CocoaMQTT/Core (2.1.0):
+    - MqttCocoaAsyncSocket (~> 1.0.8)
+  - cometchat_chat_uikit (4.2.1):
     - Flutter
-  - CometChatPro (3.0.911)
+  - cometchat_sdk (4.0.6):
+    - CometChatSDK (= 4.0.42)
+    - Flutter
+  - cometchat_uikit_shared (4.2.2):
+    - Flutter
+  - CometChatSDK (4.0.42)
   - devicelocale (0.0.1):
     - Flutter
   - DKImagePickerController/Core (4.3.4):
@@ -44,61 +52,60 @@ PODS:
   - DKPhotoGallery/Resource (0.0.17):
     - SDWebImage
     - SwiftyGif
-  - FBAEMKit (14.1.0):
-    - FBSDKCoreKit_Basics (= 14.1.0)
-  - FBSDKCoreKit (14.1.0):
-    - FBAEMKit (= 14.1.0)
-    - FBSDKCoreKit_Basics (= 14.1.0)
-  - FBSDKCoreKit_Basics (14.1.0)
-  - FBSDKLoginKit (14.1.0):
-    - FBSDKCoreKit (= 14.1.0)
+  - FBAEMKit (16.3.1):
+    - FBSDKCoreKit_Basics (= 16.3.1)
+  - FBSDKCoreKit (16.3.1):
+    - FBAEMKit (= 16.3.1)
+    - FBSDKCoreKit_Basics (= 16.3.1)
+  - FBSDKCoreKit_Basics (16.3.1)
+  - FBSDKLoginKit (16.3.1):
+    - FBSDKCoreKit (= 16.3.1)
   - file_picker (0.0.1):
     - DKImagePickerController/PhotoGallery
     - Flutter
-  - Firebase/CoreOnly (10.15.0):
-    - FirebaseCore (= 10.15.0)
-  - Firebase/DynamicLinks (10.15.0):
+  - Firebase/CoreOnly (10.20.0):
+    - FirebaseCore (= 10.20.0)
+  - Firebase/DynamicLinks (10.20.0):
     - Firebase/CoreOnly
-    - FirebaseDynamicLinks (~> 10.15.0)
-  - firebase_core (2.16.0):
-    - Firebase/CoreOnly (= 10.15.0)
+    - FirebaseDynamicLinks (~> 10.20.0)
+  - firebase_core (2.25.4):
+    - Firebase/CoreOnly (= 10.20.0)
     - Flutter
-  - firebase_dynamic_links (5.3.6):
-    - Firebase/DynamicLinks (= 10.15.0)
+  - firebase_dynamic_links (5.4.14):
+    - Firebase/DynamicLinks (= 10.20.0)
     - firebase_core
     - Flutter
-  - FirebaseCore (10.15.0):
+  - FirebaseCore (10.20.0):
     - FirebaseCoreInternal (~> 10.0)
-    - GoogleUtilities/Environment (~> 7.8)
-    - GoogleUtilities/Logger (~> 7.8)
-  - FirebaseCoreInternal (10.15.0):
+    - GoogleUtilities/Environment (~> 7.12)
+    - GoogleUtilities/Logger (~> 7.12)
+  - FirebaseCoreInternal (10.21.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - FirebaseDynamicLinks (10.15.0):
+  - FirebaseDynamicLinks (10.20.0):
     - FirebaseCore (~> 10.0)
   - Flutter (1.0.0)
-  - flutter_chat_ui_kit (3.0.6-pluto.beta.2):
-    - Flutter
-  - flutter_facebook_auth (4.4.1):
-    - FBSDKLoginKit (= 14.1.0)
+  - flutter_facebook_auth (6.0.4):
+    - FBSDKLoginKit (~> 16.3.1)
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
   - google_sign_in_ios (0.0.1):
     - Flutter
-    - GoogleSignIn (~> 6.2)
-  - GoogleSignIn (6.2.4):
+    - FlutterMacOS
+    - GoogleSignIn (~> 7.0)
+  - GoogleSignIn (7.0.0):
     - AppAuth (~> 1.5)
-    - GTMAppAuth (~> 1.3)
-    - GTMSessionFetcher/Core (< 3.0, >= 1.1)
-  - GoogleUtilities/Environment (7.11.5):
+    - GTMAppAuth (< 3.0, >= 1.3)
+    - GTMSessionFetcher/Core (< 4.0, >= 1.1)
+  - GoogleUtilities/Environment (7.12.0):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.11.5):
+  - GoogleUtilities/Logger (7.12.0):
     - GoogleUtilities/Environment
-  - "GoogleUtilities/NSData+zlib (7.11.5)"
-  - GTMAppAuth (1.3.1):
+  - "GoogleUtilities/NSData+zlib (7.12.0)"
+  - GTMAppAuth (2.0.0):
     - AppAuth/Core (~> 1.6)
-    - GTMSessionFetcher/Core (< 3.0, >= 1.5)
-  - GTMSessionFetcher/Core (2.3.0)
+    - GTMSessionFetcher/Core (< 4.0, >= 1.5)
+  - GTMSessionFetcher/Core (3.3.1)
   - image_cropper (0.0.4):
     - Flutter
     - TOCropViewController (~> 2.6.1)
@@ -106,32 +113,35 @@ PODS:
     - Flutter
   - location (0.0.1):
     - Flutter
+  - MqttCocoaAsyncSocket (1.0.8)
   - open_file_safe (0.0.1):
     - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.0.4):
+  - permission_handler_apple (9.3.0):
     - Flutter
   - PromisesObjC (2.3.1)
-  - Pushy (1.0.32)
-  - pushy_flutter (2.0.11):
+  - Pushy (1.0.48):
+    - CocoaMQTT (= 2.1.0)
+  - pushy_flutter (2.0.18):
     - Flutter
-    - Pushy (= 1.0.32)
-  - SDWebImage (5.18.2):
-    - SDWebImage/Core (= 5.18.2)
-  - SDWebImage/Core (5.18.2)
+    - Pushy (= 1.0.48)
+  - SDWebImage (5.18.11):
+    - SDWebImage/Core (= 5.18.11)
+  - SDWebImage/Core (5.18.11)
   - share_plus (0.0.1):
     - Flutter
   - sign_in_with_apple (0.0.1):
     - Flutter
   - SwiftyGif (5.4.4)
   - TOCropViewController (2.6.1)
-  - TPNS-iOS (1.3.9.8)
+  - TPNS-iOS (1.4.0.0)
   - url_launcher_ios (0.0.1):
     - Flutter
   - video_player_avfoundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - wakelock (0.0.1):
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
@@ -139,35 +149,37 @@ PODS:
 
 DEPENDENCIES:
   - add_2_calendar (from `.symlinks/plugins/add_2_calendar/ios`)
-  - cometchat (from `.symlinks/plugins/cometchat/ios`)
+  - cometchat_chat_uikit (from `.symlinks/plugins/cometchat_chat_uikit/ios`)
+  - cometchat_sdk (from `.symlinks/plugins/cometchat_sdk/ios`)
+  - cometchat_uikit_shared (from `.symlinks/plugins/cometchat_uikit_shared/ios`)
   - devicelocale (from `.symlinks/plugins/devicelocale/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
-  - flutter_chat_ui_kit (from `.symlinks/plugins/flutter_chat_ui_kit/ios`)
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
-  - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
+  - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - location (from `.symlinks/plugins/location/ios`)
   - open_file_safe (from `.symlinks/plugins/open_file_safe/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - pushy_flutter (from `.symlinks/plugins/pushy_flutter/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - TPNS-iOS
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
   trunk:
     - AppAuth
-    - CometChatPro
+    - CocoaMQTT
+    - CometChatSDK
     - DKImagePickerController
     - DKPhotoGallery
     - FBAEMKit
@@ -182,6 +194,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - MqttCocoaAsyncSocket
     - PromisesObjC
     - Pushy
     - SDWebImage
@@ -192,8 +205,12 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   add_2_calendar:
     :path: ".symlinks/plugins/add_2_calendar/ios"
-  cometchat:
-    :path: ".symlinks/plugins/cometchat/ios"
+  cometchat_chat_uikit:
+    :path: ".symlinks/plugins/cometchat_chat_uikit/ios"
+  cometchat_sdk:
+    :path: ".symlinks/plugins/cometchat_sdk/ios"
+  cometchat_uikit_shared:
+    :path: ".symlinks/plugins/cometchat_uikit_shared/ios"
   devicelocale:
     :path: ".symlinks/plugins/devicelocale/ios"
   file_picker:
@@ -204,14 +221,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_dynamic_links/ios"
   Flutter:
     :path: Flutter
-  flutter_chat_ui_kit:
-    :path: ".symlinks/plugins/flutter_chat_ui_kit/ios"
   flutter_facebook_auth:
     :path: ".symlinks/plugins/flutter_facebook_auth/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   google_sign_in_ios:
-    :path: ".symlinks/plugins/google_sign_in_ios/ios"
+    :path: ".symlinks/plugins/google_sign_in_ios/darwin"
   image_cropper:
     :path: ".symlinks/plugins/image_cropper/ios"
   image_picker_ios:
@@ -221,7 +236,7 @@ EXTERNAL SOURCES:
   open_file_safe:
     :path: ".symlinks/plugins/open_file_safe/ios"
   path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/ios"
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   pushy_flutter:
@@ -233,60 +248,63 @@ EXTERNAL SOURCES:
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_player_avfoundation:
-    :path: ".symlinks/plugins/video_player_avfoundation/ios"
+    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
-  add_2_calendar: e9d68636aed37fb18e12f5a3d74c2e0589487af0
+  add_2_calendar: 5eee66d5a3b99cd5e1487a7e03abd4e3ac4aff11
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
-  cometchat: ba893454b9579d43a12072d3fe55f4f48636ebde
-  CometChatPro: dedb2cd0fbba88f070e074911980d9223b393295
+  CocoaMQTT: 43666585403f664bb55361189c03c54897060324
+  cometchat_chat_uikit: d99460e79ac2c498e283fb5ac07d24859ecd81e7
+  cometchat_sdk: 40a3e6cf5299745b6fa9b480717a4f2871235e00
+  cometchat_uikit_shared: 9a7ebe729c26daf5d5461796f7244c52e14783e1
+  CometChatSDK: a364c3d2c31a9b786a8ad24f79e6b8b619f60e97
   devicelocale: b22617f40038496deffba44747101255cee005b0
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  FBAEMKit: a899515e45476027f73aef377b5cffadcd56ca3a
-  FBSDKCoreKit: 24f8bc8d3b5b2a8c5c656a1329492a12e8efa792
-  FBSDKCoreKit_Basics: 6e578c9bdc7aa1365dbbbde633c9ebb536bcaa98
-  FBSDKLoginKit: 787de205d524c3a4b17d527916f1d066e4361660
+  FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
+  FBSDKCoreKit: 5e4dd478947ab1bcc887e8cfadeae0727af1a942
+  FBSDKCoreKit_Basics: cd7b5f5d1e8868c26706917919d058999ca672c3
+  FBSDKLoginKit: 572cca0bc6c90067ef197187697cb3b584310c52
   file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
-  Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
-  firebase_core: 77172d0a9d8d19d07606e24406e4c2fc14d3265b
-  firebase_dynamic_links: 27625ac999a9353d6e323c07db85c3b55c5c6839
-  FirebaseCore: 2cec518b43635f96afe7ac3a9c513e47558abd2e
-  FirebaseCoreInternal: 2f4bee5ed00301b5e56da0849268797a2dd31fb4
-  FirebaseDynamicLinks: 206d4ed3efd2b722822598017f3980d9fda89815
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_chat_ui_kit: 86d93319d99477a224751caad36cc4ad341f4694
-  flutter_facebook_auth: 361ac7a57263ebf327f26089507ead0d66558ee8
+  Firebase: 10c8cb12fb7ad2ae0c09ffc86cd9c1ab392a0031
+  firebase_core: a46c312d8bae4defa3d009b2aa7b5b413aeb394e
+  firebase_dynamic_links: 5ff661188e4c8c5676d94619381bfe47f5958778
+  FirebaseCore: 28045c1560a2600d284b9c45a904fe322dc890b6
+  FirebaseCoreInternal: 43c1788eaeee9d1b97caaa751af567ce11010d00
+  FirebaseDynamicLinks: 61a82d43b81cd74a3cdbb1d65f07fb0241aaa553
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_facebook_auth: c8700ab1770f3d8e5e7456220e4f3bbcdb831454
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
-  google_sign_in_ios: 4f85eb9f937450765c8573bb85fd8cd6a5af675c
-  GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
-  GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
-  GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
-  GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
+  google_sign_in_ios: 989eea5abe94af62050782714daf920be883d4a2
+  GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
+  GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
+  GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
+  GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
-  image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
-  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  location: d5cf8598915965547c3f36761ae9cc4f4e87d22e
+  MqttCocoaAsyncSocket: 77d3b74f76228dd5a05d1f9526eab101d415b30c
   open_file_safe: 84c01ac91378bd9166ab570d7f22f4fb3532141a
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
-  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
+  permission_handler_apple: 036b856153a2b1f61f21030ff725f3e6fece2b78
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  Pushy: d87dddd74cd738d804cd95a1d4bbcd53a352b6e9
-  pushy_flutter: fcc97d54a053a802dc1facc079664838cb57c159
-  SDWebImage: c0de394d7cf7f9838aed1fd6bb6037654a4572e4
+  Pushy: c07f638ea2e40cac2198b01d41737579116379c2
+  pushy_flutter: cdbad44e459fd72b080d50b513099541486d0053
+  SDWebImage: a3ba0b8faac7228c3c8eadd1a55c9c9fe5e16457
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  TPNS-iOS: eaf32b052bba0144aa2aa68dab85b87f6ad72a12
-  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
-  video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
+  TPNS-iOS: 3c9be6922cdf578a579d7a4df00dea9ee77acd0d
+  url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
+  video_player_avfoundation: 02011213dab73ae3687df27ce441fbbcc82b5579
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
-  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
+  webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
 PODFILE CHECKSUM: 5880fb530522b68f84feff6306c664c6800290c5
 
-COCOAPODS: 1.15.0
+COCOAPODS: 1.11.3

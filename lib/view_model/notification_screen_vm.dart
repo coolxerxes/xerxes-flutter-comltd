@@ -1,5 +1,4 @@
-import 'package:cometchat/cometchat_sdk.dart';
-import 'package:cometchat/main/cometchat.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/data/local/notification_type.dart';

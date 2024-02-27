@@ -88,7 +88,7 @@ class PhoneNumberVM extends GetxController {
     code = await countryPicker.showPicker(context: context);
     if (code != null) {
       cCode = code!.dialCode;
-      flage = code!.flagImage;
+      flage = code!.flagImage();
       if (phoneNoCtr.text.trim().length == 8 &&
           isChangingPhoneNo! &&
           ((cCode.toString().trim() + phoneNoCtr.text.trim()) !=

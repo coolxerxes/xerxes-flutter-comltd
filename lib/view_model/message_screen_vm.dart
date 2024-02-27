@@ -1,4 +1,4 @@
-import 'package:cometchat/cometchat_sdk.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:jyo_app/utils/common.dart';

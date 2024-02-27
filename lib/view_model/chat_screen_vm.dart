@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
 import 'package:jyo_app/utils/common.dart';

@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:cometchat/cometchat_sdk.dart' as c;
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart' as c;
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';

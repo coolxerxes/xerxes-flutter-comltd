@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/utils/DynamicLinkHandler.dart';
@@ -44,11 +44,11 @@ class SplashVM extends GetxController {
           ..region = CometChatConstants.region
           ..autoEstablishSocketConnection = true
           ..appId = CometChatConstants.appId
-          ..apiKey = CometChatConstants.authKey)
+          ..authKey = CometChatConstants.authKey)
         .build();
 
     CometChatUIKit.init(
-        authSettings: authSettings,
+        uiKitSettings: authSettings,
         onSuccess: (String msg) {
           debugPrint("commetchat init success : $msg");
         },

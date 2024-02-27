@@ -9,7 +9,7 @@
 //TEST [DO NOT DELETE]
 class CometChatConstants {
   static const region = "us";
-  static const appId = "235738918118b356";
-  static const authKey = "0b5c82ffb94e2b0f7ba546753d12a0f6cfe6acb1";
-  static const restApiKey = "1655d0d8ffdf4946be8dc61fce07abc66e90f417";
+  static const appId = "25362029a8401007";
+  static const authKey = "34172ad18fc4680e8a91dd14897fe88ffa419bfd";
+  static const restApiKey = "7e58fb4b603b92659719c244669c69b5fe86ac36";
 }

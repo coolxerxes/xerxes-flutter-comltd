@@ -1,7 +1,6 @@
-import 'package:cometchat/cometchat_sdk.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart' as uikit;
+import 'package:flutter/material.dart' hide Typography;
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/resources/app_colors.dart';
@@ -168,33 +167,33 @@ class ChatScreenView extends StatelessWidget {
           ),
 
           body: c.group != null
-              ? uikit.CometChatMessages(
+              ? CometChatMessages(
                   group: c.group,
                   hideMessageHeader: true,
-                  theme: uikit.CometChatTheme(
-                      palette: const uikit.Palette(
-                        backGroundColor: uikit.PaletteModel(
+                  theme: CometChatTheme(
+                      palette: const Palette(
+                        backGroundColor: PaletteModel(
                             light: Colors.white, dark: Colors.white),
-                        primary: uikit.PaletteModel(
+                        primary: PaletteModel(
                             light: AppColors.orangePrimary,
                             dark: AppColors.orangePrimary),
                       ),
-                      typography: uikit.Typography.fromDefault()),
+                      typography: Typography.fromDefault()),
                 )
-              : uikit.CometChatMessageList(
+              : CometChatMessageList(
                   group: c.group,
                   user: c.conversation?.conversationWith as User?,
-                  messageListStyle: const uikit.MessageListStyle(),
+                  messageListStyle: const MessageListStyle(),
 
-                  theme: uikit.CometChatTheme(
-                      palette: const uikit.Palette(
-                        backGroundColor: uikit.PaletteModel(
+                  theme: CometChatTheme(
+                      palette: const Palette(
+                        backGroundColor: PaletteModel(
                             light: Colors.white, dark: Colors.white),
-                        primary: uikit.PaletteModel(
+                        primary: PaletteModel(
                             light: AppColors.orangePrimary,
                             dark: AppColors.orangePrimary),
                       ),
-                      typography: uikit.Typography.fromDefault()),
+                      typography: Typography.fromDefault()),
                   //messagesRequestBuilder: MessagesRequestBuilder()..uid = c.receiver!.uid,
                 ),
           //     ListView.builder(
@@ -326,7 +325,7 @@ class ChatScreenView extends StatelessWidget {
                             )
                           : SizedBox(
                               height: 115.h,
-                              child: uikit.CometChatMessageComposer(
+                              child: CometChatMessageComposer(
                                 group: c.group,
                                 user: c.conversation != null
                                     ? c.conversation!.conversationWith as User

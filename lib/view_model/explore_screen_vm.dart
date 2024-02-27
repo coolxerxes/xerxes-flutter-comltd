@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
