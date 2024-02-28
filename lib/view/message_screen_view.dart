@@ -23,6 +23,8 @@ class MessageScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var args = Get.arguments;
+
     return GetBuilder<MessageScreenVM>(builder: (c) {
       return Scaffold(
           appBar: PreferredSize(
@@ -213,7 +215,13 @@ class MessageScreenView extends StatelessWidget {
                                     itemCount: c.conversationList.length,
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
-                                      return freindMessage(c, index);
+                                      return freindMessage(
+                                          c,
+                                          index,
+                                          args != null
+                                              ? args['isFromGroup']
+                                              : false,
+                                          args != null ? args['groupId'] : '');
                                     }),
                       ),
                     )
@@ -279,7 +287,8 @@ class MessageScreenView extends StatelessWidget {
     });
   }
 
-  Widget freindMessage(MessageScreenVM c, index) {
+  Widget freindMessage(
+      MessageScreenVM c, index, bool isFromGroup, String groupId) {
     return Row(
       children: [
         Expanded(
@@ -290,11 +299,37 @@ class MessageScreenView extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: InkWell(
-                onTap: () {
-                  Get.delete<ChatScreenVM>(force: true);
-                  final cvm = Get.put(ChatScreenVM());
-                  cvm.conversation = c.conversationList[index];
-                  getToNamed(chatScreenRoute);
+                onTap: () async {
+                  if (isFromGroup) {
+                    final CustomMessage customMessage = CustomMessage(
+                      receiverUid: c.friends[index].uid ?? '',
+                      type: CometChatMessageType.custom,
+                      customData: {
+                        'groupId': groupId,
+                      },
+                      receiverType: CometChatConversationType.user,
+                      subType: 'Group',
+                    );
+
+                    CometChatMessageEvents.ccMessageSent(
+                        customMessage, MessageStatus.inProgress);
+
+                    await CometChat.sendCustomMessage(customMessage,
+                        onSuccess: (CustomMessage message) {
+                      debugPrint("Custom Message Sent Successfully : $message");
+                      CometChatMessageEvents.ccMessageSent(
+                          customMessage, MessageStatus.sent);
+                    }, onError: (CometChatException e) {
+                      debugPrint(
+                          "Custom message sending failed with exception: ${e.message}");
+                    });
+                    Get.back(result: true);
+                  } else {
+                    Get.delete<ChatScreenVM>(force: true);
+                    final cvm = Get.put(ChatScreenVM());
+                    cvm.conversation = c.conversationList[index];
+                    getToNamed(chatScreenRoute);
+                  }
                 },
                 child: Container(
                   // margin: EdgeInsets.only(left: 22.w, right: 22.w),
@@ -580,10 +615,10 @@ class MessageScreenView extends StatelessWidget {
                 Container(
                   padding:
                       EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.h),
-                  child: Column(
+                  child: const Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       SearchTextField(
                         controller: null, //c.searchCtrl,
                         //     onChanged: (t) {
@@ -734,6 +769,15 @@ class MessageScreenView extends StatelessWidget {
       return (c.conversationList[index].lastMessage as MediaMessage)
           .attachment!
           .fileName;
+    } else if (c.conversationList[index].lastMessage is CustomMessage) {
+      if ((c.conversationList[index].lastMessage as CustomMessage?)
+              ?.customData
+              ?.containsKey("groupId") ??
+          false) {
+        return 'Group shared';
+      } else {
+        return "Custom message";
+      }
     } else {
       return "Custom message";
     }

@@ -107,7 +107,20 @@ class GroupDetailsScreenView extends StatelessWidget {
                                 },
                                 onShareTap: () async => await c.shareVia(),
                                 onCopyLinkTap: () async => await c.copyLink(),
-                                onSendToFriend: () async {},
+                                onSendToFriend: () async {
+                                  getToNamed(messageScreenRoute, argument: {
+                                    "isFromGroup": true,
+                                    "groupId": c.groupId.toString(),
+                                  }).then((value) {
+                                    if (value) {
+                                      Navigator.of(context,
+                                              rootNavigator: false)
+                                          .pop();
+                                      showAppDialog(
+                                          msg: "Group shared successfully");
+                                    }
+                                  });
+                                },
                               );
                             },
                             icon: AppBarIcons.shareHSvg,
@@ -212,16 +225,16 @@ class GroupDetailsScreenView extends StatelessWidget {
                                         actions: actions,
                                         cancelButton:
                                             CupertinoActionSheetAction(
-                                          child: Text(
-                                            AppStrings.cancel,
-                                            style: AppStyles.interRegularStyle(
-                                                color: AppColors.iosBlue),
-                                          ),
                                           isDefaultAction: true,
                                           onPressed: () {
                                             Navigator.pop(
                                                 context, AppStrings.cancel);
                                           },
+                                          child: Text(
+                                            AppStrings.cancel,
+                                            style: AppStyles.interRegularStyle(
+                                                color: AppColors.iosBlue),
+                                          ),
                                         ));
                                   });
                             },
@@ -510,11 +523,7 @@ class GroupDetailsScreenView extends StatelessWidget {
                                       (c.group!.about.toString().trim().length >
                                                   100 &&
                                               !c.isReadingMore)
-                                          ? c.group!.about
-                                                  .toString()
-                                                  .trim()
-                                                  .substring(0, 100) +
-                                              "..."
+                                          ? "${c.group!.about.toString().trim().substring(0, 100)}..."
                                           : c.group!.about.toString().trim(),
                                       style: AppStyles.interRegularStyle(
                                           fontSize: 17.2,
@@ -1061,9 +1070,7 @@ class GroupDetailsScreenView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      c.friends![index].user!.firstName.toString() +
-                          " " +
-                          c.friends![index].user!.lastName.toString(),
+                      "${c.friends![index].user!.firstName} ${c.friends![index].user!.lastName}",
                       style: AppStyles.interMediumStyle(fontSize: 15.4),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -1218,15 +1225,15 @@ class GroupDetailsScreenView extends StatelessWidget {
                   // message: const Text('Your options are '),
                   actions: actions,
                   cancelButton: CupertinoActionSheetAction(
+                    isDefaultAction: true,
+                    onPressed: () {
+                      Navigator.pop(context, AppStrings.cancel);
+                    },
                     child: Text(
                       AppStrings.cancel,
                       style:
                           AppStyles.interRegularStyle(color: AppColors.iosBlue),
                     ),
-                    isDefaultAction: true,
-                    onPressed: () {
-                      Navigator.pop(context, AppStrings.cancel);
-                    },
                   ));
             });
 
@@ -1401,11 +1408,7 @@ class GroupDetailsScreenView extends StatelessWidget {
               children: [
                 Expanded(
                     child: Text(
-                  c.searchedMembers![index].user!.userInfo!.firstName
-                          .toString() +
-                      " " +
-                      c.searchedMembers![index].user!.userInfo!.lastName
-                          .toString(),
+                  "${c.searchedMembers![index].user!.userInfo!.firstName} ${c.searchedMembers![index].user!.userInfo!.lastName}",
                   style: AppStyles.interMediumStyle(fontSize: 15.4),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
@@ -1702,11 +1705,7 @@ class GroupDetailsScreenView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      c.searchedMembers![index].user!.userInfo!.firstName
-                              .toString() +
-                          " " +
-                          c.searchedMembers![index].user!.userInfo!.lastName
-                              .toString(),
+                      "${c.searchedMembers![index].user!.userInfo!.firstName} ${c.searchedMembers![index].user!.userInfo!.lastName}",
                       style: AppStyles.interMediumStyle(fontSize: 15.4),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,

@@ -27,6 +27,7 @@ import 'package:jyo_app/view/group_list_screen_view.dart';
 import 'package:jyo_app/view/group_suggestion_view.dart';
 import 'package:jyo_app/view/list_of_save_activities_screen_view.dart';
 import 'package:jyo_app/view/login_view.dart';
+import 'package:jyo_app/view/message_screen_view.dart';
 import 'package:jyo_app/view/most_liked_screen_view.dart';
 import 'package:jyo_app/view/notification_screen_view.dart';
 import 'package:jyo_app/view/otp_screen_view.dart';
@@ -148,7 +149,7 @@ class MyApp extends StatelessWidget {
                 binding: MostLikedScreenBinding()),
             GetPage(
                 name: groupSuggestionScreenRoute,
-                page: () => GroupSuggestionScreenView(),
+                page: () => const GroupSuggestionScreenView(),
                 binding: GroupSuggestionScreenBinding()),
             GetPage(
                 name: otpScreenRoute,
@@ -260,7 +261,12 @@ class MyApp extends StatelessWidget {
             GetPage(
                 name: qrScreenRoute,
                 page: () => const QrScreenView(),
-                binding: QRScreenBinding())
+                binding: QRScreenBinding()),
+            GetPage(
+              name: messageScreenRoute,
+              page: () => const MessageScreenView(),
+              binding: MessageScreenBinding(),
+            )
           ],
           initialRoute: splashScreenRoute,
           navigatorKey: locator<NavigationService>().navigatoryKey,
