@@ -269,10 +269,10 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                                     rootNavigator: false)
                                                 .pop();
                                             showFlexibleBottomSheet(
-                                              initHeight: 0.55,
-                                              isExpand: true,
-                                              minHeight: 0,
-                                              maxHeight: 0.85,
+                                              initHeight: 0.7,
+                                              // isExpand: true,
+                                              minHeight: 0.7,
+                                              maxHeight: 0.7,
                                               bottomSheetColor:
                                                   Colors.transparent,
                                               context: getContext(),
@@ -327,17 +327,17 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                           actions: actions,
                                           cancelButton:
                                               CupertinoActionSheetAction(
+                                            isDefaultAction: true,
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  context, AppStrings.cancel);
+                                            },
                                             child: Text(
                                               AppStrings.cancel,
                                               style:
                                                   AppStyles.interRegularStyle(
                                                       color: AppColors.iosBlue),
                                             ),
-                                            isDefaultAction: true,
-                                            onPressed: () {
-                                              Navigator.pop(
-                                                  context, AppStrings.cancel);
-                                            },
                                           ));
                                     });
                               },
@@ -687,12 +687,7 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                                         .length >
                                                     100 &&
                                                 !c.isReadingMore)
-                                            ? c.postsVM.activitiesList[0]
-                                                    .activityAbout
-                                                    .toString()
-                                                    .trim()
-                                                    .substring(0, 100) +
-                                                "..."
+                                            ? "${c.postsVM.activitiesList[0].activityAbout.toString().trim().substring(0, 100)}..."
                                             : c.postsVM.activitiesList[0]
                                                 .activityAbout
                                                 .toString()
@@ -860,13 +855,7 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      c.postsVM.activitiesList[0].host!
-                                              .firstName
-                                              .toString() +
-                                          " " +
-                                          c.postsVM.activitiesList[0].host!
-                                              .lastName
-                                              .toString(),
+                                      "${c.postsVM.activitiesList[0].host!.firstName} ${c.postsVM.activitiesList[0].host!.lastName}",
                                       style: AppStyles.interSemiBoldStyle(
                                           fontSize: 16),
                                     ),
@@ -926,6 +915,11 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                             actions: actions,
                                             cancelButton:
                                                 CupertinoActionSheetAction(
+                                              isDefaultAction: true,
+                                              onPressed: () {
+                                                Navigator.pop(
+                                                    context, AppStrings.cancel);
+                                              },
                                               child: Text(
                                                 AppStrings.cancel,
                                                 style:
@@ -933,11 +927,6 @@ class ActivityDetailsScreeView extends StatelessWidget {
                                                         color:
                                                             AppColors.iosBlue),
                                               ),
-                                              isDefaultAction: true,
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context, AppStrings.cancel);
-                                              },
                                             ));
                                       });
                                 },
@@ -1563,9 +1552,7 @@ class ActivityDetailsScreeView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      c.friends![index].user!.firstName.toString() +
-                          " " +
-                          c.friends![index].user!.lastName.toString(),
+                      "${c.friends![index].user!.firstName} ${c.friends![index].user!.lastName}",
                       style: AppStyles.interMediumStyle(fontSize: 15.4),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -1848,11 +1835,7 @@ class ActivityDetailsScreeView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      c.searchedMembers![index].user!.userInfo!.firstName
-                              .toString() +
-                          " " +
-                          c.searchedMembers![index].user!.userInfo!.lastName
-                              .toString(),
+                      "${c.searchedMembers![index].user!.userInfo!.firstName} ${c.searchedMembers![index].user!.userInfo!.lastName}",
                       style: AppStyles.interMediumStyle(fontSize: 15.4),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -1914,9 +1897,7 @@ class RequestsUI extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        requestData.user!.userInfo!.firstName.toString() +
-                            " " +
-                            requestData.user!.userInfo!.lastName.toString(),
+                        "${requestData.user!.userInfo!.firstName} ${requestData.user!.userInfo!.lastName}",
                         style: AppStyles.interSemiBoldStyle(fontSize: 16),
                       ),
                     ),

@@ -262,11 +262,6 @@ class MyApp extends StatelessWidget {
                 name: qrScreenRoute,
                 page: () => const QrScreenView(),
                 binding: QRScreenBinding()),
-            GetPage(
-              name: messageScreenRoute,
-              page: () => const MessageScreenView(),
-              binding: MessageScreenBinding(),
-            )
           ],
           initialRoute: splashScreenRoute,
           navigatorKey: locator<NavigationService>().navigatoryKey,

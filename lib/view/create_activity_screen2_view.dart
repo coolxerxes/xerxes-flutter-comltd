@@ -81,15 +81,15 @@ class CreateActivityScreen2View extends StatelessWidget {
                         ),
                       ],
                       cancelButton: CupertinoActionSheetAction(
+                        isDefaultAction: true,
+                        onPressed: () {
+                          Navigator.pop(context, AppStrings.cancel);
+                        },
                         child: Text(
                           AppStrings.cancel,
                           style: AppStyles.interRegularStyle(
                               color: AppColors.iosBlue),
                         ),
-                        isDefaultAction: true,
-                        onPressed: () {
-                          Navigator.pop(context, AppStrings.cancel);
-                        },
                       )),
                 );
               },
@@ -431,7 +431,7 @@ class CreateActivityScreen2View extends StatelessWidget {
     );
   }
 
-  static showInviteSheet() {
+  static showInviteSheet({void Function()? onPressed, String? title}) {
     showFlexibleBottomSheet(
       initHeight: 0.84,
       //isExpand: true,
@@ -441,14 +441,15 @@ class CreateActivityScreen2View extends StatelessWidget {
       bottomSheetColor: Colors.transparent,
       context: getContext(),
       builder: (a, b, c) {
-        return showUsers(b);
+        return showUsers(b, onPressed: onPressed, title: title);
       },
       anchors: [0.83, 0.84, 0.85],
       isSafeArea: true,
     );
   }
 
-  static Widget showUsers(ScrollController b) {
+  static Widget showUsers(ScrollController b,
+      {void Function()? onPressed, String? title}) {
     return GetBuilder<CreateActivityScreenVM>(
       builder: (c) {
         return ClipRRect(
@@ -496,7 +497,7 @@ class CreateActivityScreen2View extends StatelessWidget {
                         )
                       ],
                       middle: [
-                        Text(AppStrings.inviteFriend,
+                        Text(title ?? AppStrings.inviteFriend,
                             style: AppStyles.interSemiBoldStyle(
                                 fontSize: 16.0, color: AppColors.textColor))
                       ],
@@ -577,9 +578,10 @@ class CreateActivityScreen2View extends StatelessWidget {
                         ? Container()
                         : AppGradientButton(
                             btnText: AppStrings.done,
-                            onPressed: () {
-                              c.inviteFriends();
-                            },
+                            onPressed: onPressed ??
+                                () {
+                                  c.inviteFriends();
+                                },
                             height: 56,
                             width: double.infinity,
                             margin: EdgeInsets.symmetric(
@@ -671,9 +673,7 @@ class CreateActivityScreen2View extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      c.friends![index].user!.firstName.toString() +
-                          " " +
-                          c.friends![index].user!.lastName.toString(),
+                      "${c.friends![index].user!.firstName} ${c.friends![index].user!.lastName}",
                       style: AppStyles.interMediumStyle(fontSize: 15.4),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,

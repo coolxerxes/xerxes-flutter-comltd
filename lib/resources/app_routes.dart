@@ -42,4 +42,3 @@ const qrScreenRoute = '/qrScreenRoute';
 const listOfSavedActivitiesScreenRoute = '/listOfSavedActivitiesScreenRoute';
 const activityDetailsScreenRoute = '/activityDetailsScreenRoute';
 const activityParticipantsScreenRoute = '/activityParticipantsScreenRoute';
-

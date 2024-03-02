@@ -11,15 +11,27 @@ class AppStyles {
   }
 
   static TextStyle? interRegularStyle(
-      {double? fontSize = 15, Color? color = AppColors.textColor, TextOverflow? textOverflow}) {
+      {double? fontSize = 15,
+      Color? color = AppColors.textColor,
+      TextOverflow? textOverflow,
+      FontWeight? fontWeight}) {
     return TextStyle(
-        fontSize: fontSize!.sp, color: color, fontFamily: interRegular, overflow: textOverflow );
+        fontSize: fontSize!.sp,
+        color: color,
+        fontFamily: interRegular,
+        fontWeight: fontWeight,
+        overflow: textOverflow);
   }
 
   static TextStyle? interSemiBoldStyle(
-      {double? fontSize = 15, Color? color = AppColors.textColor,TextOverflow? textOverflow}) {
+      {double? fontSize = 15,
+      Color? color = AppColors.textColor,
+      TextOverflow? textOverflow}) {
     return TextStyle(
-        fontSize: fontSize!.sp, color: color, fontFamily: interSemiBold, overflow: textOverflow);
+        fontSize: fontSize!.sp,
+        color: color,
+        fontFamily: interSemiBold,
+        overflow: textOverflow);
   }
 
   static TextStyle? interBoldStyle(

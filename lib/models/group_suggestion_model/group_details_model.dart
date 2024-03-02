@@ -53,23 +53,26 @@ class GroupDetail {
   dynamic memberCount;
   bool? isInvited;
   bool? isJoinedGroup;
+  String? deeplink;
 
-  GroupDetail(
-      {this.id,
-      this.userId,
-      this.groupName,
-      this.groupImage,
-      this.about,
-      this.category,
-      this.isPrivateGroup,
-      this.requireAcceptance,
-      this.createdAt,
-      this.isMember,
-      this.role,
-      this.activityCount,
-      this.memberCount,
-      this.isJoinedGroup,
-      this.isInvited});
+  GroupDetail({
+    this.id,
+    this.userId,
+    this.groupName,
+    this.groupImage,
+    this.about,
+    this.category,
+    this.isPrivateGroup,
+    this.requireAcceptance,
+    this.createdAt,
+    this.isMember,
+    this.role,
+    this.activityCount,
+    this.memberCount,
+    this.isJoinedGroup,
+    this.isInvited,
+    this.deeplink,
+  });
 
   factory GroupDetail.fromJson(Map<String, dynamic> json) => GroupDetail(
       id: json["id"],
@@ -92,18 +95,46 @@ class GroupDetail {
       activityCount: json["activityCount"] ?? 0);
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "userId": userId,
+        "id": id.toString(),
+        "userId": userId.toString(),
         "groupName": groupName,
         "groupImage": groupImage,
         "about": about,
         "category": category == null
             ? []
             : List<dynamic>.from(category!.map((x) => x.toJson())),
-        "isPrivateGroup": isPrivateGroup,
-        "requireAcceptance": requireAcceptance,
+        "isPrivateGroup": isPrivateGroup.toString(),
+        "requireAcceptance": requireAcceptance.toString(),
         "createdAt": createdAt,
-        "isMember": isMember,
+        "isMember": isMember.toString(),
         "role": role,
       };
+
+  Map<String, dynamic> toSendMessage(String deeplink) => {
+        "id": id.toString(),
+        "userId": userId.toString(),
+        "groupName": groupName,
+        "groupImage": groupImage,
+        "about": about,
+        "isPrivateGroup": isPrivateGroup.toString(),
+        "requireAcceptance": requireAcceptance.toString(),
+        "createdAt": createdAt,
+        "isMember": isMember.toString(),
+        "role": role,
+        "deeplink": deeplink,
+      };
+
+  factory GroupDetail.fromSendMessage(Map<String, dynamic> json) => GroupDetail(
+        id: int.tryParse(json["id"] ?? ''),
+        userId: int.tryParse(json["userId"] ?? ''),
+        groupName: json["groupName"],
+        groupImage: json["groupImage"],
+        about: json["about"],
+        isPrivateGroup: json["isPrivateGroup"] == 'true',
+        requireAcceptance: json["requireAcceptance"] == 'true',
+        createdAt: json["createdAt"],
+        isMember: json["isMember"] == 'true',
+        role: json["role"],
+        deeplink: json["deeplink"],
+      );
 }

@@ -93,9 +93,8 @@ class GroupDetailsScreenVM extends GetxController {
       },
     );
     userId = (await SecuredStorage.readStringValue(Keys.userId))!;
-    userName = (await SecuredStorage.readStringValue(Keys.firstName))! +
-        " " +
-        (await SecuredStorage.readStringValue(Keys.lastName))!;
+    userName =
+        "${(await SecuredStorage.readStringValue(Keys.firstName))!} ${(await SecuredStorage.readStringValue(Keys.lastName))!}";
     postsVM.afterInit(this, endpoint: Endpoints.activity);
     if (!withoutArg) {
       groupId = Get.arguments["groupId"].toString();
@@ -271,20 +270,19 @@ class GroupDetailsScreenVM extends GetxController {
   }
 
   void searchInvities(String t) {
-    friends!
-        .assignAll(searchedFriends!.where((f.Datum p0) => (t.toString().isEmpty
-            ? true
-            : (p0.user!.firstName.toString().toLowerCase() +
-                    " " + //.contains(t.toString().toLowerCase()) ||
-                    p0.user!.lastName.toString().toLowerCase())
-                // (p0.user!.firstName
-                //         .toString()
-                //         .toLowerCase()
-                //         .contains(t.toString().toLowerCase()) ||
-                //     p0.user!.lastName
-                //         .toString()
-                //         .toLowerCase()
-                .contains(t.toString().toLowerCase()))));
+    friends!.assignAll(searchedFriends!.where((f.Datum p0) => (t
+            .toString()
+            .isEmpty
+        ? true
+        : ("${p0.user!.firstName.toString().toLowerCase()} ${p0.user!.lastName.toString().toLowerCase()}")
+            // (p0.user!.firstName
+            //         .toString()
+            //         .toLowerCase()
+            //         .contains(t.toString().toLowerCase()) ||
+            //     p0.user!.lastName
+            //         .toString()
+            //         .toLowerCase()
+            .contains(t.toString().toLowerCase()))));
   }
 
   Future<void> getActivities() async {
@@ -306,13 +304,12 @@ class GroupDetailsScreenVM extends GetxController {
   }
 
   void search(String t) {
-    searchedMembers!
-        .assignAll(membersList.where((m.Datum p0) => (t.toString().isEmpty
-            ? true
-            : (p0.user!.userInfo!.firstName.toString().toLowerCase() +
-                    " " + //.contains(t.toString().toLowerCase()) ||
-                    p0.user!.userInfo!.lastName.toString().toLowerCase())
-                .contains(t.toString().toLowerCase()))));
+    searchedMembers!.assignAll(membersList.where((m.Datum p0) => (t
+            .toString()
+            .isEmpty
+        ? true
+        : ("${p0.user!.userInfo!.firstName.toString().toLowerCase()} ${p0.user!.userInfo!.lastName.toString().toLowerCase()}")
+            .contains(t.toString().toLowerCase()))));
   }
 
   Future<void> getParticipants(Map data) async {
@@ -417,9 +414,7 @@ class GroupDetailsScreenVM extends GetxController {
           GroupMember.fromUid(
             scope: CometChatMemberScope.participant,
             uid: user!.id.toString(),
-            name: user.userInfo!.firstName.toString() +
-                " " +
-                user.userInfo!.lastName.toString(),
+            name: "${user.userInfo!.firstName} ${user.userInfo!.lastName}",
           )
         ],
         onSuccess: (Map<String?, String?> result) {
@@ -509,6 +504,12 @@ class GroupDetailsScreenVM extends GetxController {
     final url = await DynamicLinkHandler()
         .createDynamicLink(Get.context!, groupId, 'image', id!);
     await Share.share(url);
+  }
+
+  Future<String> shareGroup() async {
+    final String? id = await SecuredStorage.readStringValue(Keys.userId);
+    return await DynamicLinkHandler()
+        .createDynamicLink(Get.context!, groupId, 'image', id!);
   }
 
   Future<void> shareVia() async {

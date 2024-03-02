@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jyo_app/utils/app_widgets/share_modals.dart';
 import 'package:jyo_app/view/activity_details_screen_view.dart';
+import 'package:jyo_app/view/create_activity_screen2_view.dart';
 import 'package:jyo_app/view/profile_screen_view.dart';
 import 'package:jyo_app/view/timeline_screen_view.dart';
 import 'package:jyo_app/view_model/activity_details_screen_vm.dart';
@@ -108,18 +109,20 @@ class GroupDetailsScreenView extends StatelessWidget {
                                 onShareTap: () async => await c.shareVia(),
                                 onCopyLinkTap: () async => await c.copyLink(),
                                 onSendToFriend: () async {
-                                  getToNamed(messageScreenRoute, argument: {
-                                    "isFromGroup": true,
-                                    "groupId": c.groupId.toString(),
-                                  }).then((value) {
-                                    if (value) {
-                                      Navigator.of(context,
-                                              rootNavigator: false)
-                                          .pop();
-                                      showAppDialog(
-                                          msg: "Group shared successfully");
-                                    }
-                                  });
+                                  final CreateActivityScreenVM
+                                      createActivityScreenVM =
+                                      Get.put(CreateActivityScreenVM());
+                                  Navigator.of(context, rootNavigator: false)
+                                      .pop();
+                                  await CreateActivityScreen2View
+                                      .showInviteSheet(
+                                          title: AppStrings.shareToFriends,
+                                          onPressed: () async {
+                                            await createActivityScreenVM
+                                                .sendCustomMessage(
+                                                    await c.shareGroup(),
+                                                    c.group);
+                                          });
                                 },
                               );
                             },
