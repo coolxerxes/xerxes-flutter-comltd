@@ -54,17 +54,17 @@ class DeleteAccScreenView extends StatelessWidget {
                       ),
                       onTap: () {
                         showFlexibleBottomSheet(
-                          initHeight: 0.5,
+                          initHeight: 1,
                           //isExpand: true,
-                          minHeight: 0,
-                          maxHeight: 0.85,
+                          minHeight: 1,
+                          maxHeight: 1,
                           //isCollapsible: true,
                           bottomSheetColor: Colors.transparent,
                           context: getContext(),
                           builder: (a, b, c) {
                             return deleteAccSheet(b);
                           },
-                          anchors: [0, 0.65, 0.85],
+
                           isSafeArea: true,
                         );
                         // getToNamed(postPrivacyRoute);
@@ -183,10 +183,10 @@ class DeleteAccScreenView extends StatelessWidget {
                               onTap: () {
                                 Get.back();
                                 showFlexibleBottomSheet(
-                                  initHeight: 0.5,
-                                  isExpand: true,
-                                  minHeight: 0,
-                                  maxHeight: 0.85,
+                                  initHeight: 1,
+                                  // isExpand: true,
+                                  minHeight: 1,
+                                  maxHeight: 1,
                                   bottomSheetColor: Colors.transparent,
                                   context: getContext(),
                                   builder: (a, b, c) {
@@ -200,9 +200,7 @@ class DeleteAccScreenView extends StatelessWidget {
                                 height: 47.h,
                                 child: Center(
                                     child: Text(
-                                  AppStrings.iUnderstand +
-                                      ". " +
-                                      AppStrings.deleteMyAcc,
+                                  "${AppStrings.iUnderstand}. ${AppStrings.deleteMyAcc}",
                                   style: AppStyles.interMediumStyle(
                                       color: AppColors.white),
                                   textAlign: TextAlign.center,
@@ -315,9 +313,8 @@ class DeleteAccScreenView extends StatelessWidget {
                           style: AppStyles.interRegularStyle(
                               fontSize: 15, color: AppColors.hintTextColor)),
                       TextSpan(
-                          text: otpController.timerTextMin! +
-                              ":" +
-                              otpController.timerTextSec!,
+                          text:
+                              "${otpController.timerTextMin!}:${otpController.timerTextSec!}",
                           style: AppStyles.interRegularStyle(
                               fontSize: 15, color: AppColors.orangePrimary))
                     ],

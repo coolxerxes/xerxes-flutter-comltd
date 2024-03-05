@@ -44,19 +44,19 @@ void showAppDialog(
     builder: (BuildContext context) {
       List<CupertinoDialogAction> actions = List.empty(growable: true);
       actions.add(CupertinoDialogAction(
-        child: Text(btnText ?? AppStrings.okay),
         onPressed: onPressed ??
             () {
               Navigator.pop(context);
             },
+        child: Text(btnText ?? AppStrings.okay),
       ));
       if (btnText2 != null) {
         actions.add(CupertinoDialogAction(
-          child: Text(btnText2),
           onPressed: onPressed2 ??
               () {
                 Navigator.pop(context);
               },
+          child: Text(btnText2),
         ));
       }
       return CupertinoAlertDialog(
@@ -129,6 +129,14 @@ String formatDateToHMMAormat(DateTime? date) {
 DateTime? parseDateFromToEEEDDMMMFormat(String? date) {
   try {
     return DateFormat("EEE, dd MMM").parse(date!);
+  } catch (e) {
+    return null;
+  }
+}
+
+String? parseDateFromToDDMMYYYY(String? date) {
+  try {
+    return DateFormat("dd MMM yyyy").format(DateTime.parse(date!));
   } catch (e) {
     return null;
   }

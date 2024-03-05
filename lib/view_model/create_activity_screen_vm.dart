@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_init_to_null
 
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:jyo_app/data/local/post_edit_model.dart';
+import 'package:jyo_app/models/group_suggestion_model/group_details_model.dart';
 import 'package:jyo_app/models/registration_model/interest_data_response.dart';
 import 'package:jyo_app/repository/activities_repo/activities_repo_impl.dart';
 import 'package:jyo_app/repository/freinds_repo/freinds_repo_impl.dart';
@@ -162,21 +164,21 @@ class CreateActivityScreenVM extends GetxController {
       //   return;
       // }
     } else {
-      bool _serviceEnabled;
-      l.PermissionStatus _permissionGranted;
+      bool serviceEnabled;
+      l.PermissionStatus permissionGranted;
 
-      _serviceEnabled = await location.serviceEnabled();
-      if (!_serviceEnabled) {
-        _serviceEnabled = await location.requestService();
-        if (!_serviceEnabled) {
+      serviceEnabled = await location.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await location.requestService();
+        if (!serviceEnabled) {
           return;
         }
       }
 
-      _permissionGranted = await location.hasPermission();
-      if (_permissionGranted == l.PermissionStatus.denied) {
-        _permissionGranted = await location.requestPermission();
-        if (_permissionGranted != l.PermissionStatus.granted) {
+      permissionGranted = await location.hasPermission();
+      if (permissionGranted == l.PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted != l.PermissionStatus.granted) {
           return;
         }
       }
@@ -415,7 +417,7 @@ class CreateActivityScreenVM extends GetxController {
         showAppDialog(msg: res.message!.toString());
       }
     }).onError((error, stackTrace) {
-      showAppDialog(msg: "ERROR " + error.toString());
+      showAppDialog(msg: "ERROR $error");
     });
   }
 
@@ -426,9 +428,9 @@ class CreateActivityScreenVM extends GetxController {
       if (list[i].getIsSelected!) {
         count++;
         if (count == 1) {
-          c.selectedCategories = c.selectedCategories + "${list[i].name}";
+          c.selectedCategories = "${c.selectedCategories}${list[i].name}";
         } else {
-          c.selectedCategories = c.selectedCategories + ", ${list[i].name}";
+          c.selectedCategories = "${c.selectedCategories}, ${list[i].name}";
         }
       }
     }
@@ -546,9 +548,8 @@ class CreateActivityScreenVM extends GetxController {
       "activityName": activityNameCtrl!.text.trim(),
       "activityAbout": aboutCtrl!.text.trim(),
       "category": category,
-      "activityDate": DateFormat("yyyy-MM-dd").format(selectedDateTime!) +
-          " " +
-          DateFormat("HH:mm:ss").format(selectedTime),
+      "activityDate":
+          "${DateFormat("yyyy-MM-dd").format(selectedDateTime!)} ${DateFormat("HH:mm:ss").format(selectedTime)}",
       "lat": "${selectedLocation!.center![1]}",
       "long": "${selectedLocation!.center![0]}",
       "privateActivity": isPrivateThisActivity,
@@ -654,5 +655,39 @@ class CreateActivityScreenVM extends GetxController {
     }).onError((error, stackTrace) {
       showAppDialog(msg: error.toString());
     });
+  }
+
+  Future<void> sendCustomMessage(String deeplink, GroupDetail? group) async {
+    final userArray = [];
+    for (int i = 0; i < friends!.length; i++) {
+      if (friends![i].getIsHidden!) {
+        userArray.add(friends![i].user!.userId.toString());
+      }
+    }
+    for (var i in userArray) {
+      final CustomMessage customMessage = CustomMessage(
+        receiverUid: i.toString(),
+        type: CometChatMessageType.custom,
+        category: CometChatMessageCategory.custom,
+        customData: group?.toSendMessage(deeplink),
+        receiverType: CometChatConversationType.user,
+        subType: 'Group',
+        tags: ['pinned', 'Group Shared'],
+      );
+
+      CometChatMessageEvents.ccMessageSent(
+          customMessage, MessageStatus.inProgress);
+
+      await CometChat.sendCustomMessage(customMessage,
+          onSuccess: (CustomMessage message) {
+        debugPrint("Custom Message Sent Successfully : $message");
+        CometChatMessageEvents.ccMessageSent(customMessage, MessageStatus.sent);
+      }, onError: (CometChatException e) {
+        debugPrint(
+            "Custom message sending failed with exception: ${e.message}");
+      });
+    }
+    Get.back();
+    showAppDialog(msg: "Group shared successfully");
   }
 }

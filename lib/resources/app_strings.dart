@@ -185,6 +185,7 @@ class AppStrings {
   static const privateThisGroup = "Private this group";
   static const requireAcceptance = "Require acceptance";
   static const inviteFriend = "Invite friends";
+  static const shareToFriends = "Share To Friends";
   static const inviteYourFriend = "Invite your friends";
 
   static String myGroup = "My group";

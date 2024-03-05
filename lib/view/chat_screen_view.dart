@@ -3,6 +3,8 @@ import 'package:flutter/material.dart' hide Typography;
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:jyo_app/data/remote/api_interface.dart';
+import 'package:jyo_app/models/group_suggestion_model/group_details_model.dart';
 import 'package:jyo_app/resources/app_colors.dart';
 import 'package:jyo_app/resources/app_routes.dart';
 import 'package:jyo_app/resources/app_strings.dart';
@@ -20,6 +22,72 @@ class ChatScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Creating a custom message template
+    CometChatMessageTemplate customMessageTemplate = CometChatMessageTemplate(
+      type: CometChatMessageType.custom,
+      category: CometChatMessageCategory.custom,
+      bubbleView: (message, context, alignment) {
+        final group = GroupDetail.fromSendMessage(
+            (message as CustomMessage).customData ?? {});
+
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.btnStrokeColor),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            children: [
+              isValidString(group.groupImage)
+                  ? MyAvatar(
+                      url: ApiInterface.profileImgUrl +
+                          group.groupImage.toString(),
+                      height: 62,
+                      width: 62,
+                      isNetwork: true,
+                      radiusAll: 8,
+                    )
+                  : MyAvatar(
+                      url: AppImage.groupImage,
+                      height: 62,
+                      width: 62,
+                      radiusAll: 8,
+                    ),
+              sizedBoxW(width: 14),
+              Column(
+                children: [
+                  Text(
+                    group.groupName ?? '',
+                    style: AppStyles.interRegularStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    group.createdAt != null
+                        ? parseDateFromToDDMMYYYY(group.createdAt) ?? ''
+                        : '',
+                    style: AppStyles.interRegularStyle(
+                      fontSize: 13,
+                      color: AppColors.hintTextColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+
+    //custom list of templates
+    List<CometChatMessageTemplate> messageTypes = [
+      ...CometChatUIKit.getDataSource().getAllMessageTemplates(),
+      customMessageTemplate
+    ];
+
     return GetBuilder<ChatScreenVM>(builder: (c) {
       return WillPopScope(
         onWillPop: () async {
@@ -116,7 +184,7 @@ class ChatScreenView extends StatelessWidget {
                                     onPressed: () {}),
                                 CupertinoActionSheetAction(
                                   child: Text(
-                                    AppStrings.blockUser + " user",
+                                    "${AppStrings.blockUser} user",
                                     style: AppStyles.interRegularStyle(
                                         color: Colors.red),
                                   ),
@@ -147,15 +215,15 @@ class ChatScreenView extends StatelessWidget {
                                 )
                               ],
                                   cancelButton: CupertinoActionSheetAction(
+                                    isDefaultAction: true,
+                                    onPressed: () {
+                                      Navigator.pop(context, AppStrings.cancel);
+                                    },
                                     child: Text(
                                       AppStrings.cancel,
                                       style: AppStyles.interRegularStyle(
                                           color: AppColors.iosBlue),
                                     ),
-                                    isDefaultAction: true,
-                                    onPressed: () {
-                                      Navigator.pop(context, AppStrings.cancel);
-                                    },
                                   )),
                         );
                       },
@@ -184,7 +252,12 @@ class ChatScreenView extends StatelessWidget {
                   group: c.group,
                   user: c.conversation?.conversationWith as User?,
                   messageListStyle: const MessageListStyle(),
-
+                  messagesRequestBuilder: (MessagesRequestBuilder()
+                    ..uid = c.receiver!.uid
+                    ..messageId = -1
+                    ..withTags = true
+                    ..limit = 30),
+                  templates: messageTypes,
                   theme: CometChatTheme(
                       palette: const Palette(
                         backGroundColor: PaletteModel(

@@ -23,8 +23,6 @@ class MessageScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var args = Get.arguments;
-
     return GetBuilder<MessageScreenVM>(builder: (c) {
       return Scaffold(
           appBar: PreferredSize(
@@ -216,12 +214,9 @@ class MessageScreenView extends StatelessWidget {
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
                                       return freindMessage(
-                                          c,
-                                          index,
-                                          args != null
-                                              ? args['isFromGroup']
-                                              : false,
-                                          args != null ? args['groupId'] : '');
+                                        c,
+                                        index,
+                                      );
                                     }),
                       ),
                     )
@@ -288,7 +283,9 @@ class MessageScreenView extends StatelessWidget {
   }
 
   Widget freindMessage(
-      MessageScreenVM c, index, bool isFromGroup, String groupId) {
+    MessageScreenVM c,
+    index,
+  ) {
     return Row(
       children: [
         Expanded(
@@ -300,36 +297,10 @@ class MessageScreenView extends StatelessWidget {
               type: MaterialType.transparency,
               child: InkWell(
                 onTap: () async {
-                  if (isFromGroup) {
-                    final CustomMessage customMessage = CustomMessage(
-                      receiverUid: c.friends[index].uid ?? '',
-                      type: CometChatMessageType.custom,
-                      customData: {
-                        'groupId': groupId,
-                      },
-                      receiverType: CometChatConversationType.user,
-                      subType: 'Group',
-                    );
-
-                    CometChatMessageEvents.ccMessageSent(
-                        customMessage, MessageStatus.inProgress);
-
-                    await CometChat.sendCustomMessage(customMessage,
-                        onSuccess: (CustomMessage message) {
-                      debugPrint("Custom Message Sent Successfully : $message");
-                      CometChatMessageEvents.ccMessageSent(
-                          customMessage, MessageStatus.sent);
-                    }, onError: (CometChatException e) {
-                      debugPrint(
-                          "Custom message sending failed with exception: ${e.message}");
-                    });
-                    Get.back(result: true);
-                  } else {
-                    Get.delete<ChatScreenVM>(force: true);
-                    final cvm = Get.put(ChatScreenVM());
-                    cvm.conversation = c.conversationList[index];
-                    getToNamed(chatScreenRoute);
-                  }
+                  Get.delete<ChatScreenVM>(force: true);
+                  final cvm = Get.put(ChatScreenVM());
+                  cvm.conversation = c.conversationList[index];
+                  getToNamed(chatScreenRoute);
                 },
                 child: Container(
                   // margin: EdgeInsets.only(left: 22.w, right: 22.w),
